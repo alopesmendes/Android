@@ -46,3 +46,16 @@ annotations pour indiquer les métadonnées
 apps externes qui envoient les fichiers de config a confroid
 
 confroid communique avec le web service
+
+===
+
+3 types de stockage:
+	Confroid (local sqlite)
+	mémoire téléphone (api storage access framework)
+	en ligne (web service + postgresql)
+
+chaque app:
+	demande une config à Confroid (reçoit la config et la consomme ou non)
+	demande de toutes les configs
+	envoie une config à Confroid (créer un token lors du premier envoi)
+	conserve sa dernière version de config
