@@ -1,2 +1,0 @@
-com/example/testwebservice/BuildConfig.java
- com.example.testwebservice.BuildConfig
