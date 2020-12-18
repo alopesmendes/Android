@@ -12,16 +12,16 @@ class MainActivity : AppCompatActivity() {
 
         when {
             intent.action == Intent.ACTION_SEND -> {
-                if (intent.type == "text/plain") {
-                    intent.getStringExtra("name").let {
-                        tv4.text = it
-                    }
-                    intent.getStringExtra("content").let {
-                        tv5.text = it
-                    }
-                    intent.getStringExtra("tag").let {
-                        tv6.text = it
-                    }
+                intent.getStringExtra("name").let {
+                    tv4.text = it
+                }
+
+                intent.getSerializableExtra("content").let {
+                    tv5.text = it.toString()
+                }
+
+                intent.getStringExtra("tag").let {
+                    tv6.text = it
                 }
             }
         }

@@ -1,8 +1,8 @@
 package fr.umlv.test_calculator
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -10,18 +10,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        button.setOnClickListener {
-            val sendIntent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra("name", ed1.text.toString())
-
-//                utiliser setX() pour le content
-                putExtra("content", ed2.text.toString())
-
-                putExtra("tag", ed3.text.toString())
-                type = "text/plain"
+        send_config_button.setOnClickListener {
+            Intent(this, SendConfig::class.java).apply {
+                startActivity(this)
             }
-            startActivity(sendIntent)
         }
     }
 }
