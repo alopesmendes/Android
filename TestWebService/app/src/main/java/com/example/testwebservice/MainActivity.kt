@@ -1,41 +1,86 @@
 package com.example.testwebservice
 
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.AuthFailureError
+import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
-import java.net.URL
-import java.net.URLEncoder
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.UnsupportedEncodingException
+import java.nio.charset.Charset
+
 
 class MainActivity : AppCompatActivity() {
     private val requestAdapter : RequestAdapter = RequestAdapter(ArrayList())
-    private val searchTask : SearchTask =  SearchTask()
+    private var searchTask : SearchTask =  SearchTask()
+
+    private fun execute(it : Any) {
+        if (searchTask == null || searchTask.isCancelled || searchTask.status == AsyncTask.Status.FINISHED) {
+            searchTask = SearchTask()
+            searchTask.execute(it)
+        } else {
+            searchTask.cancel(true)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        buttonValidate.setOnClickListener {
-            val queue = Volley.newRequestQueue(this)
-            val stringRequest = StringRequest(Request.Method.GET, url,
+        buttonGetRequest.setOnClickListener {
+            var customRequest = CustomRequest(Request.Method.GET, url, Any::class.java,
                     {
-                        searchTask.execute(it)
+
+                        execute(it)
                     },
                     {
-                        Log.e("url error", it.toString())
-                    })
+                        Log.i("error", it.toString())
+                    }
+            )
 
-            // Add the request to the RequestQueue.
-            queue.add(stringRequest)
+            MySingleton.getInstance(this).addToRequestQueue(customRequest)
+        }
 
+        buttonPostRequest.setOnClickListener {
+            val stringRequest: StringRequest = object : StringRequest(Method.POST, url, Response.Listener {
+                //let's parse json data
+                try {
+
+                    Log.i("success", "$it")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }, Response.ErrorListener { }) {
+                override fun getParams(): Map<String, String> {
+                    var jsonBody = JSONObject()
+                    jsonBody.put("id", 5)
+                    jsonBody.put("name", "japanenglish")
+                    jsonBody.put("vtuber", "korone")
+                    val params: MutableMap<String, String> = java.util.HashMap()
+                    params["id"] = jsonBody["id"].toString()
+                    params["name"] = jsonBody["name"].toString()
+                    params["vtuber"] = jsonBody["vtuber"].toString()
+                    return params
+                }
+
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    val params: MutableMap<String, String> = java.util.HashMap()
+                    params["Content-Type"] = "application/x-www-form-urlencoded"
+                    return params
+                }
+            }
+            MySingleton.getInstance(this).addToRequestQueue(stringRequest)
+
+            //sendRequest()
         }
 
         recyclerView.adapter = requestAdapter
@@ -43,32 +88,63 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
     }
 
-    data class SearchResultEntry(val id : String, val title : String)
+
+    private fun sendRequest() {
+        val jsonBody = JSONObject()
+        jsonBody.put("id", 5)
+        jsonBody.put("name", "japanenglish")
+        jsonBody.put("vtuber", "korone")
+        val requestBody = jsonBody.toString()
+
+        var request = object : StringRequest(Method.POST, url,
+                {
+                    val jsonObject = JSONObject(it)
+                    Log.i("success", jsonObject.toString())
+                },
+                {
+                    Log.e("error", it.toString())
+                }
+        ) {
+            override fun getBodyContentType(): String {
+
+                return "application/json; charset=utf-8"
+            }
+
+            override fun getBody(): ByteArray {
+                try {
+                    return requestBody.toByteArray(Charsets.UTF_8)
+                } catch (e: UnsupportedEncodingException) {
+                    Log.e("error byte", e.toString())
+                    throw e
+                }
+            }
+
+            override fun parseNetworkResponse(response: NetworkResponse?): Response<String> {
+                var json = String(response!!.data, Charset.forName(HttpHeaderParser.parseCharset(response!!.headers)))
+                return Response.success(json, HttpHeaderParser.parseCacheHeaders(response))
+            }
+        }
+        MySingleton.getInstance(this).addToRequestQueue(request)
+    }
 
     companion object {
         private var url = "http://192.168.1.17:8080/api/courses"
     }
 
-    private fun parseSearchResult(resultPage : String) : List<SearchResultEntry> {
-        val obj = Gson().fromJson(resultPage, List::class.java)
-        return obj.map {
-            val e = it as Map<String, Any>
-            SearchResultEntry(
-                    e["id"].toString(),
-                    e["name"].toString()
-            )
-        }
-    }
-
-    inner class SearchTask : AsyncTask<String, Int, List<SearchResultEntry>>() {
-        override fun doInBackground(vararg params: String?): List<SearchResultEntry>? {
-            return params[0]?.let { parseSearchResult(it) }
+    inner class SearchTask : AsyncTask<Any, Int, Content>() {
+        override fun doInBackground(vararg params: Any?): Content {
+            var content = params[0]?.let { Content(it) }
+            content?.convertToBundle()
+            return content!!
         }
 
-        override fun onPostExecute(result: List<SearchResultEntry>?) {
+        override fun onPostExecute(result: Content?) {
             super.onPostExecute(result)
-            requestAdapter.requests = result!!
+            requestAdapter.requests = listOf(result!!)
             requestAdapter.notifyDataSetChanged()
+
         }
+
+
     }
 }
