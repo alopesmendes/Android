@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         buttonGetRequest.setOnClickListener {
             var customRequest = CustomRequest(Request.Method.GET, url, Any::class.java,
                     {
-
                         execute(it)
                     },
                     {
@@ -50,24 +49,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonPostRequest.setOnClickListener {
-            val stringRequest: StringRequest = object : StringRequest(Method.POST, url, Response.Listener {
-                //let's parse json data
-                try {
+            val stringRequest = object : CustomRequest<Any>(Method.POST, url, Any::class.java,
+                    {
 
-                    Log.i("success", "$it")
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }, Response.ErrorListener { }) {
+                    },
+                    {
+                        Log.e("error", it.toString())
+                    }
+            ) {
                 override fun getParams(): Map<String, String> {
-                    var jsonBody = JSONObject()
-                    jsonBody.put("id", 5)
-                    jsonBody.put("name", "japanenglish")
-                    jsonBody.put("vtuber", "korone")
                     val params: MutableMap<String, String> = java.util.HashMap()
-                    params["id"] = jsonBody["id"].toString()
-                    params["name"] = jsonBody["name"].toString()
-                    params["vtuber"] = jsonBody["vtuber"].toString()
+                    params["id"] = "5"
+                    params["name"] = "japanenglish"
+                    params["vtuber"] = "korone"
                     return params
                 }
 
@@ -128,7 +122,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private var url = "http://192.168.1.17:8080/api/courses"
+        private var url = "https://fagaj.loca.lt/api/courses"
     }
 
     inner class SearchTask : AsyncTask<Any, Int, Content>() {

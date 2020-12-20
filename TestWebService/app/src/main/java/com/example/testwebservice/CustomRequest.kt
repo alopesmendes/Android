@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException
 import java.nio.charset.Charset
 
 
-class CustomRequest<T>(
+open class CustomRequest<T>(
         requestMethod: Int,
         url: String,
         private val clazz: Class<T>,
