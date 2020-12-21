@@ -12,18 +12,23 @@ const courses = [
     { id:3, name:'course3', teachers:['aAAA'] },
 ];
 
+const school = {
+    classroom: "AB2",
+    classes:courses,
+}
+
 app.get('/', (req, res) => {
     res.send('Hello World ON est la!!!');
 });
 
 app.get('/api/courses', (req, res) => {
-    res.json(courses);
+    res.json(school);
 });
 
 app.post('/api/courses', (req, res) => {
     const newCourse = req.body;
-    courses.push(newCourse);
-    res.json(courses);
+    school.classes.push(newCourse);
+    res.json(school);
 });
 
 app.use("/", router);

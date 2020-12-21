@@ -10,6 +10,7 @@ import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
@@ -49,7 +50,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonPostRequest.setOnClickListener {
-            val stringRequest = object : CustomRequest<Any>(Method.POST, url, Any::class.java,
+            /*
+            val request = object : CustomRequest<Any>(Method.POST, url, Any::class.java,
                     {
 
                     },
@@ -61,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                     val params: MutableMap<String, String> = java.util.HashMap()
                     params["id"] = "5"
                     params["name"] = "japanenglish"
-                    params["vtuber"] = "korone"
+                    params["vtuber"] = listOf("korone", "okayu", "aqua").toString()
                     return params
                 }
 
@@ -72,8 +74,8 @@ class MainActivity : AppCompatActivity() {
                     return params
                 }
             }
-            MySingleton.getInstance(this).addToRequestQueue(stringRequest)
-
+            MySingleton.getInstance(this).addToRequestQueue(request)
+            */
             //sendRequest()
         }
 
@@ -82,49 +84,36 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
     }
 
-
+    /***
+     * Will post a random JSONObject
+     * The key is always a string.
+     * Thr value can be all primitives objects, String, JSONObject, JSONArray and Null
+     */
     private fun sendRequest() {
         val jsonBody = JSONObject()
         jsonBody.put("id", 5)
         jsonBody.put("name", "japanenglish")
-        jsonBody.put("vtuber", "korone")
-        val requestBody = jsonBody.toString()
+        jsonBody.put("vtuber", JSONArray(listOf("korone", "okayu", "aqua")))
 
-        var request = object : StringRequest(Method.POST, url,
+        var request = JsonObjectRequest(Request.Method.POST, url, jsonBody,
                 {
-                    val jsonObject = JSONObject(it)
-                    Log.i("success", jsonObject.toString())
+                    Log.i("success", it.toString())
                 },
                 {
                     Log.e("error", it.toString())
                 }
-        ) {
-            override fun getBodyContentType(): String {
-
-                return "application/json; charset=utf-8"
-            }
-
-            override fun getBody(): ByteArray {
-                try {
-                    return requestBody.toByteArray(Charsets.UTF_8)
-                } catch (e: UnsupportedEncodingException) {
-                    Log.e("error byte", e.toString())
-                    throw e
-                }
-            }
-
-            override fun parseNetworkResponse(response: NetworkResponse?): Response<String> {
-                var json = String(response!!.data, Charset.forName(HttpHeaderParser.parseCharset(response!!.headers)))
-                return Response.success(json, HttpHeaderParser.parseCacheHeaders(response))
-            }
-        }
+        )
         MySingleton.getInstance(this).addToRequestQueue(request)
     }
 
     companion object {
-        private var url = "https://fagaj.loca.lt/api/courses"
+        private var url = "https://valkyroid.serverless.social/api/courses"
     }
 
+
+    /***
+     * The async task that will display as a recycler view the elements to see...
+     */
     inner class SearchTask : AsyncTask<Any, Int, Content>() {
         override fun doInBackground(vararg params: Any?): Content {
             var content = params[0]?.let { Content(it) }

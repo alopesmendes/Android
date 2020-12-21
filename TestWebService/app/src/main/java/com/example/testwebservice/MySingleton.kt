@@ -8,6 +8,16 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 
+/***
+ * Will allow us the add a request in =to a queue.
+ * Is also able to load images.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class MySingleton(context: Context) {
     companion object {
         @Volatile

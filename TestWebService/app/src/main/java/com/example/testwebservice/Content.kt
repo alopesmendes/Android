@@ -1,5 +1,8 @@
 package com.example.testwebservice
 
+/***
+ * The content of a request to see ...
+ */
 data class Content(private val data : Any) {
     lateinit var content: Map<String, Any>
 

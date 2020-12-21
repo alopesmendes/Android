@@ -10,7 +10,9 @@ import org.json.JSONException
 import java.io.UnsupportedEncodingException
 import java.nio.charset.Charset
 
-
+/***
+ * CustomRequest to see...
+ */
 open class CustomRequest<T>(
         requestMethod: Int,
         url: String,
