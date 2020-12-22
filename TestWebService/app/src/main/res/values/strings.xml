@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">TestWebService</string>
-    <string name="edit_text_hint">Enter url</string>
-    <string name="button_validate_text">Validate</string>
+    <string name="button_get_request_text">Get Request</string>
+    <string name="button_post_request_text">Post Request</string>
 </resources>

@@ -6,12 +6,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RequestAdapter(var requests : List<MainActivity.SearchResultEntry>) : RecyclerView.Adapter<RequestAdapter.ViewHolder>() {
+/***
+ * The RequestAdapter to see...
+ */
+class RequestAdapter(var requests : List<Content>) : RecyclerView.Adapter<RequestAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textTitleView : TextView = itemView.findViewById(R.id.textTitle)
 
-        fun update(search: MainActivity.SearchResultEntry) {
-            textTitleView.text = "${search.id} -> ${search.title}"
+        fun update(search: Content) {
+            textTitleView.text = "${search.content}"
         }
     }
 
