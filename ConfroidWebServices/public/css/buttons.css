@@ -1,0 +1,106 @@
+
+img.icon,
+input.icon {
+    background-color: transparent; /* make the button transparent */
+    background-repeat: no-repeat;  /* make the background image appear only once */
+    border: none;           /* assuming we don't want any borders */
+    cursor: pointer;        /* make the cursor like hovering over an <a> element */
+    
+    width: 36px;
+    height: 36px;
+}
+
+
+input.button-profile {
+	background-image: url(../logo/profile.png);
+}
+input.button-addbasket {
+	background-image: url(../logo/add-tobasket.png);
+}
+input.button-grade {
+	background-image: url(../logo/grade.png);
+}
+input.button-cancel {
+	background-image: url(../logo/cancel.png);
+}
+input.button-basket {
+	background-image: url(../images/pencil.png);
+}
+input.button-rent {
+    background-image: url(../logo/rent.png);
+}
+input.button-buy {
+    background-image: url(../logo/buy.png);
+}
+input.button-home {
+	background-image: url(../logo/home.png);
+}
+input.button-history {
+	background-image: url(../logo/history.png);
+}
+input.button-sell {
+	background-image: url(../logo/sell.png);
+}
+
+
+a.button-logout {
+	background-image: url(../images/logout.png);
+	background-repeat: no-repeat;
+	
+	text-decoration: none;
+	float: right;
+  padding: 12px;
+  margin: 15px;
+  color: red;
+
+  transition: width .35s;
+  -webkit-transition: width .35s;
+  overflow: hidden;
+  
+      cursor: pointer;        /* make the cursor like hovering over an <a> element */
+    
+    width: 36px;
+    height: 36px;
+  
+}
+
+
+a.button-logout:hover {
+  width: 100px;
+}
+
+a.button-logout:hover .logout{
+  opacity: .9;
+}
+
+
+
+.navigation {
+  width: 100%;
+  background-color: blue;
+}
+
+.logout {
+  font-size: .8em;
+  font-family: 'Oswald', sans-serif;
+	position: relative;
+  right: -24px;
+  bottom: 6px;
+  overflow: hidden;
+  letter-spacing: 3px;
+  opacity: 0;
+  transition: opacity .45s;
+  -webkit-transition: opacity .35s;
+  
+}
+
+
+input.button-history,
+input.button-profile,
+input.button-home,
+input.button-basket {
+	float: right;
+	padding-right: 5em;
+	padding-bottom: 4em;
+}
+
