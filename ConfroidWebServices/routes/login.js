@@ -19,11 +19,6 @@ router.post('/', (req, res) => {
   console.log("password: " + password);
   //console.log("password: " + password);
 
-
-
-
-
-
 });
 
 

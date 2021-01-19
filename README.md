@@ -15,6 +15,7 @@ $ sudo npm install -g nodemon
 $ npm install -g localtunnel
 
 Android/ConfroidWebServices$ npm install express --save
+Android/ConfroidWebServices$ npm install sqlite3
 ```
 
 Or download the package for the website [nodejs](https://nodejs.org/en/download/)
