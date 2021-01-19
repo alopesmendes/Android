@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         return when(item.itemId) {
             R.id.loginItem -> {
                 Intent(this, LoginActivity::class.java).apply { startActivity(this) }
-                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)
