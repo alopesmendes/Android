@@ -15,8 +15,9 @@ router.post('/', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  console.log("Username: " + username);
-  console.log("password: " + password);
+  //console.log("Username: " + username);
+  //console.log("password: " + password);
+  res.json(req.body);
   //console.log("password: " + password);
 
 });

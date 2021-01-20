@@ -8,8 +8,10 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import fr.uge.confroid.web.URL
+import fr.uge.confroid.web.User
 import fr.uge.confroid.web.VolleySingleton
 import kotlinx.android.synthetic.main.activity_login.*
+import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +47,17 @@ class LoginActivity : AppCompatActivity() {
         val customRequest = object : StringRequest(Method.POST, URL.ROOT_URL,
             {
                 Log.i("good", it.toString())
+                val jsonObject = JSONObject(it)
+                //Log.i("good", jsonObject.toString())
+
+                val user = User(jsonObject.getString("username"), jsonObject.getString("password"))
+
+                /*
+                if (!jsonObject.getBoolean("error")) {
+                    Log.i("good", jsonObject.toString())
+                    val user = User(jsonObject.getString("username"), jsonObject.getString("password"))
+                }
+                */
             },
             {
                 Log.i("bad", it.toString())
