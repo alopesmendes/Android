@@ -20,12 +20,13 @@ class ConfigurationPusher : Service() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.i("pusher service", "start")
+        val app = intent?.extras?.getString("app")
         val version = intent?.extras?.getInt("version")
         val content = intent?.extras?.getString("content")
         val tag = intent?.extras?.getString("tag")
 
-        if (version != null && content != null && tag != null) {
-            MainActivity.model.addConfig(version, content, tag)
+        if (app != null && version != null && content != null && tag != null) {
+            MainActivity.model.addConfig(app, version, content, tag)
         }
 
         return super.onStartCommand(intent, flags, startId)

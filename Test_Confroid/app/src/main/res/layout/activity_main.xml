@@ -7,6 +7,17 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/app_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="app"
+        android:textSize="25sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/app_editText"
+        app:layout_constraintEnd_toStartOf="@id/barrier"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/id_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +26,7 @@
         app:layout_constraintBaseline_toBaselineOf="@id/id_editText"
         app:layout_constraintEnd_toStartOf="@id/barrier"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/app_textView" />
 
     <TextView
         android:id="@+id/version_textView"
@@ -51,6 +62,17 @@
         app:layout_constraintTop_toBottomOf="@+id/content_textView" />
 
     <EditText
+        android:id="@+id/app_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
         android:id="@+id/id_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -60,7 +82,7 @@
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/barrier"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/app_editText" />
 
     <EditText
         android:id="@+id/version_editText"
@@ -101,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="id_textView, version_textView, content_textView, tag_textView" />
+        app:constraint_referenced_ids="app_textView, id_textView, version_textView, content_textView, tag_textView" />
 
     <TextView
         android:id="@+id/test1"
@@ -126,7 +148,7 @@
         android:layout_height="wrap_content"
         android:text="delete"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/reset_button"
         app:layout_constraintStart_toEndOf="@id/select_all_button" />
 
     <Button
@@ -137,5 +159,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/delete_button"
         app:layout_constraintStart_toEndOf="@id/insert_button" />
+
+    <Button
+        android:id="@+id/reset_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="reset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/show_all_tables_button"
+        app:layout_constraintStart_toEndOf="@id/delete_button" />
+
+    <Button
+        android:id="@+id/show_all_tables_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="show tables"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/reset_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
