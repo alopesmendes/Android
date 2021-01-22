@@ -1,18 +1,23 @@
-package fr.uge.confroid
+package fr.uge.confroid.web
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import fr.uge.confroid.web.URL
-import fr.uge.confroid.web.User
-import fr.uge.confroid.web.VolleySingleton
+import fr.uge.confroid.MainActivity
+import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.activity_login.*
-import org.json.JSONObject
 
+/**
+ * This activity will allow the user to log in.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
 
         buttonLogin.setOnClickListener {
             userLogin()
+            Intent(this, MainActivity::class.java).apply { startActivity(this) }
         }
 
         textViewRegisterNowLogin.setOnClickListener {
@@ -27,37 +33,34 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun userLogin() {
-
-        val username = editTextNameLogin.text.toString()
-        val password = editTextPasswordLogin.text.toString()
-
+    private fun isMissingFields(username : String, password : String) : Boolean {
         if (TextUtils.isEmpty(username)) {
             editTextNameLogin.error = "Please enter your username"
             editTextNameLogin.requestFocus()
-            return
+            return true
         }
 
         if (TextUtils.isEmpty(password)) {
             editTextPasswordLogin.error = "Please enter your password"
             editTextPasswordLogin.requestFocus()
+            return true
+        }
+        return false
+    }
+
+    private fun userLogin() {
+
+        val username = editTextNameLogin.text.toString()
+        val password = editTextPasswordLogin.text.toString()
+
+        if (isMissingFields(username, password)) {
             return
         }
-
-        val customRequest = object : StringRequest(Method.POST, URL.ROOT_URL,
+        val customRequest = object : CustomRequest<User>(Method.POST, URL.ROOT_URL, User::class.java,
             {
                 Log.i("good", it.toString())
-                val jsonObject = JSONObject(it)
-                //Log.i("good", jsonObject.toString())
+                SharedPreferences.getInstance(applicationContext).userLogin(it)
 
-                val user = User(jsonObject.getString("username"), jsonObject.getString("password"))
-
-                /*
-                if (!jsonObject.getBoolean("error")) {
-                    Log.i("good", jsonObject.toString())
-                    val user = User(jsonObject.getString("username"), jsonObject.getString("password"))
-                }
-                */
             },
             {
                 Log.i("bad", it.toString())

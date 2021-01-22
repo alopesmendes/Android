@@ -13,6 +13,7 @@ var db = new sqlite3.Database('./database/db.sqlite', (err) => {
 
 db.serialize(() => {
   // Queries scheduled here will be serialized.
+  db.run('DROP TABLE account');
   db.run('CREATE TABLE IF NOT EXISTS account(username TEXT, password TEXT)')
     .run(`INSERT INTO account(username, password)
           VALUES('a', 'a'),

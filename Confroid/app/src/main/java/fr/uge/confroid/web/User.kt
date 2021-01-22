@@ -1,3 +1,3 @@
 package fr.uge.confroid.web
 
-data class User(val userName : String, val password : String)
+data class User(val username : String, val password : String)
