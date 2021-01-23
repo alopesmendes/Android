@@ -13,11 +13,14 @@ app.use(express.static('public'));
 
 // Defining each routes with its file
 const loginRoutes = require('./routes/login');
+const registerRoutes = require('./routes/login');
 const dashboardRoutes = require('./routes/dashboard');
 
 
 // Routes that should handle requests
 app.use('/', loginRoutes);
+app.use("/register", registerRoutes);
+
 app.use("/dashboard", dashboardRoutes);
 
 
