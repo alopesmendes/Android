@@ -1,15 +1,9 @@
 package fr.umlv.test_confroid
 
-import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
-import java.sql.Date
-import java.time.LocalDate
 
 class DatabaseHandler(
     context: Context?,
@@ -37,16 +31,16 @@ class DatabaseHandler(
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         // Drop older table if existed
         TABLES.forEach {
-            db?.execSQL("DROP TABLE IF EXISTS $it");
+            db?.execSQL("DROP TABLE IF EXISTS $it")
         }
 
         // Create tables again
-        onCreate(db);
+        onCreate(db)
     }
 
     fun reset(db: SQLiteDatabase) {
         TABLES.forEach {
-            db.execSQL("DROP TABLE IF EXISTS $it");
+            db.execSQL("DROP TABLE IF EXISTS $it")
         }
         TABLES.removeAll(TABLES)
     }

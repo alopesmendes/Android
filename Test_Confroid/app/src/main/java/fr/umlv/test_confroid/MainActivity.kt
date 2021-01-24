@@ -1,26 +1,50 @@
 package fr.umlv.test_confroid
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import fr.umlv.test_confroid.services.ConfigurationPuller
 import fr.umlv.test_confroid.services.ConfigurationPusher
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    val filter: IntentFilter = IntentFilter()
+
     companion object {
         lateinit var model: Model
+        val broadcastConfigAction = "getConfig"
+    }
+
+    /*
+    LORSQUE LE RECEIVER RECOIT LA CONFIG DU SERVICE PULLER,
+    AFFICHE LA CONFIG DANS LA TEXTVIEW
+    ET MET FIN AU SERVICE DE PULLER
+    */
+    val receiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            if (intent.action == broadcastConfigAction) {
+                test1.text = intent.getSerializableExtra("config").toString()
+            }
+            Intent(this@MainActivity, ConfigurationPuller::class.java).apply {
+                stopService(this)
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        filter.addAction(broadcastConfigAction)
 
         model = Model(this)
         model.open()
@@ -33,6 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         /////////////////////////////////////////////////////
 
+//        ENVOIE LES DONNEES AU SERVICE DE PUSHER POUR STOCKER UNE CONFIG
         insert_button.setOnClickListener {
             Log.i("main", "pusher button")
             val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
@@ -78,5 +103,34 @@ class MainActivity : AppCompatActivity() {
         show_all_tables_button.setOnClickListener {
             test1.text = model.showTables().joinToString("\n", "{", "}")
         }
+
+//        ENVOIE LES DONNEES AU SERVICE DE PULLER POUR DEMANDER UNE CONFIG
+        select_one_button.setOnClickListener {
+            val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
+            val version = version_editText.text.toString()
+            if (app.isBlank() || version.isBlank()) {
+                Toast.makeText(this, "configuration app and version required", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(this, "configuration selected", Toast.LENGTH_SHORT).show()
+                Intent(this, ConfigurationPuller::class.java).apply {
+                    putExtra("app", app)
+                    putExtra("version", version.toInt())
+
+                    startService(this)
+                }
+            }
+        }
+    }
+
+    //    POUR ENREGISTRER LE RECEIVER DE L'INTENT DU SERVICE DE PULLER
+    override fun onPause() {
+        unregisterReceiver(receiver)
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(receiver, filter)
     }
 }

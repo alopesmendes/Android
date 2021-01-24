@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".services.ConfigurationPusher"
+            android:name=".services.ConfigurationPuller"
             android:enabled="true"
             android:exported="true"></service>
+        <service
+            android:name=".services.ConfigurationPusher"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

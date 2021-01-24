@@ -70,27 +70,19 @@ class Model(context: Context) {
         db.delete(app, "${DatabaseHandler.KEY_ID} = $id", null)
     }
 
-    fun getConfig(app: String, id: Int): Config? {
+    fun getConfig(app: String, version: Int): Config? {
         val cursor = db.query(
-            app, allColumns, "${DatabaseHandler.KEY_ID} = $id",
+            app, allColumns, "${DatabaseHandler.KEY_VERSION} = $version",
             null, null, null, null, null
         )
 
-        if (cursor == null) {
-            return null
+        return if (cursor == null) {
+            null
         } else {
             cursor.moveToFirst()
-
-            val config =
-                Config(
-                    app,
-                    cursor.getInt(0),
-                    cursor.getInt(1),
-                    cursor.getString(2),
-                    cursor.getString(3)
-                )
+            val config = cursorToConfig(app, cursor)
             cursor.close()
-            return config
+            config
         }
     }
 
