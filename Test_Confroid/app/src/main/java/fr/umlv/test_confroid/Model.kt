@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import java.sql.Date
 import java.time.LocalDate
@@ -80,13 +81,12 @@ class Model(context: Context) {
             null, null, null, null, null
         )
 
-        return if (cursor == null) {
-            null
+        if (cursor == null || !cursor.moveToFirst()) {
+            return null
         } else {
-            cursor.moveToFirst()
             val config = cursorToConfig(app, cursor)
             cursor.close()
-            config
+            return config
         }
     }
 
