@@ -19,8 +19,7 @@ router.get('/register', function(req, res, next) {
 
 
 
-function existsUserPassword(username, password, callback) {
-
+function existsUserPassword(username, password, db, callback) {
     var query = 'SELECT username, password FROM account WHERE username = ? AND password = ?'
     db.get(query, [username, password], (err, results) => {
         if (err) {
@@ -89,9 +88,10 @@ router.post('/register', (req, res) => {
                   return console.log(err.message);
                 }
             });
-            
-            res.status(200).json({"data": username + password });  
+            console.log(req.body);
+            res.status(200).json(req.body);  
         } else {
+            //console.log('data taken');
             res.status(400).json({"data": "Already taken" });
         }
         return row;

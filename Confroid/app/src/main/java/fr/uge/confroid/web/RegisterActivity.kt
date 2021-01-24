@@ -23,8 +23,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         buttonRegister.setOnClickListener {
-            userLogin()
-            Intent(this, LoginActivity::class.java).apply { startActivity(this) }
+            userRegister()
         }
     }
 
@@ -55,7 +54,7 @@ class RegisterActivity : AppCompatActivity() {
         return false
     }
 
-    private fun userLogin() {
+    private fun userRegister() {
         val username = editTextNameRegister.text.toString()
         val password = editTextPasswordRegister.text.toString()
         val confirmPassword = editTextConfirmPasswordRegister.text.toString()
@@ -64,10 +63,11 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
         val customRequest = object : CustomRequest<User>(
-            Method.POST, URL.ROOT_URL, User::class.java,
+            Method.POST, URL.ROOT_REGISTER, User::class.java,
             {
                 Log.i("good", it.toString())
                 SharedPreferences.getInstance(applicationContext).userLogin(it)
+                Intent(this, LoginActivity::class.java).apply { startActivity(this) }
 
             },
             {
@@ -76,8 +76,9 @@ class RegisterActivity : AppCompatActivity() {
         ) {
             override fun getParams(): MutableMap<String, String> {
                 val params = HashMap<String, String>()
+                val cryptPassword = CryptKey.encrypt(password.toByteArray(), 2)
                 params["username"] = username
-                params["password"] = password
+                params["password"] = String(cryptPassword!!)
                 return params
             }
         }
