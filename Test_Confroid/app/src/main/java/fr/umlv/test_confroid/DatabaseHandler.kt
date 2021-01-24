@@ -46,7 +46,7 @@ class DatabaseHandler(
     }
 
     fun createTable(db: SQLiteDatabase, app: String) {
-        if (!TABLES.contains(app)) {
+        if (!containsTable(app)) {
             db.execSQL("CREATE TABLE $app($KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT, $KEY_VERSION INTEGER, $KEY_CONTENT TEXT, $KEY_TAG TEXT, $KEY_DATE DATE)")
             TABLES.add(app)
         }
@@ -68,5 +68,9 @@ class DatabaseHandler(
             }
             cursor.close()
         }
+    }
+
+    fun containsTable(app: String): Boolean {
+        return TABLES.contains(app)
     }
 }

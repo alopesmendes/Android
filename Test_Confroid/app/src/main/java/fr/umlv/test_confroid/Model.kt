@@ -71,6 +71,10 @@ class Model(context: Context) {
     }
 
     fun getConfig(app: String, version: Int): Config? {
+        if (!handler.containsTable(app)) {
+            return null
+        }
+
         val cursor = db.query(
             app, allColumns, "${DatabaseHandler.KEY_VERSION} = $version",
             null, null, null, null, null
