@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
         if (isMissingFields(username, password)) {
             return
         }
-        val customRequest = object : StringRequest(Method.POST, URL.ROOT_URL,
+        val customRequest = object : StringRequest(Method.POST, URL.ROOT_LOGIN,
             {
                 Log.i("good", it.toString())
                 val jsonObject = JSONObject(it)
@@ -74,7 +74,8 @@ class LoginActivity : AppCompatActivity() {
                 val params = HashMap<String, String>()
                 val cryptPassword = CryptKey.encrypt(password.toByteArray(), 2)
                 params["username"] = username
-                params["password"] = String(cryptPassword!!)
+                //params["password"] = String(cryptPassword!!)
+                params["password"] = password
                 return params
             }
         }

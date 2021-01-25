@@ -25,7 +25,7 @@ router.post('/login', async function(req, res) {
       if (userInfo.length == 1) {              // Check if credentials matched
     
         const token = AuthHelper.generateToken(userInfo);
-        res.status(200).json({token});
+        res.status(200).json({"username":usernameGiven, "password":passwordGiven, "token":token});
         //res.send(`Hello, ${users[0].username}`);
         console.log(token);
         //res.header('Authorization', "Bearer "+ token).redirect('/api/auth/');
@@ -60,7 +60,7 @@ router.post("/register", async (req, res) => {
 
             const data = await dbAccount.insert(username, password);
             console.log(data);
-            res.status(200).json({data : `User '${username}' inserted  succesfully !`}); 
+            res.status(200).json({"username":username, "password":password}); 
         }
       } catch (err) {                              // Handle errors
         console.error('Database error:', err);     
