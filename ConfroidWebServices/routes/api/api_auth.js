@@ -73,7 +73,7 @@ router.post("/register", async (req, res) => {
 
 
 
-
+// getAllAccount with token
 router.get('/', AuthHelper.checkToken, async (req, res) => {
     const accounts = await dbAccount.getAllAccount();
     res.status(201).json({id : accounts});
