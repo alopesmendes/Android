@@ -1,5 +1,4 @@
 var express = require('express');
-var dataModel = require('../models/data-model.js');
 var router = express.Router();
 const path = require('path');
 const db = require('../database/db');
@@ -16,8 +15,6 @@ router.get('/', function(req, res, next) {
 router.get('/register', function(req, res, next) {
     res.sendFile(path.join(__dirname,'../views/register.html'));
 });
-
-
 
 function existsUserPassword(username, password, db, callback) {
     var query = 'SELECT username, password FROM account WHERE username = ? AND password = ?'
