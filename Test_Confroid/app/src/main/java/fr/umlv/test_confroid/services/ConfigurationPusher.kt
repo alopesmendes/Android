@@ -17,6 +17,7 @@ class ConfigurationPusher : Service() {
         return null
     }
 
+    //    AJOUTE LA CONFIG DANS LA BDD
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.i("pusher service", "start")

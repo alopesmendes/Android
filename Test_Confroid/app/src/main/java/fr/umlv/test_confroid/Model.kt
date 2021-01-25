@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import java.sql.Date
 import java.time.LocalDate
@@ -70,25 +71,20 @@ class Model(context: Context) {
         db.delete(app, "${DatabaseHandler.KEY_ID} = $id", null)
     }
 
-    fun getConfig(app: String, id: Int): Config? {
+    fun getConfig(app: String, version: Int): Config? {
+        if (!handler.containsTable(app)) {
+            return null
+        }
+
         val cursor = db.query(
-            app, allColumns, "${DatabaseHandler.KEY_ID} = $id",
+            app, allColumns, "${DatabaseHandler.KEY_VERSION} = $version",
             null, null, null, null, null
         )
 
-        if (cursor == null) {
+        if (cursor == null || !cursor.moveToFirst()) {
             return null
         } else {
-            cursor.moveToFirst()
-
-            val config =
-                Config(
-                    app,
-                    cursor.getInt(0),
-                    cursor.getInt(1),
-                    cursor.getString(2),
-                    cursor.getString(3)
-                )
+            val config = cursorToConfig(app, cursor)
             cursor.close()
             return config
         }
