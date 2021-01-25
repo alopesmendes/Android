@@ -1,5 +1,4 @@
 var express = require('express');
-var dataModel = require('../models/data-model.js');
 var router = express.Router();
 const path = require('path');
 const db = require('../database/db');
