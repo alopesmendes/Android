@@ -106,6 +106,23 @@ class Model(context: Context) {
         return configList
     }
 
+    fun getAllVersions(app: String): List<Config>? {
+        if (!handler.containsTable(app)) {
+            return null
+        }
+
+        val configList = ArrayList<Config>()
+        val cursor = db.query(app, allColumns, null, null, null, null, null)
+
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast) {
+            configList.add(cursorToConfig(app, cursor))
+            cursor.moveToNext()
+        }
+        cursor.close()
+        return configList
+    }
+
     fun updateConfig(app: String, config: Config): Int {
         val values = ContentValues()
         values.put(DatabaseHandler.KEY_CONTENT, config.content)
