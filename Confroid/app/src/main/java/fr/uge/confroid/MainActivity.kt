@@ -5,20 +5,29 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import fr.uge.confroid.web.LoginActivity
 import fr.uge.confroid.web.SharedPreferences
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Display's the username and the encrypted password if log
+        // Bug : Does not work if we close the application.
         if (SharedPreferences.getInstance(this).isLoggedIn()) {
-            Toast.makeText(this, "User is log in", Toast.LENGTH_SHORT).show()
+            val user = SharedPreferences.getInstance(this).getUser()
+            usernameTextMain.visibility = View.VISIBLE
+            passwordTextMain.visibility = View.VISIBLE
+            usernameTextMain.text = user.username
+            passwordTextMain.text = user.password
 
         } else {
-            Toast.makeText(this, "User not log in", Toast.LENGTH_SHORT).show()
+            usernameTextMain.visibility = View.INVISIBLE
+            passwordTextMain.visibility = View.INVISIBLE
         }
     }
 

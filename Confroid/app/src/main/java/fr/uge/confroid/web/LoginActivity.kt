@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import com.android.volley.toolbox.StringRequest
 import fr.uge.confroid.MainActivity
 import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.activity_login.*
+import org.json.JSONObject
 
 /**
  * This activity will allow the user to log in.
@@ -25,7 +27,6 @@ class LoginActivity : AppCompatActivity() {
 
         buttonLogin.setOnClickListener {
             userLogin()
-            Intent(this, MainActivity::class.java).apply { startActivity(this) }
         }
 
         textViewRegisterNowLogin.setOnClickListener {
@@ -56,10 +57,13 @@ class LoginActivity : AppCompatActivity() {
         if (isMissingFields(username, password)) {
             return
         }
-        val customRequest = object : CustomRequest<User>(Method.POST, URL.ROOT_URL, User::class.java,
+        val customRequest = object : StringRequest(Method.POST, URL.ROOT_URL,
             {
                 Log.i("good", it.toString())
-                SharedPreferences.getInstance(applicationContext).userLogin(it)
+                val jsonObject = JSONObject(it)
+                val user = User(jsonObject.getString("username"), jsonObject.getString("password"))
+                SharedPreferences.getInstance(applicationContext).userLogin(user)
+                Intent(this, MainActivity::class.java).apply { startActivity(this) }
 
             },
             {
@@ -68,8 +72,9 @@ class LoginActivity : AppCompatActivity() {
         ) {
             override fun getParams(): MutableMap<String, String> {
                 val params = HashMap<String, String>()
+                val cryptPassword = CryptKey.encrypt(password.toByteArray(), 2)
                 params["username"] = username
-                params["password"] = password
+                params["password"] = String(cryptPassword!!)
                 return params
             }
         }

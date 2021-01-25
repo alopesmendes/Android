@@ -16,7 +16,6 @@ router.get('/register', function(req, res, next) {
     res.sendFile(path.join(__dirname,'../views/register.html'));
 });
 
-
 function existsUserPassword(username, password, db, callback) {
     var query = 'SELECT username, password FROM account WHERE username = ? AND password = ?'
     db.get(query, [username, password], (err, results) => {
