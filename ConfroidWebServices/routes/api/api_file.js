@@ -40,7 +40,7 @@ router.get('/file/:name', async function(req, res) {
     });
 });
 
-router.post('/upload', (req, res) => {
+router.post('file/upload', (req, res) => {
     console.log(req.files)
     
     if (req.file == undefined) {

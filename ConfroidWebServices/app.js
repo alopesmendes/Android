@@ -15,8 +15,8 @@ app.use(express.static('public'));
 
 
 // Defining each routes with its file
-const loginRoutes = require('./routes/auth');
-const registerRoutes = require('./routes/auth');
+const loginRoutes = require('./routes/login');
+const registerRoutes = require('./routes/login');
 const dashboardRoutes = require('./routes/dashboard');
 
 const apiAuthRoutes = require('./routes/api/api_auth');
