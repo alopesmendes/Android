@@ -9,11 +9,20 @@ function findByUsername(username) {
     return knex("account").where({ username: username});
 }
 
-function findByUsernamePassword(username, password) {
-    return knex('account').where({      // Query: SELECT * FROM users
-        'username': username,           //                 WHERE login = ?
-        'password': password,           //                 AND password = ?
-      });
+async function findByUsernamePassword(username, password) {
+    var results = await knex('account').where({      // Query: SELECT * FROM users
+        'username': username,                   //                 WHERE login = ?
+        'password': password,                   //                 AND password = ?
+      }).first().then(function(user) {
+        if(user){
+            console.log('pp' + JSON.stringify(user));
+            return JSON.stringify(user);        
+        } else {
+            return null;
+        }
+    }).catch( (err) => JSON.stringify('Wrong credentials'));
+
+    return results;
 }
 
 

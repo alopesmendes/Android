@@ -21,9 +21,12 @@ router.post('/login', async function(req, res) {
 
     try {
       var userInfo = await dbAccount.findByUsernamePassword(usernameGiven, passwordGiven);
-
-      if (userInfo.length == 1) {              // Check if credentials matched
-    
+      
+      console.log('ici_1 :' + userInfo);
+      userInfo = JSON.parse(userInfo);
+      
+      if (userInfo) {              // Check if credentials matched
+        console.log(userInfo);
         const token = AuthHelper.generateToken(userInfo);
         res.status(200).json({"username":usernameGiven, "password":passwordGiven, "token":token});
         //res.send(`Hello, ${users[0].username}`);
@@ -70,15 +73,6 @@ router.post("/register", async (req, res) => {
 
     
 });
-
-
-
-// getAllAccount with token
-router.get('/', AuthHelper.checkToken, async (req, res) => {
-    const accounts = await dbAccount.getAllAccount();
-    res.status(201).json({id : accounts});
-});
-
 
 
 module.exports = router;
