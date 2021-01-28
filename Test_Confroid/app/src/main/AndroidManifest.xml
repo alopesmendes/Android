@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".services.ConfigurationPuller"
+            android:name=".services.ConfigurationVersions"
             android:enabled="true"
             android:exported="true"></service>
+        <service
+            android:name=".services.ConfigurationPuller"
+            android:enabled="true"
+            android:exported="true" />
         <service
             android:name=".services.ConfigurationPusher"
             android:enabled="true"

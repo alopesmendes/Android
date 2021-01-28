@@ -21,7 +21,6 @@ class ConfigurationPuller : Service() {
 
         if (app != null && version != null) {
             val config = MainActivity.model.getConfig(app, version)
-            Log.i("puller service", config.toString())
 
 //            ENVOIE LA CONFIG AU RECEIVER DU MAINACTIVITY VIA UNE INTENT
             val broadcastIntent = Intent()

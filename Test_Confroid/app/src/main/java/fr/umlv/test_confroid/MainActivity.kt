@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.services.ConfigurationPuller
 import fr.umlv.test_confroid.services.ConfigurationPusher
+import fr.umlv.test_confroid.services.ConfigurationVersions
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         lateinit var model: Model
         val broadcastConfigAction = "getConfig"
+        val broadcastAllVersionsAction = "getAllVersions"
     }
 
     /*
@@ -32,6 +34,9 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent) {
             if (intent.action == broadcastConfigAction) {
                 test1.text = intent.getSerializableExtra("config").toString()
+            } else if (intent.action == broadcastAllVersionsAction) {
+                val versions = intent.getSerializableExtra("versions") as Array<*>
+                test1.text = versions.joinToString("\n", "{", "}")
             }
             Intent(this@MainActivity, ConfigurationPuller::class.java).apply {
                 stopService(this)
@@ -45,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         filter.addAction(broadcastConfigAction)
+        filter.addAction(broadcastAllVersionsAction)
 
         model = Model(this)
         model.open()
@@ -116,6 +122,22 @@ class MainActivity : AppCompatActivity() {
                 Intent(this, ConfigurationPuller::class.java).apply {
                     putExtra("app", app)
                     putExtra("version", version.toInt())
+
+                    startService(this)
+                }
+            }
+        }
+
+//        ENVOIE LES DONNEES AU SERVICE DE PULLER POUR DEMANDER TOUTES LES VERSIONS D'UNE APPLI
+        all_versions_button.setOnClickListener {
+            val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
+            if (app.isBlank()) {
+                Toast.makeText(this, "configuration app required", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(this, "all versions selected", Toast.LENGTH_SHORT).show()
+                Intent(this, ConfigurationVersions::class.java).apply {
+                    putExtra("app", app)
 
                     startService(this)
                 }
