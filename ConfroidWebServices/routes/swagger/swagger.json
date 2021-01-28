@@ -1,0 +1,224 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Configuration Management API",
+        "description": "Web Service API for android configuration management.",
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "paths": {
+        "/api/auth/login/": {
+            "post": {
+                "description": "Login by username and password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "To sign-in",
+                "parameters": [
+                    {
+                        "description": "The username and the password of the user.",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.UserLoginParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "type": "object",
+                        "description": "OK",
+                        "username": "usernameGiven", 
+                        "password": "passwordGiven",
+                        "token": "token"
+                    },
+                    "401": {
+                        "type": "object",
+                        "description": "Wrong username or password"
+                    },
+                    "500": {
+                        "type": "object",
+                        "description": "Database Error"
+                    }
+                }
+            }
+        },
+        "/api/auth/register/": {
+            "post": {
+                "description": "Register with a username and a password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "To sign-up",
+                "parameters": [
+                    {
+                        "description": "The username and the password of the user.",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.UserLoginParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "401": {
+                        "type": "object",
+                        "description": "Username already taken"
+                    },
+                    "500": {
+                        "type": "object",
+                        "description": "Database Error"
+                    }
+                }
+            }
+        },
+    
+    "/api/files/": {
+        "get": {
+            "description": "Get all the configurations available of the user",
+            "produces": [
+                "application/json"
+            ],
+            "summary": "See my configurations available",
+            "parameters": [ 
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "type": "string",
+                    "description": "The token provided when logged in."
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "type": "object"
+
+                    }
+                },
+                "500": {
+                    "description": "Unable to read files!",
+                    "schema": {
+                        "type": "object"
+
+                    }
+                }
+
+                
+            }
+        }
+    },
+
+    "/api/file/{name}": {
+        "get": {
+            "description": "Get the configuration requested.",
+            "produces": [
+                "application/json"
+            ],
+            "summary": "Download the configuration",
+            "parameters": [ 
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "type": "string",
+                    "description": "The token provided when logged in."
+                },
+                {
+                  "in": "path",
+                  "name": "name",
+                  "required": true,
+                  "type": "string",
+                  "description": "Then name of the configuration to retrieve."
+                }
+            ],
+            "responses": {
+                "500": {
+                    "description": "Could not download the file"
+                }
+
+                
+            }
+        }
+    },
+
+    
+
+    "/api/upload/": {
+        "post": {
+            "consumes": [
+                "multipart/form-data"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "summary": "To upload a file",
+
+            "parameters": [
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "type": "string",
+                    "description": "The token provided when logged in."
+                },
+                {
+                    "name": "file",
+                    "description": "File to upload.",
+                    "required": true,
+                    "type": "array",
+                    "in": "formData",
+                    "items": {
+                      "type": "file"
+                    }
+                }
+            
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "type": "object"
+
+                    }
+                }
+            }
+        }
+      }
+    },
+
+    "definitions": {
+        "model.UserLoginParams": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "example": "a"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "a",
+                    "format": "password"
+                }
+            }
+        }
+    }
+        
+}

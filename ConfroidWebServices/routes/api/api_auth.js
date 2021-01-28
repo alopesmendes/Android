@@ -15,9 +15,9 @@ router.post('/login', async function(req, res) {
     var passwordGiven = req.body.password;
     
     if (!usernameGiven || !passwordGiven) {
-        res.json({success: false, data: 'Please enter email and password.'});
+        res.json({success: false, data: 'Please enter username and password.'});
         return;
-    } 
+    }
 
     try {
       var userInfo = await dbAccount.findByUsernamePassword(usernameGiven, passwordGiven);
@@ -29,16 +29,13 @@ router.post('/login', async function(req, res) {
         console.log(userInfo);
         const token = AuthHelper.generateToken(userInfo);
         res.status(200).json({"username":usernameGiven, "password":passwordGiven, "token":token});
-        //res.send(`Hello, ${users[0].username}`);
         console.log(token);
-        //res.header('Authorization', "Bearer "+ token).redirect('/api/auth/');
-        //res.header('x-authorization', "Bearer "+ token).redirect('/api/auth/');
     } else {
         res.status(401).send({data : 'Wrong username or password'});
       }
     } catch (err) {                              // Handle errors
       console.error('Database error:', err);  
-      res.status(500).send('Error');
+      res.status(500).send({data : 'Database Error'});
     }
 });
 
@@ -49,7 +46,7 @@ router.post("/register", async (req, res) => {
       var password = req.body.password;
       
       if (!username || !password) {
-        res.json({success: false, data: 'Please enter email and password.'});
+        res.json({success: false, data: 'Please enter username and password.'});
         return;
       } 
 
@@ -67,8 +64,7 @@ router.post("/register", async (req, res) => {
         }
       } catch (err) {                              // Handle errors
         console.error('Database error:', err);     
-        res.status(500).send('Error');
-        //res.render("/login");
+        res.status(500).send({"data": "Database error" });
     }
 
     

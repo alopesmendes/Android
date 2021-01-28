@@ -1,9 +1,8 @@
 const express = require('express');
-const path = require("path");
-var fs = require('fs');
 const app = express();
 const bodyParser = require("body-parser");
-const jwt = require("jsonwebtoken");
+const swaggerUI =require('swagger-ui-express');
+const swaggerDocs = require('./routes/swagger/swagger.json');
 
 global.__basedir = __dirname;
 global.baseUrl = "http://localhost:8080/";
@@ -28,6 +27,7 @@ app.use('/', loginRoutes);
 app.use("/register", registerRoutes);
 app.use("/dashboard", dashboardRoutes);
 
+app.use('/api-docs',swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use("/api/auth", apiAuthRoutes);
 app.use("/api/", apiFilesRoutes);
 
