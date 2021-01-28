@@ -8,9 +8,7 @@ const jwt = require("jsonwebtoken");
    */
   function generateToken(personInfo) {
     const token = jwt.sign({
-      userId: personInfo.userId,
-      username: personInfo.username,
-      password: personInfo.password
+      id_person: personInfo.id_person,
     },
       "SECREET", // process.env.SECRET
        { expiresIn: '30m' }
@@ -28,8 +26,8 @@ function checkToken(req, res, next) {
               res.status(401).json({ message: 'Invalid token provided' });
               return;
             } else {
-                // token is valid
-                req.userID = decoded.userID;
+                // when token is valid
+                req.id_person = decoded.id_person;
                 next();
             }
         })
