@@ -193,7 +193,16 @@
         android:layout_height="wrap_content"
         android:text="all versions"
         app:layout_constraintBottom_toTopOf="@id/delete_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/reflect_button"
         app:layout_constraintStart_toEndOf="@id/select_one_button" />
+
+    <Button
+        android:id="@+id/reflect_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="reflect"
+        app:layout_constraintBottom_toTopOf="@id/delete_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/all_versions_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

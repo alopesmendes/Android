@@ -13,7 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.services.ConfigurationPuller
 import fr.umlv.test_confroid.services.ConfigurationPusher
 import fr.umlv.test_confroid.services.ConfigurationVersions
+import fr.umlv.test_confroid.test.reflect.BillingDetail
+import fr.umlv.test_confroid.test.reflect.ShippingAddress
+import fr.umlv.test_confroid.test.reflect.ShoppingInfo
+import fr.umlv.test_confroid.test.reflect.ShoppingPreferences
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.reflect.Field
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,6 +57,60 @@ class MainActivity : AppCompatActivity() {
 
         filter.addAction(broadcastConfigAction)
         filter.addAction(broadcastAllVersionsAction)
+
+        /////////////////////////////////////////////////////////
+
+        val prefs = ShoppingPreferences(mutableMapOf())
+        val address1 = ShippingAddress("Bugdroid", "Bd Descartes", "Champs-sur-Marne", "France")
+        val address2 =
+            ShippingAddress("Bugdroid", "Rue des tartes au nougat", "Lollipop City", "Oreo Country")
+        val billingDetail = BillingDetail(
+            "Bugdroid",
+            "123456789",
+            12,
+            2021,
+            123
+        )
+        prefs.shoppingInfos["home"] = ShoppingInfo(address1, billingDetail, true)
+        prefs.shoppingInfos["work"] = ShoppingInfo(address2, billingDetail, false)
+
+        val c = ShoppingPreferences::class.java
+//        val fields = c.declaredFields.map {
+//            mapOf<Any, Class<*>>(
+//                it.type.name to it.type
+//            )
+//        }
+
+        fun deepGetFields(acc: MutableList<Any>, fields: Array<Field>): List<Any> {
+            for (field in fields) {
+
+                if (field.type.isPrimitive) {
+                    acc.add(field.type.name)
+                } else if (field.type == Map::class.java) {
+                    val genericType =
+                        field.genericType.toString().substringAfter("<").substringBefore(">")
+                            .substringAfterLast(", ")
+                    val otherFields = Class.forName(genericType)
+                    acc.add(genericType)
+                    deepGetFields(acc, otherFields.declaredFields)
+
+                } else if (field.type == String::class.java) {
+                    acc.add(field.type.name)
+                } else {
+                    acc.add(field.type.name)
+                    deepGetFields(acc, field.type.declaredFields)
+                }
+            }
+            return acc
+        }
+
+        reflect_button.setOnClickListener {
+            val fields = deepGetFields(mutableListOf(), c.declaredFields)
+            Log.i("fields", c.declaredFields.joinToString("\n", "{", "}"))
+            test1.text = fields.joinToString("\n", "(", ")")
+        }
+
+        /////////////////////////////////////////////////////////
 
         model = Model(this)
         model.open()
