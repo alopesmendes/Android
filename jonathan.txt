@@ -1,0 +1,64 @@
+Test_Calculator:
+
+-Dans la class Content, j'ai des méthodes qui permettent de convertir des structures recursives de Map et de List et primitifs
+en une Map<String, Any> que l'on peut facilement envoyer à une autre appli via Intent.putExtra() (=Bundle).
+Cet outil de conversion devrait servir pour convertir les objets de "configuration" des applis en Bundle.
+
+===
+
+Test_Confroid:
+
+SQLite:
+-La class Config est une simple data class qui représente une config avec
+	-le nom de l'appli
+	-l'id de la config (il sera généré par SQLite automatiquement par AUTOINCREMENT)
+	-la version de la config
+	-le contenu (pour l'instant il s'agit juste d'une Map<String, Any> sous forme de String
+	puisqu'une config peut contenir des champs qui soient imbriqués,
+	il faudra donc un moyen de reconvertir cette Map en un objet Java avec Reflection??)
+	-le tag (pour l'instant ça ne sert pas à grand chose et c'est optionnel)
+La class DatabaseHandler (qui extends de SQLiteOpenHelper) permet de créer notre base de données.
+Il y a également une class Model, qui fonctionne avec DatabaseHandler et qui contient des méthodes pour
+	-ajouter une config dans la bdd (s'il s'agit d'une nouvelle appli, elle répertorie cette appli et
+	créer une table qui aura comme nom le nom de l'appli)
+	-supprimer une config
+	-récupérer une config en fonction du nom de l'appli et de sa version
+	-récupérer toutes les configs de la bdd (ne sera pas très utile pour le projet je pense)
+	-récupérer toutes les versions de config d'une appli en fonction du nom de l'appli
+	-récupérer toutes les tables de la bdd (=toutes les applis répertoriées)
+
+Service
+-Il y a un package avec 3 classes:
+	-ConfigurationPuller
+	-ConfigurationPusher
+	-ConfigurationVersions
+Ces classes sont des Service qui sont appelés lorsque l'on veut
+	-récupérer une config à partir du nom de l'appli et de la version demandée
+	-ajouter une config dans la bdd
+	-récupérer toutes les versions de config d'une appli en fonction du nom de l'appli
+Ces Service sont appelés en appuyant sur les boutons du MainActivity qui envoient une Intent
+avec les données nécessaires aux requêtes aux Service concernés.
+Il y a d'autres boutons pour effectuer d'autres requêtes vers la bdd,
+mais ces requêtes ne seront surement pas importantes pour le projet.
+Un Service permet d'effectuer une tâche en arrière-plan et ne possède pas d'interface graphique.
+Les Service ConfigurationPuller et ConfigurationVersions doivent envoyer des données
+au MainActivity (puisqu'ils effectuent des requêtes de SELECT) et pour ça, ils stockent
+les réponses aux requêtes dans une Intent qui est envoyée via broadcast à une class receiver
+qui extends de BroadcastReceiver dont le rôle est d'effectuer des actions lorsqu'elle reçoit
+ces Intent des Service (ici il s'agit juste d'afficher les réponses des requêtes dans une TextView).
+Pour que tout ceci fonctionne, il faut que l'Activity enregistre l'objet receiver
+dans les méthodes onPause() et onResume() et définir un IntentFilter qui enregistre
+les actions autorisées par les Service.
+
+API de reflection
+-Dans la MainActivity, il y a un bloc de code entre 2 "/////////////////////////"
+qui correspond à
+	-la définition d'un objet preferences (qui contient des champs de type ShippingAddress,
+	BillingDetail et des primitifs comme dans l'exemple du sujet)
+	-la définition d'une fonction qui parse cet objet de preferences et renvoie
+	la liste des types des champs de l'objet par un parcours en profondeur
+	-affichage de la liste des types de l'objet dans une TextView via un bouton
+Pour l'instant, c'est juste une première utilisation de l'api de reflection,
+mais faudra faire en sorte que la fonction renvoie également
+	-le nom des champs
+	-la valeur des champs
