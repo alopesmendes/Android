@@ -78,8 +78,8 @@ class RegisterActivity : AppCompatActivity() {
                 val params = HashMap<String, String>()
                 val cryptPassword = CryptKey.encrypt(password.toByteArray(), 2)
                 params["username"] = username
-                //params["password"] = String(cryptPassword!!)
-                params["password"] = password
+                params["password"] = String(cryptPassword!!)
+                //params["password"] = password
                 return params
             }
         }

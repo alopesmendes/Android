@@ -62,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.i("good", it.toString())
                 val jsonObject = JSONObject(it)
                 val user = User(jsonObject.getString("username"), jsonObject.getString("password"))
+                URL.token = jsonObject.getString("token")
                 SharedPreferences.getInstance(applicationContext).userLogin(user)
                 Intent(this, MainActivity::class.java).apply { startActivity(this) }
 
@@ -74,8 +75,8 @@ class LoginActivity : AppCompatActivity() {
                 val params = HashMap<String, String>()
                 val cryptPassword = CryptKey.encrypt(password.toByteArray(), 2)
                 params["username"] = username
-                //params["password"] = String(cryptPassword!!)
-                params["password"] = password
+                params["password"] = String(cryptPassword!!)
+                //params["password"] = password
                 return params
             }
         }
