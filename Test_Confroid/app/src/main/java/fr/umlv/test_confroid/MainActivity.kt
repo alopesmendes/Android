@@ -13,10 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.services.ConfigurationPuller
 import fr.umlv.test_confroid.services.ConfigurationPusher
 import fr.umlv.test_confroid.services.ConfigurationVersions
-import fr.umlv.test_confroid.test.reflect.BillingDetail
-import fr.umlv.test_confroid.test.reflect.ShippingAddress
-import fr.umlv.test_confroid.test.reflect.ShoppingInfo
-import fr.umlv.test_confroid.test.reflect.ShoppingPreferences
+import fr.umlv.test_confroid.test.reflect.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.reflect.Field
 
@@ -74,40 +71,23 @@ class MainActivity : AppCompatActivity() {
         prefs.shoppingInfos["home"] = ShoppingInfo(address1, billingDetail, true)
         prefs.shoppingInfos["work"] = ShoppingInfo(address2, billingDetail, false)
 
-        val c = ShoppingPreferences::class.java
-//        val fields = c.declaredFields.map {
-//            mapOf<Any, Class<*>>(
-//                it.type.name to it.type
-//            )
-//        }
+        fun deepGetFields(acc: MutableMap<String, Any>, obj: Any): Map<String, Any> {
+            val fields = obj::class.java.declaredFields
 
-        fun deepGetFields(acc: MutableList<Any>, fields: Array<Field>): List<Any> {
             for (field in fields) {
+                field.isAccessible = true
+                val otherObj = field.get(obj)
 
-                if (field.type.isPrimitive) {
-                    acc.add(field.type.name)
-                } else if (field.type == Map::class.java) {
-                    val genericType =
-                        field.genericType.toString().substringAfter("<").substringBefore(">")
-                            .substringAfterLast(", ")
-                    val otherFields = Class.forName(genericType)
-                    acc.add(genericType)
-                    deepGetFields(acc, otherFields.declaredFields)
-
-                } else if (field.type == String::class.java) {
-                    acc.add(field.type.name)
-                } else {
-                    acc.add(field.type.name)
-                    deepGetFields(acc, field.type.declaredFields)
+                if (otherObj != null) {
+                    acc[field.name] = otherObj
                 }
             }
             return acc
         }
 
         reflect_button.setOnClickListener {
-            val fields = deepGetFields(mutableListOf(), c.declaredFields)
-            Log.i("fields", c.declaredFields.joinToString("\n", "{", "}"))
-            test1.text = fields.joinToString("\n", "(", ")")
+            val fields = deepGetFields(mutableMapOf(), prefs)
+            test1.text = fields.entries.joinToString("\n", "(", ")")
         }
 
         /////////////////////////////////////////////////////////
