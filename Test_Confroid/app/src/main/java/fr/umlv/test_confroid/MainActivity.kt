@@ -11,9 +11,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.services.ConfigurationPuller
-import fr.umlv.test_confroid.services.ConfigurationPusher
-import fr.umlv.test_confroid.services.ConfigurationVersions
 import fr.umlv.test_confroid.test.reflect.*
+import fr.umlv.test_confroid.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -70,43 +69,15 @@ class MainActivity : AppCompatActivity() {
         prefs.shoppingInfos["home"] = ShoppingInfo(address1, billingDetail, true)
         prefs.shoppingInfos["work"] = ShoppingInfo(address2, billingDetail, false)
 
-        fun deepGetFields(acc: MutableMap<String, Any>, obj: Any): Map<String, Any> {
-            val clazz = obj::class.java
-            val fields = clazz.declaredFields
-            acc["class"] = clazz.name
-
-            for (field in fields) {
-                field.isAccessible = true
-                val otherObj = field.get(obj)
-
-                if (otherObj != null) {
-
-                    if (field.type.isPrimitive || field.type == String::class.java) {
-                        acc[field.name] = otherObj
-                    } else if (field.type == Map::class.java) {
-                        (otherObj as Map<*, *>).entries.forEach {
-                            acc[it.key.toString()] =
-                                it.value?.let { it1 -> deepGetFields(mutableMapOf(), it1) }!!
-                        }
-                    } else {
-                        acc[field.name] = deepGetFields(mutableMapOf(), otherObj)
-                    }
-                }
-            }
-            return acc
-        }
-
-        val fields = deepGetFields(mutableMapOf(), prefs)
+        val fields = ConfroidUtils.deepGetFields(mutableMapOf(), prefs)
+        val content = ConfroidUtils.convertToBundle(fields)
 
         reflect_button.setOnClickListener {
             test1.text = fields.toString()
         }
 
         convert_to_bundle_button.setOnClickListener {
-            val content = Content()
-            content.init(fields)
-            content.convertToBundle()
-            test1.text = content.content.toString()
+            test1.text = content.toString()
         }
 
         /////////////////////////////////////////////////////////
@@ -127,21 +98,14 @@ class MainActivity : AppCompatActivity() {
             Log.i("main", "pusher button")
             val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
             val version = version_editText.text.toString()
-            val content = content_editText.text.toString()
-            val tag = tag_editText.text.toString()
+//            val content = content_editText.text.toString()
+//            val tag = tag_editText.text.toString()
 
-            if (app.isBlank() || version.isBlank() || content.isBlank()) {
-                Toast.makeText(this, "app, version and content required", Toast.LENGTH_SHORT).show()
+            if (app.isBlank() || version.isBlank()) {
+                Toast.makeText(this, "app and version required", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "configuration added", Toast.LENGTH_SHORT).show()
-                Intent(this, ConfigurationPusher::class.java).apply {
-                    putExtra("app", app)
-                    putExtra("version", version.toInt())
-                    putExtra("content", content)
-                    putExtra("tag", tag)
-
-                    startService(this)
-                }
+                ConfroidUtils.saveConfiguration(this, app, prefs, version)
             }
         }
 
@@ -178,12 +142,7 @@ class MainActivity : AppCompatActivity() {
                     .show()
             } else {
                 Toast.makeText(this, "configuration selected", Toast.LENGTH_SHORT).show()
-                Intent(this, ConfigurationPuller::class.java).apply {
-                    putExtra("app", app)
-                    putExtra("version", version.toInt())
-
-                    startService(this)
-                }
+                ConfroidUtils.loadConfiguration<Config>(this, app, version, null)
             }
         }
 
@@ -195,11 +154,7 @@ class MainActivity : AppCompatActivity() {
                     .show()
             } else {
                 Toast.makeText(this, "all versions selected", Toast.LENGTH_SHORT).show()
-                Intent(this, ConfigurationVersions::class.java).apply {
-                    putExtra("app", app)
-
-                    startService(this)
-                }
+                ConfroidUtils.getConfigurationVersions(this, app, null)
             }
         }
     }

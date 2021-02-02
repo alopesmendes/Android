@@ -23,11 +23,11 @@ class ConfigurationPusher : Service() {
         Log.i("pusher service", "start")
         val app = intent?.extras?.getString("app")
         val version = intent?.extras?.getInt("version")
-        val content = intent?.extras?.getString("content")
+        val content = intent?.extras?.getSerializable("content")
         val tag = intent?.extras?.getString("tag")
 
         if (app != null && version != null && content != null && tag != null) {
-            MainActivity.model.addConfig(app, version, content, tag)
+            MainActivity.model.addConfig(app, version, content.toString(), tag)
         }
 
         return super.onStartCommand(intent, flags, startId)
