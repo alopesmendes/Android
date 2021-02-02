@@ -15,7 +15,6 @@ import fr.umlv.test_confroid.services.ConfigurationPusher
 import fr.umlv.test_confroid.services.ConfigurationVersions
 import fr.umlv.test_confroid.test.reflect.*
 import kotlinx.android.synthetic.main.activity_main.*
-import java.lang.reflect.Field
 
 
 class MainActivity : AppCompatActivity() {
@@ -72,22 +71,42 @@ class MainActivity : AppCompatActivity() {
         prefs.shoppingInfos["work"] = ShoppingInfo(address2, billingDetail, false)
 
         fun deepGetFields(acc: MutableMap<String, Any>, obj: Any): Map<String, Any> {
-            val fields = obj::class.java.declaredFields
+            val clazz = obj::class.java
+            val fields = clazz.declaredFields
+            acc["class"] = clazz.name
 
             for (field in fields) {
                 field.isAccessible = true
                 val otherObj = field.get(obj)
 
                 if (otherObj != null) {
-                    acc[field.name] = otherObj
+
+                    if (field.type.isPrimitive || field.type == String::class.java) {
+                        acc[field.name] = otherObj
+                    } else if (field.type == Map::class.java) {
+                        (otherObj as Map<*, *>).entries.forEach {
+                            acc[it.key.toString()] =
+                                it.value?.let { it1 -> deepGetFields(mutableMapOf(), it1) }!!
+                        }
+                    } else {
+                        acc[field.name] = deepGetFields(mutableMapOf(), otherObj)
+                    }
                 }
             }
             return acc
         }
 
+        val fields = deepGetFields(mutableMapOf(), prefs)
+
         reflect_button.setOnClickListener {
-            val fields = deepGetFields(mutableMapOf(), prefs)
-            test1.text = fields.entries.joinToString("\n", "(", ")")
+            test1.text = fields.toString()
+        }
+
+        convert_to_bundle_button.setOnClickListener {
+            val content = Content()
+            content.init(fields)
+            content.convertToBundle()
+            test1.text = content.content.toString()
         }
 
         /////////////////////////////////////////////////////////
