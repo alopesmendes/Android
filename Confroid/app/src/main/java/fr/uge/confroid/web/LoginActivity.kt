@@ -59,10 +59,9 @@ class LoginActivity : AppCompatActivity() {
         }
         val customRequest = object : StringRequest(Method.POST, URL.ROOT_LOGIN,
             {
-                Log.i("good", it.toString())
                 val jsonObject = JSONObject(it)
-                val user = User(jsonObject.getString("username"), jsonObject.getString("password"))
-                URL.token = jsonObject.getString("token")
+                val user = User(jsonObject.getString("username"), jsonObject.getString("password"), jsonObject.getString("token"))
+                Log.i("user", user.toString())
                 SharedPreferences.getInstance(applicationContext).userLogin(user)
                 Intent(this, MainActivity::class.java).apply { startActivity(this) }
 

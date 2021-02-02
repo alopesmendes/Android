@@ -5,7 +5,7 @@ var upload_storage = require('../../storage');
 
 const fs = require("fs");
 
-const outputPath = global.__basedir + "/ressourcess/config-uploads/";
+const outputPath = global.__basedir + "/resources/config-uploads/";
 
 
 router.get('/files', AuthHelper.checkToken, async function(req, res) {
@@ -49,6 +49,8 @@ router.post('/upload', AuthHelper.checkToken, upload_storage.upload.single('file
     
     if (req.file == undefined) {
         res.status(400).send({ message: "Please upload a file!" });
+    } else {
+        res.status(200).send({ message : "file recevied"})
     }
     
 });

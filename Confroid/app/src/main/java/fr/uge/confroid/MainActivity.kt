@@ -1,6 +1,7 @@
 package fr.uge.confroid
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -9,45 +10,46 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.android.volley.NetworkResponse
-import com.android.volley.ParseError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
 import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.web.*
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.DataOutputStream
 import java.io.File
-import kotlin.math.min
+import java.io.FileOutputStream
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
+        //ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
 
-        // Display's the username and the encrypted password if log
-        // Bug : Does not work if we close the application.
+
         if (SharedPreferences.getInstance(this).isLoggedIn()) {
             val user = SharedPreferences.getInstance(this).getUser()
-            usernameTextMain.visibility = View.VISIBLE
-            passwordTextMain.visibility = View.VISIBLE
-            usernameTextMain.text = user.username
-            passwordTextMain.text = user.password
-
+            Log.i("shared user", user.toString())
+            buttonSendFile.visibility = View.VISIBLE
+            buttonGetFile.visibility = View.VISIBLE
             val myProvider = MyProvider()
-            //myProvider.shareFile(this)
-            sendFile(myProvider.getFile(this), URL.token)
+
+            buttonSendFile.setOnClickListener {
+                sendFile(myProvider.getFile(this), user.token)
+            }
+
+            buttonGetFile.setOnClickListener {
+                getFile("mmtext.txt", user.token)
+            }
 
         } else {
-            usernameTextMain.visibility = View.INVISIBLE
-            passwordTextMain.visibility = View.INVISIBLE
+            buttonSendFile.visibility = View.INVISIBLE
+            buttonGetFile.visibility = View.INVISIBLE
         }
     }
 
@@ -93,8 +95,6 @@ class MainActivity : AppCompatActivity() {
                 return params
             }
         }
-
-
         /*
         val customRequest = object : CustomRequest<NetworkResponse>(
             Method.POST, URL.ROOT_FILE_UPLOAD, NetworkResponse::class.java,
@@ -144,23 +144,41 @@ class MainActivity : AppCompatActivity() {
                 return byteArrayOutputStream.toByteArray()
             }
         }
-
         */
 
         VolleySingleton.getInstance(this).addToRequestQueue(customRequest)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode) {
-            10 -> {
-                if (requestCode == RESULT_OK) {
-                    val path = data?.data?.path
-                    Log.i("file select", "path : $path")
+    private fun getFile(name : String, token : String) {
+        Log.i("preparing get", "file:$name and token:$token")
+        val customRequest : CustomRequest<ByteArray> = object : CustomRequest<ByteArray>(Method.GET, "${URL.ROOT_FILE}/$name", ByteArray::class.java,
+            {
+                try {
+                    if (it != null) {
+                        val outputStream = openFileOutput(name, Context.MODE_PRIVATE)
+                        outputStream.write(it)
+                        outputStream.close()
+                        Toast.makeText(this, "Download completed", Toast.LENGTH_LONG).show()
+                        Log.i("info files", this.filesDir.list().joinToString(", ", "{", "}"))
+                    }
+                } catch (e : Exception) {
+                    Log.e("KEY_ERROR", "UNABLE TO DOWNLOAD FILE")
+                    e.printStackTrace()
                 }
-                return
+            },
+            {
+                Log.e("error get", it.toString())
+            })
+        {
+            override fun getHeaders(): MutableMap<String, String> {
+                return mutableMapOf("authorization" to token)
             }
 
+            override fun parseNetworkResponse(response: NetworkResponse?): Response<ByteArray> {
+                return Response.success( response?.data, HttpHeaderParser.parseCacheHeaders(response));
+            }
         }
-        super.onActivityResult(requestCode, resultCode, data)
+
+        VolleySingleton.getInstance(this).addToRequestQueue(customRequest)
     }
 }

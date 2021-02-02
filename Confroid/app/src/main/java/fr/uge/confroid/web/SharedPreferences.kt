@@ -24,9 +24,10 @@ class SharedPreferences(private val context: Context) {
             }
         }
 
-        private const val SHARED_PREFS = "simplifiedcodingsharedpref"
+        private const val SHARED_PREFS = "SHARED_PREFS"
         private const val KEY_USERNAME = "keyusername"
         private const val KEY_PASSWORD = "keypassword"
+        private const val KEY_TOKEN = "keytoken"
     }
 
     /***
@@ -40,6 +41,7 @@ class SharedPreferences(private val context: Context) {
         val editor = sharedPreferences?.edit()
         editor?.putString(KEY_USERNAME, user.username)
         editor?.putString(KEY_PASSWORD, user.password)
+        editor?.putString(KEY_TOKEN, user.token)
         editor?.apply()
     }
 
@@ -60,7 +62,8 @@ class SharedPreferences(private val context: Context) {
         val sharedPreferences = INSTANCE?.context?.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
         return User(
             sharedPreferences?.getString(KEY_USERNAME, null)!!,
-            sharedPreferences?.getString(KEY_PASSWORD, null)!!
+            sharedPreferences?.getString(KEY_PASSWORD, null)!!,
+            sharedPreferences?.getString(KEY_TOKEN, "")!!
         )
     }
 

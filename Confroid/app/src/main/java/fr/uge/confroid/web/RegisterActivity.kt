@@ -66,7 +66,7 @@ class RegisterActivity : AppCompatActivity() {
             Method.POST, URL.ROOT_REGISTER, User::class.java,
             {
                 Log.i("good", it.toString())
-                SharedPreferences.getInstance(applicationContext).userLogin(it)
+                //SharedPreferences.getInstance(applicationContext).userLogin(it)
                 Intent(this, LoginActivity::class.java).apply { startActivity(this) }
 
             },
