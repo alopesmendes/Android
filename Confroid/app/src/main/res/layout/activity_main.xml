@@ -6,26 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/usernameTextMain"
+    <Button
+        android:id="@+id/buttonSendFile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="25sp"
+        android:text="@string/button_send_file_text"
         android:layout_margin="15dp"
         />
 
-    <TextView
-        android:id="@+id/passwordTextMain"
+    <Button
+        android:id="@+id/buttonGetFile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameTextMain"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSendFile"
+        android:text="@string/button_get_file_text"
         android:textSize="25sp"/>
 
 

@@ -59,9 +59,9 @@ class LoginActivity : AppCompatActivity() {
         }
         val customRequest = object : StringRequest(Method.POST, URL.ROOT_LOGIN,
             {
-                Log.i("good", it.toString())
                 val jsonObject = JSONObject(it)
-                val user = User(jsonObject.getString("username"), jsonObject.getString("password"))
+                val user = User(jsonObject.getString("username"), jsonObject.getString("password"), jsonObject.getString("token"))
+                Log.i("user", user.toString())
                 SharedPreferences.getInstance(applicationContext).userLogin(user)
                 Intent(this, MainActivity::class.java).apply { startActivity(this) }
 
@@ -74,8 +74,8 @@ class LoginActivity : AppCompatActivity() {
                 val params = HashMap<String, String>()
                 val cryptPassword = CryptKey.encrypt(password.toByteArray(), 2)
                 params["username"] = username
-                //params["password"] = String(cryptPassword!!)
-                params["password"] = password
+                params["password"] = String(cryptPassword!!)
+                //params["password"] = password
                 return params
             }
         }

@@ -66,7 +66,7 @@ class RegisterActivity : AppCompatActivity() {
             Method.POST, URL.ROOT_REGISTER, User::class.java,
             {
                 Log.i("good", it.toString())
-                SharedPreferences.getInstance(applicationContext).userLogin(it)
+                //SharedPreferences.getInstance(applicationContext).userLogin(it)
                 Intent(this, LoginActivity::class.java).apply { startActivity(this) }
 
             },
@@ -78,8 +78,8 @@ class RegisterActivity : AppCompatActivity() {
                 val params = HashMap<String, String>()
                 val cryptPassword = CryptKey.encrypt(password.toByteArray(), 2)
                 params["username"] = username
-                //params["password"] = String(cryptPassword!!)
-                params["password"] = password
+                params["password"] = String(cryptPassword!!)
+                //params["password"] = password
                 return params
             }
         }

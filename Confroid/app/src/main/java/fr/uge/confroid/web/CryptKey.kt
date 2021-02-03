@@ -1,10 +1,8 @@
 package fr.uge.confroid.web
 
-import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
-import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 /**
@@ -20,14 +18,11 @@ object CryptKey {
 
     private val secretKey : SecretKey
 
-    private val  IV : ByteArray = ByteArray(16)
-
     init {
         val keyGenerator : KeyGenerator = KeyGenerator.getInstance("AES")
         keyGenerator.init(256)
-        secretKey = keyGenerator.generateKey()
-        val random : SecureRandom = SecureRandom()
-        random.nextBytes(IV)
+        secretKey = SecretKeySpec("1Hbfh667adfDEJ78".toByteArray(), "AES")
+
     }
     /**
      * Will encrypt an text using AES and returns a encrypted ByteArray?
@@ -40,8 +35,7 @@ object CryptKey {
     private fun encrypt(plaintext: ByteArray?): ByteArray? {
         val cipher: Cipher = Cipher.getInstance("AES")
         val keySpec = SecretKeySpec(secretKey.encoded, "AES")
-        val ivSpec = IvParameterSpec(IV)
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec)
         return cipher.doFinal(plaintext)
     }
 
@@ -72,8 +66,7 @@ object CryptKey {
         try {
             val cipher = Cipher.getInstance("AES")
             val keySpec = SecretKeySpec(secretKey.encoded, "AES")
-            val ivSpec = IvParameterSpec(IV)
-            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
+            cipher.init(Cipher.DECRYPT_MODE, keySpec)
             val decryptedText = cipher.doFinal(cipherText)
             return String(decryptedText)
         } catch (e: java.lang.Exception) {
