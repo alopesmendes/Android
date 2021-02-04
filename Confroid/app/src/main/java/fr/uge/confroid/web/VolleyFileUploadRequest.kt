@@ -5,6 +5,16 @@ import com.android.volley.toolbox.HttpHeaderParser
 import java.io.*
 import kotlin.math.min
 
+/**
+ * Specific Volley Request to upload files.
+ * Will use the idea of multipart.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 open class VolleyFileUploadRequest(
     method: Int,
     url: String,
@@ -30,6 +40,12 @@ open class VolleyFileUploadRequest(
     override fun getBodyContentType() = "multipart/form-data;boundary=$boundary"
 
 
+    /**
+     * Firstly will process the params.
+     * Then it will process the data and write everything in dataOutputStream.
+     * Finally it will return the ByteArray
+     * @return ByteArray whit all the information of the files written.
+     */
     @Throws(AuthFailureError::class)
     override fun getBody(): ByteArray {
         val byteArrayOutputStream = ByteArrayOutputStream()
@@ -38,7 +54,7 @@ open class VolleyFileUploadRequest(
             if (params != null && params.isNotEmpty()) {
                 processParams(dataOutputStream, params, paramsEncoding)
             }
-            val data = getByteData() as? Map<String, FileDataPart>?
+            val data = getByteData()
             if (data != null && data.isNotEmpty()) {
                 processData(dataOutputStream, data)
             }
@@ -51,8 +67,12 @@ open class VolleyFileUploadRequest(
         return super.getBody()
     }
 
+    /**
+     * Needs to be rewritten.
+     * Will be used to create the data we wand to send
+     */
     @Throws(AuthFailureError::class)
-    open fun getByteData(): Map<String, Any>? {
+    open fun getByteData(): Map<String, FileDataPart>? {
         return null
     }
 
@@ -86,6 +106,13 @@ open class VolleyFileUploadRequest(
         }
     }
 
+    /**
+     * For each entry in data. We start by writing the basic information Content-Disposition etc
+     * Then we write all the data content of a file in dataOutputStream.
+     * @param dataOutputStream where we write all our data.
+     * @param data the different files data.
+     * @throws IOException
+     */
     @Throws(IOException::class)
     private fun processData(dataOutputStream: DataOutputStream, data: Map<String, FileDataPart>) {
         data.forEach {
@@ -113,4 +140,7 @@ open class VolleyFileUploadRequest(
     }
 }
 
+/**
+ * A class to seperate the name of a file, it's data and type.
+ */
 class FileDataPart(var fileName: String?, var data: ByteArray, var type: String)

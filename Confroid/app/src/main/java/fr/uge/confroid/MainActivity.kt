@@ -1,6 +1,5 @@
 package fr.uge.confroid
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -12,17 +11,17 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import com.android.volley.NetworkResponse
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
 import fr.uge.confroid.storageprovider.MyProvider
+import fr.uge.confroid.storageprovider.StorageUtils
 import fr.uge.confroid.web.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
-import java.io.FileOutputStream
 import java.lang.Exception
+import javax.crypto.SecretKey
+import javax.crypto.spec.SecretKeySpec
 
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
@@ -38,13 +37,14 @@ class MainActivity : AppCompatActivity() {
             buttonSendFile.visibility = View.VISIBLE
             buttonGetFile.visibility = View.VISIBLE
             val myProvider = MyProvider()
+            val file = myProvider.getFile(this)
 
             buttonSendFile.setOnClickListener {
-                sendFile(myProvider.getFile(this), user.token)
+                sendFile(file, user.password, user.token)
             }
 
             buttonGetFile.setOnClickListener {
-                getFile("mmtext.txt", user.token)
+                getFile(file.name, user.password, user.token)
             }
 
         } else {
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendFile(file : File, token : String) {
+    private fun sendFile(file : File, password : String,  token : String) {
         Log.i("preparing send","path:${file.absolutePath} and token:$token")
 
         val customRequest = object : VolleyFileUploadRequest(Method.POST, URL.ROOT_FILE_UPLOAD,
@@ -89,9 +89,11 @@ class MainActivity : AppCompatActivity() {
                 return mutableMapOf("authorization" to token)
             }
 
-            override fun getByteData(): Map<String, Any>? {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun getByteData(): Map<String, FileDataPart>? {
                 val params = HashMap<String, FileDataPart>()
-                params["file"] = FileDataPart(file.absolutePath, file.readBytes(), "txt")
+                val secretKey : SecretKey = SecretKeySpec(CryptKey.decrypt(password.toByteArray(), CryptKey.secretKey), "AES")
+                params["file"] = FileDataPart(file.absolutePath, CryptKey.encrypt(file.readBytes(), secretKey)!!, "txt")
                 return params
             }
         }
@@ -149,17 +151,24 @@ class MainActivity : AppCompatActivity() {
         VolleySingleton.getInstance(this).addToRequestQueue(customRequest)
     }
 
-    private fun getFile(name : String, token : String) {
+    private fun getFile(name : String, password: String, token : String) {
         Log.i("preparing get", "file:$name and token:$token")
-        val customRequest : CustomRequest<ByteArray> = object : CustomRequest<ByteArray>(Method.GET, "${URL.ROOT_FILE}/$name", ByteArray::class.java,
+        val customRequest : CustomRequest<ByteArray> = @RequiresApi(Build.VERSION_CODES.O)
+        object : CustomRequest<ByteArray>(Method.GET, "${URL.ROOT_FILE}/$name", ByteArray::class.java,
             {
                 try {
                     if (it != null) {
+                        val secretKey : SecretKey = SecretKeySpec(CryptKey.decrypt(password.toByteArray(), CryptKey.secretKey), "AES")
+                        val decrypted = CryptKey.decrypt(it, secretKey)
+
                         val outputStream = openFileOutput(name, Context.MODE_PRIVATE)
-                        outputStream.write(it)
+                        outputStream.write(decrypted)
                         outputStream.close()
+                        val file = File(filesDir, name)
+                        //CryptKey.decryptFile(file)
+                        //Log.i("content", "after->${String(CryptKey.decrypt(it)!!)}")
                         Toast.makeText(this, "Download completed", Toast.LENGTH_LONG).show()
-                        Log.i("info files", this.filesDir.list().joinToString(", ", "{", "}"))
+                        Log.i("file", "content:${file.readText()}")
                     }
                 } catch (e : Exception) {
                     Log.e("KEY_ERROR", "UNABLE TO DOWNLOAD FILE")

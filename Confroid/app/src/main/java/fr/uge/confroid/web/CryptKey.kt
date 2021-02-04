@@ -1,8 +1,9 @@
 package fr.uge.confroid.web
 
-import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.util.*
+import javax.crypto.*
 import javax.crypto.spec.SecretKeySpec
 
 /**
@@ -16,7 +17,7 @@ import javax.crypto.spec.SecretKeySpec
  */
 object CryptKey {
 
-    private val secretKey : SecretKey
+    val secretKey : SecretKey
 
     init {
         val keyGenerator : KeyGenerator = KeyGenerator.getInstance("AES")
@@ -24,19 +25,23 @@ object CryptKey {
         secretKey = SecretKeySpec("1Hbfh667adfDEJ78".toByteArray(), "AES")
 
     }
+
     /**
      * Will encrypt an text using AES and returns a encrypted ByteArray?
      *
      * @param plaintext the following ByteArray of an text
+     * @param secretKey the secretKey from a encrypted(password) or CryptKey.secretKey
      * @return a ByteArray?
      * @throws Exception
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     @Throws(Exception::class)
-    private fun encrypt(plaintext: ByteArray?): ByteArray? {
+    fun encrypt(plaintext: ByteArray?, secretKey: SecretKey) : ByteArray? {
         val cipher: Cipher = Cipher.getInstance("AES")
         val keySpec = SecretKeySpec(secretKey.encoded, "AES")
         cipher.init(Cipher.ENCRYPT_MODE, keySpec)
-        return cipher.doFinal(plaintext)
+        val cypherByteArray =  cipher.doFinal(plaintext)
+        return Base64.getEncoder().encode(cypherByteArray)
     }
 
     /**
@@ -44,15 +49,17 @@ object CryptKey {
      *
      * @param number the number of times plaintext should be encrypted
      * @param plaintext the following ByteArray of an text
+     * @param secretKey the secretKey from a encrypted(password) or CryptKey.secretKey
      * @return a ByteArray?
      * @throws Exception
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     @Throws(Exception::class)
-    fun encrypt(plaintext: ByteArray?, number : Int): ByteArray? {
+    fun encrypt(plaintext: ByteArray?, secretKey: SecretKey, number: Int): ByteArray? {
         return if (number <= 0) {
             plaintext
         } else {
-            encrypt(encrypt(plaintext), number - 1)
+            encrypt(encrypt(plaintext, secretKey), secretKey, number - 1)
         }
     }
 
@@ -60,16 +67,18 @@ object CryptKey {
      * Will decrypt a cipherText using AES and return the String?
      *
      * @param cipherText the following encrypted ByteArray?
+     * @param secretKey the secretKey from a encrypted(password) or CryptKey.secretKey
      * @return a String?
      */
-    fun decrypt(cipherText: ByteArray?): String? {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun decrypt(cipherText: ByteArray?, secretKey: SecretKey): ByteArray? {
         try {
+            val base64data = Base64.getDecoder().decode(cipherText)
             val cipher = Cipher.getInstance("AES")
             val keySpec = SecretKeySpec(secretKey.encoded, "AES")
             cipher.init(Cipher.DECRYPT_MODE, keySpec)
-            val decryptedText = cipher.doFinal(cipherText)
-            return String(decryptedText)
-        } catch (e: java.lang.Exception) {
+            return cipher.doFinal(base64data)
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return null

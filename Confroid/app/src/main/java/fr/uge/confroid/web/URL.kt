@@ -1,7 +1,7 @@
 package fr.uge.confroid.web
 
 
-/***
+/**
  * Object that will have the different urls stock.
  *
  * @author Ailton Lopes Mendes

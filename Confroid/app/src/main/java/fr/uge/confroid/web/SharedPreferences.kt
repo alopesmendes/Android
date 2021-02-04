@@ -32,7 +32,7 @@ class SharedPreferences(private val context: Context) {
 
     /***
      * Method will allow the user to login.
-     * Will store the user date in shared preferences.
+     * Will store the user data in shared preferences.
      *
      * @param user : Will log in the user.
      */
