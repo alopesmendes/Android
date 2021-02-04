@@ -220,7 +220,16 @@
         android:layout_height="wrap_content"
         android:text="send to app"
         app:layout_constraintBottom_toTopOf="@id/all_versions_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/send_all_to_app_button"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/send_all_to_app_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="send all to app"
+        app:layout_constraintBottom_toTopOf="@id/all_versions_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/send_to_app_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

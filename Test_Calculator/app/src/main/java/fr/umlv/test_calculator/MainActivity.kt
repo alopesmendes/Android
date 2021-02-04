@@ -3,7 +3,7 @@ package fr.umlv.test_calculator
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import fr.umlv.test_confroid.utils.ConfroidUtils
+import fr.umlv.test_calculator.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

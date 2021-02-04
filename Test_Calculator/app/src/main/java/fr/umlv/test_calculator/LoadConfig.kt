@@ -4,8 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import fr.umlv.test_confroid.test.reflect.ShoppingPreferences
-import fr.umlv.test_confroid.utils.ConfroidUtils
+import fr.umlv.test_calculator.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_load_config.*
 
 class LoadConfig : AppCompatActivity() {

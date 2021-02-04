@@ -1,11 +1,7 @@
-package fr.umlv.test_confroid.utils
+package fr.umlv.test_calculator.utils
 
 import android.content.Context
 import android.content.Intent
-import fr.umlv.test_calculator.utils.Version
-//import fr.umlv.test_confroid.services.ConfigurationPuller
-//import fr.umlv.test_confroid.services.ConfigurationPusher
-//import fr.umlv.test_confroid.services.ConfigurationVersions
 import java.util.function.Consumer
 
 object ConfroidUtils {

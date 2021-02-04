@@ -12,16 +12,17 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.services.ConfigurationPuller
 import fr.umlv.test_confroid.services.ConfigurationPusher
+import fr.umlv.test_confroid.services.ConfigurationVersions
 import fr.umlv.test_confroid.test.reflect.*
 import fr.umlv.test_confroid.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 class MainActivity : AppCompatActivity() {
 
     val filter: IntentFilter = IntentFilter()
 
     var configToSend: Config? = null
+    var versionsToSend: Array<Config>? = null
 
     companion object {
         lateinit var model: Model
@@ -41,8 +42,9 @@ class MainActivity : AppCompatActivity() {
                 test1.text = content.toString()
                 configToSend = content as Config?
             } else if (intent.action == broadcastAllVersionsAction) {
-                val versions = intent.getSerializableExtra("versions") as Array<*>
-                test1.text = versions.joinToString("\n", "{", "}")
+                val versions = intent.getSerializableExtra("versions")
+                test1.text = (versions as Array<*>).joinToString("\n", "{", "}")
+                versionsToSend = versions as Array<Config>?
             }
             Intent(this@MainActivity, ConfigurationPuller::class.java).apply {
                 stopService(this)
@@ -120,7 +122,12 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     2 -> {
-                        
+                        val app = intent.getStringExtra("app")
+
+                        Intent(this, ConfigurationVersions::class.java).apply {
+                            putExtra("app", app)
+                            startService(this)
+                        }
                     }
                 }
             }
@@ -133,8 +140,6 @@ class MainActivity : AppCompatActivity() {
             Log.i("main", "pusher button")
             val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
             val version = version_editText.text.toString()
-//            val content = content_editText.text.toString()
-//            val tag = tag_editText.text.toString()
 
             if (app.isBlank() || version.isBlank()) {
                 Toast.makeText(this, "app and version required", Toast.LENGTH_SHORT).show()
@@ -193,11 +198,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+//        ENVOIE LA CONFIG DEMANDEE A L'APP
         send_to_app_button.setOnClickListener {
             Intent().apply {
                 action = Intent.ACTION_SEND
 
                 putExtra("content", configToSend.toString())
+
+                startActivity(this)
+            }
+        }
+
+//        ENVOIE TOUTES LES VERSIONS DES CONFIGS A L'APP
+        send_all_to_app_button.setOnClickListener {
+            Intent().apply {
+                action = Intent.ACTION_SEND
+
+                putExtra("content", versionsToSend?.joinToString("\n", "{", "}"))
 
                 startActivity(this)
             }

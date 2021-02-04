@@ -1,14 +1,15 @@
 package fr.umlv.test_calculator
 
-import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.test.reflect.BillingDetail
 import fr.umlv.test_confroid.test.reflect.ShippingAddress
 import fr.umlv.test_confroid.test.reflect.ShoppingInfo
 import fr.umlv.test_confroid.test.reflect.ShoppingPreferences
-import fr.umlv.test_confroid.utils.ConfroidUtils
+import fr.umlv.test_calculator.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_send_config.*
+import kotlinx.android.synthetic.main.activity_send_config.version_edit_text
 
 class SendConfig : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +42,12 @@ class SendConfig : AppCompatActivity() {
         /////////////////////////////////////////////////////////
 
         send_to_confroid_button.setOnClickListener {
-            ConfroidUtils.saveConfiguration(this,  "Calculator", prefs, "1")
+            val version = version_edit_text.text.toString()
+            if (version.isBlank()) {
+                Toast.makeText(this, "version required", Toast.LENGTH_SHORT).show()
+            } else {
+                ConfroidUtils.saveConfiguration(this, "Calculator", prefs, version)
+            }
         }
     }
 }
