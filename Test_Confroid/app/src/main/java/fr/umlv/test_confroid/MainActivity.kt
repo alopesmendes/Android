@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.services.ConfigurationPuller
+import fr.umlv.test_confroid.services.ConfigurationPusher
 import fr.umlv.test_confroid.test.reflect.*
 import fr.umlv.test_confroid.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,6 +20,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     val filter: IntentFilter = IntentFilter()
+
+    var configToSend: Config? = null
 
     companion object {
         lateinit var model: Model
@@ -34,7 +37,9 @@ class MainActivity : AppCompatActivity() {
     val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
             if (intent.action == broadcastConfigAction) {
-                test1.text = intent.getSerializableExtra("config").toString()
+                val content = intent.getSerializableExtra("config")
+                test1.text = content.toString()
+                configToSend = content as Config?
             } else if (intent.action == broadcastAllVersionsAction) {
                 val versions = intent.getSerializableExtra("versions") as Array<*>
                 test1.text = versions.joinToString("\n", "{", "}")
@@ -85,11 +90,41 @@ class MainActivity : AppCompatActivity() {
         model = Model(this)
         model.open()
 
-//        when {
-//            intent.action == Intent.ACTION_SEND -> {
+        when {
+            intent.action == Intent.ACTION_SEND -> {
+                val request = intent.getIntExtra("request", -1)
 
-//            }
-//        }
+                when (request) {
+                    0 -> {
+                        val app = intent.getStringExtra("app")
+                        val version = intent.getIntExtra("version", 1)
+                        val content = intent.getSerializableExtra("content")
+                        val tag = intent.getStringExtra("tag")
+
+                        Intent(this, ConfigurationPusher::class.java).apply {
+                            putExtra("app", app)
+                            putExtra("version", version)
+                            putExtra("content", content)
+                            putExtra("tag", tag)
+                            startService(this)
+                        }
+                    }
+                    1 -> {
+                        val app = intent.getStringExtra("app")
+                        val version = intent.getIntExtra("version", 1)
+
+                        Intent(this, ConfigurationPuller::class.java).apply {
+                            putExtra("app", app)
+                            putExtra("version", version)
+                            startService(this)
+                        }
+                    }
+                    2 -> {
+                        
+                    }
+                }
+            }
+        }
 
         /////////////////////////////////////////////////////
 
@@ -155,6 +190,16 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "all versions selected", Toast.LENGTH_SHORT).show()
                 ConfroidUtils.getConfigurationVersions(this, app, null)
+            }
+        }
+
+        send_to_app_button.setOnClickListener {
+            Intent().apply {
+                action = Intent.ACTION_SEND
+
+                putExtra("content", configToSend.toString())
+
+                startActivity(this)
             }
         }
     }
