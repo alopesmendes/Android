@@ -29,6 +29,12 @@ open class CustomRequest<T>(
 
     private val gson : Gson = Gson()
 
+    /**
+     * Will parse the NetworkResponse and will return a the clazz object in Response
+     *
+     * @param response the status reponse.
+     * @return Response
+     */
     override fun parseNetworkResponse(response: NetworkResponse?): Response<T> {
         return try {
 

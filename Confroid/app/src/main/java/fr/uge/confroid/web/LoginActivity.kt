@@ -1,10 +1,12 @@
 package fr.uge.confroid.web
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.android.volley.toolbox.StringRequest
 import fr.uge.confroid.MainActivity
 import fr.uge.confroid.R
@@ -70,9 +72,10 @@ class LoginActivity : AppCompatActivity() {
                 Log.i("bad", it.toString())
             }
         ) {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun getParams(): MutableMap<String, String> {
                 val params = HashMap<String, String>()
-                val cryptPassword = CryptKey.encrypt(password.toByteArray(), 2)
+                val cryptPassword = CryptKey.encrypt(password.toByteArray(), CryptKey.secretKey, 2)
                 params["username"] = username
                 params["password"] = String(cryptPassword!!)
                 //params["password"] = password
