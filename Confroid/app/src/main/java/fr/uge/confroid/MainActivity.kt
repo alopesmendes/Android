@@ -11,15 +11,20 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.work.Constraints
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
 import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.storageprovider.StorageUtils
 import fr.uge.confroid.web.*
+import fr.uge.confroid.worker.UploadWorker
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.lang.Exception
+import java.util.concurrent.TimeUnit
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
@@ -29,22 +34,31 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
-
+        // The differents files created
+        MyProvider.writeFile(applicationContext, "mmtext.txt", "On est la".toByteArray())
+        MyProvider.writeFile(applicationContext, "save.txt", "Sauvegarde les secrets".toByteArray())
 
         if (SharedPreferences.getInstance(this).isLoggedIn()) {
-            val user = SharedPreferences.getInstance(this).getUser()
-            Log.i("shared user", user.toString())
             buttonSendFile.visibility = View.VISIBLE
             buttonGetFile.visibility = View.VISIBLE
-            val myProvider = MyProvider()
-            val file = myProvider.getFile(this)
 
-            buttonSendFile.setOnClickListener {
-                sendFile(file, user.password, user.token)
-            }
+
+            val constraints = Constraints.Builder()
+                .setRequiresBatteryNotLow(true)
+                .build()
+
+            val work = PeriodicWorkRequestBuilder<UploadWorker>(30, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build()
+
+            val workManager = WorkManager.getInstance(this)
+            workManager.enqueue(work)
+
 
             buttonGetFile.setOnClickListener {
-                getFile(file.name, user.password, user.token)
+                val user = SharedPreferences.getInstance(this).getUser()
+                Log.i("shared user", user.toString())
+                getFile("mmtext.txt", user.password, user.token)
             }
 
         } else {
@@ -72,83 +86,6 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun sendFile(file : File, password : String,  token : String) {
-        Log.i("preparing send","path:${file.absolutePath} and token:$token")
-
-        val customRequest = object : VolleyFileUploadRequest(Method.POST, URL.ROOT_FILE_UPLOAD,
-            {
-                Log.i("success", it.toString())
-            },
-            {
-                Log.e("fail", it.toString())
-            })
-        {
-            override fun getHeaders(): MutableMap<String, String> {
-                return mutableMapOf("authorization" to token)
-            }
-
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun getByteData(): Map<String, FileDataPart>? {
-                val params = HashMap<String, FileDataPart>()
-                val secretKey : SecretKey = SecretKeySpec(CryptKey.decrypt(password.toByteArray(), CryptKey.secretKey), "AES")
-                params["file"] = FileDataPart(file.absolutePath, CryptKey.encrypt(file.readBytes(), secretKey)!!, "txt")
-                return params
-            }
-        }
-        /*
-        val customRequest = object : CustomRequest<NetworkResponse>(
-            Method.POST, URL.ROOT_FILE_UPLOAD, NetworkResponse::class.java,
-            {
-                Log.i("success", it.toString())
-            },
-            {
-                Log.e("error", it.toString())
-            })
-        {
-            override fun getHeaders(): MutableMap<String, String> {
-                return mutableMapOf("authorization" to token)
-            }
-
-            override fun parseNetworkResponse(response: NetworkResponse?): Response<NetworkResponse> {
-                return try {
-                    Response.success(response, HttpHeaderParser.parseCacheHeaders(response))
-                } catch (e: Exception) {
-                    Response.error(ParseError(e))
-                }
-            }
-
-            override fun getBodyContentType(): String {
-                return "multipart/form-data;"
-            }
-
-            override fun getBody(): ByteArray {
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                val dataOutputStream = DataOutputStream(byteArrayOutputStream)
-                val dataPart : MutableMap<String, FileDataPart> = HashMap()
-                dataPart["file"] =  FileDataPart(file.absolutePath, file.readBytes(), "txt")
-                dataPart.forEach {
-                    val dataFile = it.value
-                    val fileInputStream = ByteArrayInputStream(dataFile.data)
-                    var bytesAvailable = fileInputStream.available()
-                    val maxBufferSize = 1024 * 1024
-                    var bufferSize = min(maxBufferSize, bytesAvailable)
-                    val buffer = ByteArray(bufferSize)
-                    var bytesRead = fileInputStream.read(buffer, 0, bufferSize)
-                    while (bytesRead > 0) {
-                        dataOutputStream.write(buffer, 0, bufferSize)
-                        bytesAvailable = fileInputStream.available()
-                        bufferSize = min(bytesAvailable, maxBufferSize)
-                        bytesRead = fileInputStream.read(buffer, 0, bufferSize)
-                    }
-                }
-                return byteArrayOutputStream.toByteArray()
-            }
-        }
-        */
-
-        VolleySingleton.getInstance(this).addToRequestQueue(customRequest)
     }
 
     private fun getFile(name : String, password: String, token : String) {
