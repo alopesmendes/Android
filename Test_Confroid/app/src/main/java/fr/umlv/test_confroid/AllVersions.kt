@@ -3,6 +3,7 @@ package fr.umlv.test_confroid;
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class AllVersions : AppCompatActivity() {
+
+    val filter: IntentFilter = IntentFilter()
     val broadcastAction = "getAllVersions"
     /*
     LORSQUE LE RECEIVER RECOIT LA CONFIG DU SERVICE PULLER,
@@ -38,6 +41,7 @@ class AllVersions : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_versions)
+        filter.addAction(broadcastAction)
         val intent = intent
         if (intent != null) {
             var appName: String = ""
@@ -48,5 +52,16 @@ class AllVersions : AppCompatActivity() {
             }
         }
 
+    }
+
+    //    POUR ENREGISTRER LE RECEIVER DE L'INTENT DU SERVICE DE PULLER
+    override fun onPause() {
+        unregisterReceiver(receiver)
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(receiver, filter)
     }
 }
