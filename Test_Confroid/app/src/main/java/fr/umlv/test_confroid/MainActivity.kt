@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity() {
                     .show()
             } else {
                 Toast.makeText(this, "all versions selected", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, AllVersions::class.java)
+                val intent = Intent(this, AllVersionsActivity::class.java)
                 intent.putExtra("app", app)
                 startActivity(intent)
 

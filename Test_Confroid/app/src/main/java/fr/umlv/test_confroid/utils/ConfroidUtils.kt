@@ -2,6 +2,7 @@ package fr.umlv.test_confroid.utils
 
 import android.content.Context
 import android.content.Intent
+import fr.umlv.test_confroid.Config
 import fr.umlv.test_confroid.services.ConfigurationPuller
 import fr.umlv.test_confroid.services.ConfigurationPusher
 import fr.umlv.test_confroid.services.ConfigurationVersions
@@ -42,7 +43,7 @@ object ConfroidUtils {
     fun getConfigurationVersions(
         context: Context,
         name: String,
-        callback: Consumer<List<Version>>?
+        callback: Consumer<List<Config>>?
     ) {
         Intent(context, ConfigurationVersions::class.java).apply {
             putExtra("app", name)

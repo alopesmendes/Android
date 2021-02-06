@@ -6,19 +6,20 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import android.view.View
-import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import fr.umlv.test_confroid.services.ConfigurationPuller
 import fr.umlv.test_confroid.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_all_versions.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 
-class AllVersions : AppCompatActivity() {
+class AllVersionsActivity : AppCompatActivity() {
 
     val filter: IntentFilter = IntentFilter()
     val broadcastAction = "getAllVersions"
+    private var configAdapter : ConfigAdapter?=null
+    private var configs : List<Config>? = null
     /*
     LORSQUE LE RECEIVER RECOIT LA CONFIG DU SERVICE PULLER,
     AFFICHE LA CONFIG DANS LA TEXTVIEW
@@ -29,8 +30,14 @@ class AllVersions : AppCompatActivity() {
             if (intent.action == broadcastAction) {
                 Log.i("versions service", "receiver de AllVersions")
                 val versions = intent.getSerializableExtra("versions")
-                VersionsList.text = (versions as Array<*>).joinToString("\n", "{", "}")
-                Intent(this@AllVersions, ConfigurationPuller::class.java).apply {
+                configs = ((versions as Array<Config>).toList())
+                configAdapter = configs?.let { ConfigAdapter(this@AllVersionsActivity, it) }
+                RvAllVersions.adapter = configAdapter
+                RvAllVersions.layoutManager = LinearLayoutManager(this@AllVersionsActivity)
+                RvAllVersions.setHasFixedSize(true)
+                Log.i("résultat", configs!!.size.toString())
+
+                Intent(this@AllVersionsActivity, ConfigurationPuller::class.java).apply {
                     stopService(this)
                 }
             }
@@ -49,9 +56,17 @@ class AllVersions : AppCompatActivity() {
                 appName = intent.getStringExtra("app").toString()
                 AppName.text = appName
                 ConfroidUtils.getConfigurationVersions(this, appName, null)
+
             }
         }
 
+
+    }
+
+    fun onClickListener(position: Int){
+        val intent = Intent(this, ConfigActivity::class.java)
+        intent.putExtra("config", configs?.get(position))
+        startActivity(intent)
     }
 
     //    POUR ENREGISTRER LE RECEIVER DE L'INTENT DU SERVICE DE PULLER
