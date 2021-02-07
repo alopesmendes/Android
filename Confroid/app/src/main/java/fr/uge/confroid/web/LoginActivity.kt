@@ -51,38 +51,17 @@ class LoginActivity : AppCompatActivity() {
         return false
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun userLogin() {
-
         val username = editTextNameLogin.text.toString()
         val password = editTextPasswordLogin.text.toString()
 
         if (isMissingFields(username, password)) {
             return
         }
-        val customRequest = object : StringRequest(Method.POST, URL.ROOT_LOGIN,
-            {
-                val jsonObject = JSONObject(it)
-                val user = User(jsonObject.getString("username"), jsonObject.getString("password"), jsonObject.getString("token"))
-                Log.i("user", user.toString())
-                SharedPreferences.getInstance(applicationContext).userLogin(user)
-                Intent(this, MainActivity::class.java).apply { startActivity(this) }
-
-            },
-            {
-                Log.i("bad", it.toString())
-            }
-        ) {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun getParams(): MutableMap<String, String> {
-                val params = HashMap<String, String>()
-                val cryptPassword = CryptKey.encrypt(password.toByteArray(), CryptKey.secretKey, 2)
-                params["username"] = username
-                params["password"] = String(cryptPassword!!)
-                //params["password"] = password
-                return params
-            }
+        val cryptPassword = CryptKey.encrypt(password.toByteArray(), CryptKey.secretKey, 2)
+        LoginRequest.request(this, username, String(cryptPassword!!)) {
+            Intent(this, MainActivity::class.java).apply { startActivity(this) }
         }
-
-        VolleySingleton.getInstance(this).addToRequestQueue(customRequest)
     }
 }

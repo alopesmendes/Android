@@ -6,7 +6,7 @@ import java.io.File
 
 object StorageUtils {
 
-    private fun createOrGetFile(
+    fun createFile(
         fileName: String?,
         folderName: String?
     ) : File {
@@ -25,11 +25,11 @@ object StorageUtils {
         return file
     }
 
-    fun getFileFromStorage(
-        context: Context?,
-        fileName: String?,
-        folderName: String?
-    ): File {
-        return createOrGetFile(fileName, folderName)
+    fun getFiles(folderName: String?) : Array<File> {
+        val root = File(folderName)
+        if (!root.exists() && !root.isDirectory) {
+            return arrayOf()
+        }
+        return root.listFiles()
     }
 }
