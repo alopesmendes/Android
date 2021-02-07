@@ -15,6 +15,7 @@ object LoginRequest {
             },
             {
                 Log.i("bad", it.toString())
+                SharedPreferences.getInstance(applicationContext).logout()
             }
         ) {
             @RequiresApi(Build.VERSION_CODES.O)

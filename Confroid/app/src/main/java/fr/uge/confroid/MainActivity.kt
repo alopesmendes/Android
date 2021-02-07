@@ -11,24 +11,30 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.Constraints
+import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.StringRequest
+import com.google.gson.Gson
 import fr.uge.confroid.storageprovider.MyProvider
-import fr.uge.confroid.storageprovider.StorageUtils
 import fr.uge.confroid.web.*
 import fr.uge.confroid.worker.UploadWorker
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
 import java.io.File
 import java.lang.Exception
 import java.util.concurrent.TimeUnit
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RequestAdapter.OnUrlListener {
+    private val requestAdapter = RequestAdapter(this, mutableListOf())
+
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,34 +43,50 @@ class MainActivity : AppCompatActivity() {
         // The differents files created
         MyProvider.writeFile(applicationContext, "mmtext.txt", "On est la".toByteArray())
         MyProvider.writeFile(applicationContext, "save.txt", "Sauvegarde les secrets".toByteArray())
+        MyProvider.writeFile(applicationContext, "allo.txt", "Allo les gens".toByteArray())
+        MyProvider.writeFile(applicationContext, "bonjour.txt", "Bonjour les amis".toByteArray())
+        MyProvider.writeFile(applicationContext, "anime.txt", "Cest bien les animes".toByteArray())
+        MyProvider.writeFile(applicationContext, "cours.txt", "Pas ouf".toByteArray())
+        MyProvider.writeFile(applicationContext, "eau.txt", "H20".toByteArray())
+        MyProvider.writeFile(applicationContext, "avatar.txt", "Les 4 elements".toByteArray())
 
         if (SharedPreferences.getInstance(this).isLoggedIn()) {
-            buttonSendFile.visibility = View.VISIBLE
+            val user = SharedPreferences.getInstance(this).getUser()
+            LoginRequest.request(this, user.username, user.password) {}
             buttonGetFile.visibility = View.VISIBLE
 
-
-            val constraints = Constraints.Builder()
-                .setRequiresBatteryNotLow(true)
-                .build()
-
-            val work = PeriodicWorkRequestBuilder<UploadWorker>(30, TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .build()
-
-            val workManager = WorkManager.getInstance(this)
-            workManager.enqueue(work)
-
+            work()
 
             buttonGetFile.setOnClickListener {
                 val user = SharedPreferences.getInstance(this).getUser()
                 Log.i("shared user", user.toString())
-                getFile("mmtext.txt", user.password, user.token)
+                //getFile("mmtext.txt", user.password, user.token)
+                getFiles(user.token)
             }
 
         } else {
-            buttonSendFile.visibility = View.INVISIBLE
             buttonGetFile.visibility = View.INVISIBLE
         }
+
+        requestRecyclerView.adapter = requestAdapter
+        requestRecyclerView.layoutManager = LinearLayoutManager(this)
+        requestRecyclerView.setHasFixedSize(true)
+
+    }
+
+    private fun work() {
+        val constraints = Constraints.Builder()
+            .setRequiresBatteryNotLow(true)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresStorageNotLow(true)
+            .build()
+
+        val work = PeriodicWorkRequestBuilder<UploadWorker>(30, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .build()
+
+        val workManager = WorkManager.getInstance(this)
+        workManager.enqueue(work)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -88,8 +110,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun parse(result: String) : List<FileAttributes> {
+        val list = Gson().fromJson(result, List::class.java)
+        return list.map {
+            val jsonObject = it as Map<String, String>
+            FileAttributes(jsonObject["name"] ?: error(""), jsonObject["url"] ?: error(""))
+        }
+    }
+
+    private fun getFiles(token: String) {
+        val filesRequest = object : StringRequest(Method.GET, URL.ROOT_FILES,
+            {
+                requestAdapter.fas = parse(it)
+                requestAdapter.notifyDataSetChanged()
+            },
+            {
+                Log.e("files error", it.toString())
+                SharedPreferences.getInstance(this).logout()
+            })
+        {
+            override fun getHeaders(): MutableMap<String, String> {
+                return mutableMapOf("authorization" to token)
+            }
+        }
+        VolleySingleton.getInstance(this).addToRequestQueue(filesRequest)
+    }
+
     private fun getFile(name : String, password: String, token : String) {
-        Log.i("preparing get", "file:$name and token:$token")
         val customRequest : CustomRequest<ByteArray> = @RequiresApi(Build.VERSION_CODES.O)
         object : CustomRequest<ByteArray>(Method.GET, "${URL.ROOT_FILE}/$name", ByteArray::class.java,
             {
@@ -114,6 +161,7 @@ class MainActivity : AppCompatActivity() {
             },
             {
                 Log.e("error get", it.toString())
+                SharedPreferences.getInstance(this).logout()
             })
         {
             override fun getHeaders(): MutableMap<String, String> {
@@ -126,5 +174,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         VolleySingleton.getInstance(this).addToRequestQueue(customRequest)
+    }
+
+    override fun onClickListener(fileAttributes: FileAttributes) {
+        val user = SharedPreferences.getInstance(this).getUser()
+        LoginRequest.request(this, user.username, user.password) {}
+        getFile(fileAttributes.name, user.password, user.token)
     }
 }

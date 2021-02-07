@@ -11,9 +11,11 @@ package fr.uge.confroid.web
  * @author Gérald LIN
  */
 object URL {
-    const val ROOT_URL = "https://valkyroid.loca.lt"
+    private const val ROOT_URL = "https://valkyroid.loca.lt"
     const val ROOT_REGISTER = "${ROOT_URL}/api/auth/register"
     const val ROOT_LOGIN = "${ROOT_URL}/api/auth/login"
     const val ROOT_FILE_UPLOAD = "${ROOT_URL}/api/upload"
     const val ROOT_FILE = "${ROOT_URL}/api/file"
+    const val ROOT_FILES = "${ROOT_URL}/api/files"
+
 }

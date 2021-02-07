@@ -23,6 +23,7 @@ import org.json.JSONObject
  * @author Gérald LIN
  */
 class LoginActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
