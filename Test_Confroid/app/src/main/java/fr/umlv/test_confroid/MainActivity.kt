@@ -13,7 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.services.ConfigurationPuller
 import fr.umlv.test_confroid.services.ConfigurationPusher
 import fr.umlv.test_confroid.services.ConfigurationVersions
-import fr.umlv.test_confroid.test.reflect.*
+import fr.umlv.test_confroid.test.reflect.BillingDetail
+import fr.umlv.test_confroid.test.reflect.ShippingAddress
+import fr.umlv.test_confroid.test.reflect.ShoppingInfo
+import fr.umlv.test_confroid.test.reflect.ShoppingPreferences
 import fr.umlv.test_confroid.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -41,10 +44,6 @@ class MainActivity : AppCompatActivity() {
                 val content = intent.getSerializableExtra("config")
                 test1.text = content.toString()
                 configToSend = content as Config?
-            } else if (intent.action == broadcastAllVersionsAction) {
-                val versions = intent.getSerializableExtra("versions")
-                test1.text = (versions as Array<*>).joinToString("\n", "{", "}")
-                versionsToSend = versions as Array<Config>?
             }
             Intent(this@MainActivity, ConfigurationPuller::class.java).apply {
                 stopService(this)
@@ -194,7 +193,10 @@ class MainActivity : AppCompatActivity() {
                     .show()
             } else {
                 Toast.makeText(this, "all versions selected", Toast.LENGTH_SHORT).show()
-                ConfroidUtils.getConfigurationVersions(this, app, null)
+                val intent = Intent(this, AllVersionsActivity::class.java)
+                intent.putExtra("app", app)
+                startActivity(intent)
+
             }
         }
 

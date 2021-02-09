@@ -17,14 +17,14 @@ class ConfigurationVersions : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.i("versions service", "start")
         val app = intent?.extras?.getString("app")
-
+        Log.i("versions service", app.toString())
         if (app != null) {
             val versions = MainActivity.model.getAllVersions(app)
 
 //            ENVOIE LES VERSIONS AU RECEIVER DU MAINACTIVITY VIA UNE INTENT
             if (versions != null) {
                 val broadcastIntent = Intent()
-                broadcastIntent.action = MainActivity.broadcastAllVersionsAction
+                broadcastIntent.action = "getAllVersions"
                 broadcastIntent.putExtra("versions", versions.toTypedArray())
                 sendBroadcast(broadcastIntent)
             }
