@@ -9,9 +9,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
@@ -25,15 +26,14 @@ import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.web.*
 import fr.uge.confroid.worker.UploadWorker
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
+import kotlinx.coroutines.*
 import java.io.File
 import java.lang.Exception
 import java.util.concurrent.TimeUnit
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
-class MainActivity : AppCompatActivity(), RequestAdapter.OnUrlListener {
-    private val requestAdapter = RequestAdapter(this, mutableListOf())
+class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,24 +53,16 @@ class MainActivity : AppCompatActivity(), RequestAdapter.OnUrlListener {
         if (SharedPreferences.getInstance(this).isLoggedIn()) {
             val user = SharedPreferences.getInstance(this).getUser()
             LoginRequest.request(this, user.username, user.password) {}
-            buttonGetFile.visibility = View.VISIBLE
-
             work()
 
-            buttonGetFile.setOnClickListener {
-                val user = SharedPreferences.getInstance(this).getUser()
-                Log.i("shared user", user.toString())
-                //getFile("mmtext.txt", user.password, user.token)
-                getFiles(user.token)
-            }
+            Log.i("shared user", user.toString())
+            getFiles(user.token)
+            requestSpinner.visibility = View.VISIBLE
 
         } else {
-            buttonGetFile.visibility = View.INVISIBLE
+            requestSpinner.visibility = View.INVISIBLE
         }
 
-        requestRecyclerView.adapter = requestAdapter
-        requestRecyclerView.layoutManager = LinearLayoutManager(this)
-        requestRecyclerView.setHasFixedSize(true)
 
     }
 
@@ -81,7 +73,7 @@ class MainActivity : AppCompatActivity(), RequestAdapter.OnUrlListener {
             .setRequiresStorageNotLow(true)
             .build()
 
-        val work = PeriodicWorkRequestBuilder<UploadWorker>(30, TimeUnit.MINUTES)
+        val work = PeriodicWorkRequestBuilder<UploadWorker>(20, TimeUnit.MINUTES)
             .setConstraints(constraints)
             .build()
 
@@ -121,8 +113,10 @@ class MainActivity : AppCompatActivity(), RequestAdapter.OnUrlListener {
     private fun getFiles(token: String) {
         val filesRequest = object : StringRequest(Method.GET, URL.ROOT_FILES,
             {
-                requestAdapter.fas = parse(it)
-                requestAdapter.notifyDataSetChanged()
+                runBlocking {
+                    updateAdapter(it)
+                }
+
             },
             {
                 Log.e("files error", it.toString())
@@ -176,9 +170,26 @@ class MainActivity : AppCompatActivity(), RequestAdapter.OnUrlListener {
         VolleySingleton.getInstance(this).addToRequestQueue(customRequest)
     }
 
-    override fun onClickListener(fileAttributes: FileAttributes) {
+    private suspend fun updateAdapter(requestBody : String) {
+        val files = parse(requestBody)
+        ArrayAdapter(
+            this, android.R.layout.simple_spinner_item, files
+        ).also {
+            arrayAdapter ->
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                requestSpinner.adapter = arrayAdapter
+        }
+        requestSpinner.onItemSelectedListener = this
+
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val user = SharedPreferences.getInstance(this).getUser()
-        LoginRequest.request(this, user.username, user.password) {}
+        val fileAttributes : FileAttributes = parent?.getItemAtPosition(position) as FileAttributes
         getFile(fileAttributes.name, user.password, user.token)
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
     }
 }
