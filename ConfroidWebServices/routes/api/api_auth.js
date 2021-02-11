@@ -7,7 +7,27 @@ const path = require('path');
 
 const dbAccount = require("../../database/account");
 const jwt = require("jsonwebtoken");
+// Nodejs encryption with CTR
+const crypto = require('crypto');
+const algorithm = 'aes-256-cbc';
+const key = crypto.randomBytes(32);
+const iv = crypto.randomBytes(16);
 
+function encrypt(text) {
+ let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
+ let encrypted = cipher.update(text);
+ encrypted = Buffer.concat([encrypted, cipher.final()]);
+ return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+}
+
+function decrypt(text) {
+ let iv = Buffer.from(text.iv, 'hex');
+ let encryptedText = Buffer.from(text.encryptedData, 'hex');
+ let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+ let decrypted = decipher.update(encryptedText);
+ decrypted = Buffer.concat([decrypted, decipher.final()]);
+ return decrypted.toString();
+}
 
 
 router.post('/login', async function(req, res) {
@@ -19,16 +39,20 @@ router.post('/login', async function(req, res) {
         return;
     }
 
+    console.log(`passwordGiven:${passwordGiven}`)
+    var encrtyptedPassword = encrypt(passwordGiven);
+    console.log(`login enc:${encrtyptedPassword}`)
     try {
-      var userInfo = await dbAccount.findByUsernamePassword(usernameGiven, passwordGiven);
-      
+      var userInfo = await dbAccount.findByUsernamePassword(usernameGiven, encrtyptedPassword.encryptedData);
       console.log('ici_1 :' + userInfo);
       userInfo = JSON.parse(userInfo);
+      var decryptedPassword = decrypt(encrtyptedPassword)
+      console.log(`decrypted:${decryptedPassword}`)
       
       if (userInfo) {              // Check if credentials matched
         console.log(userInfo);
         const token = AuthHelper.generateToken(userInfo);
-        res.status(200).json({"username":usernameGiven, "password":passwordGiven, "token":token});
+        res.status(200).json({"username":usernameGiven, "password":decryptedPassword, "token":token});
         console.log(token);
     } else {
         res.status(401).send({data : 'Wrong username or password'});
@@ -57,10 +81,11 @@ router.post("/register", async (req, res) => {
             res.status(401).json({"data": "Username already taken" });
         } else {
             //const hashPassword = AuthHelper.hashPassword(req.body.password);
-
-            const data = await dbAccount.insert(username, password);
+            var encrtyptedPassword = encrypt(password)
+            const data = await dbAccount.insert(username, encrtyptedPassword.encryptedData);
             console.log(data);
-            res.status(200).json({"username":username, "password":password}); 
+            console.log(`encrypted:${encrtyptedPassword}`)
+            res.status(200).json({"username":username, "password":encrtyptedPassword.encryptedData}); 
         }
       } catch (err) {                              // Handle errors
         console.error('Database error:', err);     
