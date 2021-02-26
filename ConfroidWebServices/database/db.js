@@ -1,6 +1,5 @@
+const knex = require("knex");
 const sqlite3 = require('sqlite3').verbose();
-//const nameDB = 'main.db'
-//const db2 = new sqlite3.Database(nameDB);
 
 // open database
 var db = new sqlite3.Database('./database/db.sqlite', (err) => {
@@ -13,16 +12,17 @@ var db = new sqlite3.Database('./database/db.sqlite', (err) => {
 
 db.serialize(() => {
   // Queries scheduled here will be serialized.
-  db.run('CREATE TABLE IF NOT EXISTS account(username TEXT, password TEXT)')
+  db.run('DROP TABLE account');
+  db.run('CREATE TABLE IF NOT EXISTS account(id_person INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL)')
     .run(`INSERT INTO account(username, password)
           VALUES('a', 'a'),
                 ('b', 'b'),
-                ('c', 'c')`)
-    .each(`SELECT username, password FROM account`, (err, row) => {
+                ('Z', 'Z')`)
+    .each(`SELECT * FROM account`, (err, row) => {
       if (err){
         throw err;
       }
-      console.log(row.username);
+      console.log(row);
     });
 });
 
@@ -31,4 +31,16 @@ db.serialize(() => {
 //let db = new sqlite3.Database(':memory:');
 
 
-module.exports = db;
+
+
+const connectedKnex = knex({
+  client: "sqlite3",
+  connection: {
+      filename: "database/db.sqlite"
+  },
+  useNullAsDefault: true
+})
+
+
+module.exports = connectedKnex
+//module.exports = db;

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Confroid</string>
+    <string name="login_text">LOGIN</string>
+    <string name="register_text">REGISTER</string>
+    <string name="hint_name">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="register_new_user_text">New User? Register now</string>
+    <string name="button_send_file_text">Send File</string>
+    <string name="button_get_file_text">Get File</string>
+
 </resources>

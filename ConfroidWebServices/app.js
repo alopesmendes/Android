@@ -1,9 +1,11 @@
 const express = require('express');
-const path = require("path");
-var fs = require('fs');
 const app = express();
 const bodyParser = require("body-parser");
+const swaggerUI =require('swagger-ui-express');
+const swaggerDocs = require('./routes/swagger/swagger.json');
 
+global.__basedir = __dirname;
+global.baseUrl = "http://localhost:8080/";
 
 // app config
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -13,40 +15,22 @@ app.use(express.static('public'));
 
 // Defining each routes with its file
 const loginRoutes = require('./routes/login');
+const registerRoutes = require('./routes/login');
 const dashboardRoutes = require('./routes/dashboard');
+
+const apiAuthRoutes = require('./routes/api/api_auth');
+const apiFilesRoutes = require('./routes/api/api_file');
 
 
 // Routes that should handle requests
 app.use('/', loginRoutes);
+app.use("/register", registerRoutes);
 app.use("/dashboard", dashboardRoutes);
 
+app.use('/api-docs',swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use("/api/auth", apiAuthRoutes);
+app.use("/api/", apiFilesRoutes);
 
-
-
-
-
-const courses = [
-    { id:1, name:'english', teachers:['aAAA', 'Bbbb', 'CCcC']},
-    { id:2, name:'course2', teachers:[] },
-    { id:3, name:'course3', teachers:['aAAA'] },
-];
-
-const school = {
-    classroom: "AB2",
-    classes:courses,
-}
-
-
-
-app.get('/api/courses', (req, res) => {
-    res.json(school);
-});
-
-app.post('/api/courses', (req, res) => {
-    const newCourse = req.body;
-    school.classes.push(newCourse);
-    res.json(school);
-});
 
 
 // Offer this app to other files that may require it

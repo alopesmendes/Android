@@ -11,16 +11,23 @@ Confroid application will allow the user to change the configuration of certains
 ```bash
 $ sudo apt-get update
 $ sudo apt-get install nodejs npm
-$ sudo npm install -g nodemon
-$ npm install -g localtunnel
-
-Android/ConfroidWebServices$ npm install express --save
 ```
 
 Or download the package for the website [nodejs](https://nodejs.org/en/download/)
 
 ### Windows or Mac
 Refer to the website [nodejs](https://nodejs.org/en/download/)
+
+
+### Npm dependencies 
+```bash
+$ sudo npm install -g nodemon
+$ npm install express --save
+$ npm install sqlite3
+$ npm install knex multer
+$ npm install swagger-jsdoc swagger-ui-express
+```
+
 
 ## Usage
 
