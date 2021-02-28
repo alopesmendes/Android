@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/homeItem"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:title="Home"
+            />
+
+        <item
+            android:id="@+id/filesItem"
+            android:icon="@drawable/ic_baseline_file_download_24"
+            android:title="Files Download"
+            android:visible="false"
+            />
+    </group>
+
+    <item android:title="Profile">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/loginItem"
+                    android:title="Login"
+                    android:icon="@drawable/ic_baseline_login_24"
+                    />
+
+                <item android:id="@+id/logoutItem"
+                    android:title="Logout"
+                    android:icon="@drawable/ic_baseline_sensor_door_24"
+                    android:visible="false"
+                    />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Settings">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/settingItem"
+                    android:title="Settings"
+                    android:icon="@drawable/ic_baseline_settings_24"
+                    />
+
+                <item android:id="@+id/helpItem"
+                    android:title="Help"
+                    android:icon="@drawable/ic_baseline_help_24"
+                    />
+
+                <item android:id="@+id/licenseItem"
+                    android:title="License"
+                    android:icon="@drawable/ic_baseline_menu_book_24"/>
+            </group>
+        </menu>
+    </item>
+</menu>
