@@ -37,7 +37,7 @@ class ConfigActivity : AppCompatActivity() {
             }else if (content.get(i)=='}'){
                 nb_rec--
             }else if (content.get(i)==',' && (nb_rec==0)){
-                return Pair(content.subSequence(0,i-1).toString(),content.subSequence(i+1,content.length).toString())
+                return Pair(content.subSequence(0,i).toString(),content.subSequence(i+1,content.length).toString())
             }
             i++
         }
@@ -66,7 +66,13 @@ class ConfigActivity : AppCompatActivity() {
             var content = str.substring(str.indexOf("=")+1)
             Log.i("field",field )
             Log.i("content", content)
-            lst.add(Field(field,content, null))
+            var testList = toList(content)
+            if (testList.size==1){
+                lst.add(Field(field,content, null))
+            }else{
+                lst.add(Field(field,null,toListField(testList)))
+            }
+
         }
         return lst
     }

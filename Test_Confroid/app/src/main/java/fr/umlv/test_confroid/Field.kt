@@ -8,4 +8,7 @@ data class Field(
     val recursiveContent: List<Field>?
 ) : Serializable {
 
+    override fun toString(): String {
+        return "Field(name=$name, contenu=$content, reste=$recursiveContent')"
+    }
 }
