@@ -42,8 +42,12 @@ class Model(context: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun addConfig(app: String, version: Int, content: String, tag: String): Config {
+    fun addConfig(app: String, version: Int, content: String, tag: String): Config? {
         handler.createTable(db, app)
+
+        if (getConfig(app, version) != null) {
+            return null
+        }
 
         val values = ContentValues()
         values.put(DatabaseHandler.KEY_VERSION, version)

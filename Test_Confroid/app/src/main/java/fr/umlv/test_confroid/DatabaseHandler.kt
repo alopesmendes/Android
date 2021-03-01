@@ -47,7 +47,7 @@ class DatabaseHandler(
 
     fun createTable(db: SQLiteDatabase, app: String) {
         if (!containsTable(app)) {
-            db.execSQL("CREATE TABLE $app($KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT, $KEY_VERSION INTEGER, $KEY_CONTENT TEXT, $KEY_TAG TEXT, $KEY_DATE DATE)")
+            db.execSQL("CREATE TABLE $app($KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT, $KEY_VERSION INTEGER UNIQUE, $KEY_CONTENT TEXT, $KEY_TAG TEXT, $KEY_DATE DATE)")
             TABLES.add(app)
         }
     }
