@@ -23,7 +23,7 @@ class ConfigActivity : AppCompatActivity() {
                 textTagConfig.text = config.tag
                 var content:String = config.content
                 textContent.text = content
-                Log.i("JSON", toMap(toList(content)).toString())
+                Log.i("JSON", toListField(toList(content)).toString())
             }
         }
     }
