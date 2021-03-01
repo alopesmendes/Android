@@ -122,11 +122,10 @@ class MainActivity : AppCompatActivity() {
                     }
                     2 -> {
                         val app = intent.getStringExtra("app")
-
-                        Intent(this, ConfigurationVersions::class.java).apply {
-                            putExtra("app", app)
-                            startService(this)
-                        }
+                        Toast.makeText(this, "all versions selected", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, AllVersionsActivity::class.java)
+                        intent.putExtra("app", app)
+                        startActivity(intent)
                     }
                 }
             }
@@ -206,17 +205,6 @@ class MainActivity : AppCompatActivity() {
                 action = Intent.ACTION_SEND
 
                 putExtra("content", configToSend.toString())
-
-                startActivity(this)
-            }
-        }
-
-//        ENVOIE TOUTES LES VERSIONS DES CONFIGS A L'APP
-        send_all_to_app_button.setOnClickListener {
-            Intent().apply {
-                action = Intent.ACTION_SEND
-
-                putExtra("content", versionsToSend?.joinToString("\n", "{", "}"))
 
                 startActivity(this)
             }

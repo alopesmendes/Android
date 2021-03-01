@@ -11,10 +11,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/send_all_to_app_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
+    <Button
+        android:id="@+id/send_all_to_app_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="send all to app"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/AppName"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RvAllVersions"

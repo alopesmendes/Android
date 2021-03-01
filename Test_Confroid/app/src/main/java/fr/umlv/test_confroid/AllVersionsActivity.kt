@@ -60,6 +60,15 @@ class AllVersionsActivity : AppCompatActivity() {
             }
         }
 
+        send_all_to_app_button.setOnClickListener {
+            Intent().apply {
+                action = Intent.ACTION_SEND
+
+                putExtra("content", configs?.joinToString("\n", "{", "}"))
+
+                startActivity(this)
+            }
+        }
 
     }
 
