@@ -76,5 +76,6 @@ class SharedPreferences(private val context: Context) {
         editor?.clear()
         editor?.apply()
         INSTANCE?.context?.startActivity(Intent(INSTANCE?.context, MainActivity::class.java))
+
     }
 }

@@ -10,7 +10,8 @@
     <string name="button_get_file_text">Get File</string>
     <string name="navigation_open_drawer">Open navigation drawer</string>
     <string name="navigation_close_drawer">Close navigation drawer</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dark_mode_text">Dark Mode</string>
+    <string name="light_mode_text">Light Mode</string>
+    <string name="moon_and_sun">Moon and sun</string>
 
 </resources>

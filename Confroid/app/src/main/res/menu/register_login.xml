@@ -10,7 +10,7 @@
 
     <item android:id="@+id/logoutItem"
         android:title="Logout"
-        android:icon="@drawable/ic_baseline_sensor_door_24"
+        android:icon="@drawable/ic_logout"
         app:showAsAction="ifRoom|collapseActionView"
         android:visible="false"
         />

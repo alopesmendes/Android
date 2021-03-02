@@ -1,40 +1,26 @@
 package fr.uge.confroid
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.android.volley.NetworkResponse
-import com.android.volley.Response
-import com.android.volley.toolbox.HttpHeaderParser
-import com.android.volley.toolbox.StringRequest
 import com.google.android.material.navigation.NavigationView
-import com.google.gson.Gson
+import fr.uge.confroid.settings.SettingFragment
 import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.web.*
 import fr.uge.confroid.worker.UploadWorker
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
-import java.io.File
-import java.lang.Exception
 import java.util.concurrent.TimeUnit
-import javax.crypto.SecretKey
-import javax.crypto.spec.SecretKeySpec
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,9 +28,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
-        // The differents files created
-        /*
+
+        SettingFragment.enableMode(this)
+
+
         MyProvider.writeFile(applicationContext, "mmtext.txt", "On est la".toByteArray())
         MyProvider.writeFile(applicationContext, "save.txt", "Sauvegarde les secrets".toByteArray())
         MyProvider.writeFile(applicationContext, "allo.txt", "Allo les gens".toByteArray())
@@ -60,13 +47,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             work()
 
             Log.i("shared user", user.toString())
-            getFiles(user.token)
-            requestSpinner.visibility = View.VISIBLE
 
-        } else {
-            requestSpinner.visibility = View.INVISIBLE
         }
-        */
+
 
         isLoggedInVisibility()
 
@@ -87,7 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun isLoggedInVisibility() {
-        if (SharedPreferences.getInstance(this).isLoggedIn()) {
+        if (SharedPreferences.getInstance(applicationContext).isLoggedIn()) {
             mainNavigationView.menu.findItem(R.id.logoutItem).isVisible = true
             mainNavigationView.menu.findItem(R.id.filesItem).isVisible = true
             mainNavigationView.menu.findItem(R.id.loginItem).isVisible = false
@@ -109,25 +92,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val transaction = supportFragmentManager.beginTransaction().addToBackStack(null)
         when(item.itemId) {
             R.id.homeItem -> {
-                supportFragmentManager.beginTransaction().replace(R.id.mainFrameLayout, AppFragment()).commit()
+                transaction.replace(R.id.mainFrameLayout, AppFragment()).commit()
             }
             R.id.filesItem -> {
-                supportFragmentManager.beginTransaction().replace(R.id.mainFrameLayout, FilesFragment()).commit()
+                transaction.replace(R.id.mainFrameLayout, FilesFragment()).commit()
             }
             R.id.loginItem -> {
-                Intent(this, LoginActivity::class.java).apply { startActivity(this) }
+                Intent(applicationContext, LoginActivity::class.java).apply { startActivity(this) }
             }
             R.id.logoutItem -> {
-                SharedPreferences.getInstance(this).logout()
+                SharedPreferences.getInstance(applicationContext).logout()
+            }
+
+            R.id.settingItem -> {
+                transaction.replace(R.id.mainFrameLayout, SettingFragment()).commit()
             }
         }
         mainDrawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    /*
+
     private fun work() {
         val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
@@ -142,7 +130,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val workManager = WorkManager.getInstance(this)
         workManager.enqueue(work)
     }
-
+/*
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.register_login, menu)

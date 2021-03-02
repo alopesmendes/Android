@@ -5,13 +5,10 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import androidx.annotation.RequiresApi
-import com.android.volley.toolbox.StringRequest
 import fr.uge.confroid.MainActivity
 import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.activity_login.*
-import org.json.JSONObject
 
 /**
  * This activity will allow the user to log in.
