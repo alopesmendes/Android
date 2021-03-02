@@ -24,9 +24,10 @@ class ResultActivity : AppCompatActivity() {
                         result_tv.text = intent.getStringExtra("content")
                     }
                     3 -> {
-                        result_tv.text = intent.getLongExtra("token", 0).toString()
-                        CalculatorConfig.TOKEN = intent.getLongExtra("token", 0)
+                        val token = intent.getLongExtra("token", 0)
+                        result_tv.text = token.toString()
                         Intent(this, MainActivity::class.java).apply {
+                            putExtra("token", token)
                             startActivity(this)
                         }
                     }
