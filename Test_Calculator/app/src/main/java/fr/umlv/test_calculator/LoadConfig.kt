@@ -12,12 +12,6 @@ class LoadConfig : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_load_config)
 
-        when {
-            intent.action == Intent.ACTION_SEND -> {
-                content_text_view.text = intent.getStringExtra("content")
-            }
-        }
-
         load_config_button.setOnClickListener {
             val version = version_edit_text.text.toString()
             if (version.isBlank()) {

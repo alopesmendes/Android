@@ -42,9 +42,20 @@ object ConfroidUtils {
         }
     }
 
+
+    fun <T> subscribeConfiguration(context: Context, name: String, callback: Consumer<T>?) {
+        Intent().apply {
+            action = Intent.ACTION_SEND
+
+            putExtra("app", name)
+
+            putExtra("request", 3)
+
+            context.startActivity(this)
+        }
+    }
+
     //
-//    fun <T> subscribeConfiguration(context: Context, name: String, callback: Consumer<T>) {}
-//
 //    fun <T> cancelConfigurationSubscription(context: Context, callback: Consumer<T>) {}
 //
     fun getConfigurationVersions(
