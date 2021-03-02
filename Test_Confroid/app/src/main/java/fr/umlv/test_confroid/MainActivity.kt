@@ -11,6 +11,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import fr.umlv.test_confroid.receivers.TokenDispenser
 import fr.umlv.test_confroid.services.ConfigurationPuller
 import fr.umlv.test_confroid.services.ConfigurationPusher
 import fr.umlv.test_confroid.services.ConfigurationVersions
@@ -130,6 +131,15 @@ class MainActivity : AppCompatActivity() {
                         intent.putExtra("app", app)
                         startActivity(intent)
                     }
+                    3 -> {
+                        val app = intent.getStringExtra("app")
+
+                        Intent(this, TokenDispenser::class.java).apply {
+                            putExtra("app", app)
+                            startService(this)
+                        }
+
+                    }
                 }
             }
         }
@@ -208,6 +218,7 @@ class MainActivity : AppCompatActivity() {
                 action = Intent.ACTION_SEND
 
                 putExtra("content", configToSend.toString())
+                putExtra("request", 1)
 
                 startActivity(this)
             }

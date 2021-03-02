@@ -18,8 +18,9 @@ class AllVersionsActivity : AppCompatActivity() {
 
     val filter: IntentFilter = IntentFilter()
     val broadcastAction = "getAllVersions"
-    private var configAdapter : ConfigAdapter?=null
-    private var configs : List<Config>? = null
+    private var configAdapter: ConfigAdapter? = null
+    private var configs: List<Config>? = null
+
     /*
     LORSQUE LE RECEIVER RECOIT LA CONFIG DU SERVICE PULLER,
     AFFICHE LA CONFIG DANS LA TEXTVIEW
@@ -65,6 +66,7 @@ class AllVersionsActivity : AppCompatActivity() {
                 action = Intent.ACTION_SEND
 
                 putExtra("content", configs?.joinToString("\n", "{", "}"))
+                putExtra("request", 2)
 
                 startActivity(this)
             }
@@ -72,7 +74,7 @@ class AllVersionsActivity : AppCompatActivity() {
 
     }
 
-    fun onClickListener(position: Int){
+    fun onClickListener(position: Int) {
         val intent = Intent(this, ConfigActivity::class.java)
         intent.putExtra("config", configs?.get(position))
         startActivity(intent)

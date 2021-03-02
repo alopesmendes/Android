@@ -9,11 +9,5 @@ class AllVersions : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_versions)
-
-        when {
-            intent.action == Intent.ACTION_SEND -> {
-                all_versions_text_view.text = intent.getStringExtra("content")
-            }
-        }
     }
 }
