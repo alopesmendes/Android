@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -58,6 +59,8 @@ class MainActivity : AppCompatActivity() {
 
         filter.addAction(broadcastConfigAction)
         filter.addAction(broadcastAllVersionsAction)
+
+        test1.movementMethod = ScrollingMovementMethod()
 
         /////////////////////////////////////////////////////////
 
@@ -160,7 +163,7 @@ class MainActivity : AppCompatActivity() {
 
         select_all_button.setOnClickListener {
             val configs = model.getAllConfigs()
-            test1.text = configs.joinToString("\n", "{", "}")
+            test1.text = configs.joinToString("\n\n", "{", "}")
         }
 
         reset_button.setOnClickListener {
