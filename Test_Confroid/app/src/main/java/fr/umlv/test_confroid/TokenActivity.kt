@@ -1,5 +1,6 @@
 package fr.umlv.test_confroid
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,30 +17,34 @@ class TokenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_token)
 
-        val intent = intent
-        if (intent != null) {
-            app_tv.text = intent.extras?.getString("app")
-        }
+        val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+
+        //////////////////////////////////
 
         generate_token_button.setOnClickListener {
             token = Random.nextLong()
             token_tv.text = "TOKEN: $token"
         }
 
-        send_token_button.setOnClickListener {
-            if (token == 0L) {
-                Toast.makeText(this, "token required", Toast.LENGTH_SHORT).show()
-            } else {
-                Intent().apply {
-                    action = Intent.ACTION_SEND
+        if (intent != null) {
+            val app = intent.extras?.getString("app")
+            app_tv.text = app
 
-                    putExtra("token", token)
-                    putExtra("request", 3)
+            send_token_button.setOnClickListener {
+                if (token != 0L) {
+                    prefs.edit().putLong("$app", token).apply()
+                    Intent().apply {
+                        action = Intent.ACTION_SEND
 
-                    startActivity(this)
+                        putExtra("token", token)
+                        putExtra("request", 3)
+
+                        startActivity(this)
+                    }
                 }
             }
         }
+
 
     }
 }

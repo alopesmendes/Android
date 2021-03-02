@@ -17,12 +17,6 @@ class MainActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
 
-        if (intent != null) {
-            val token = intent.extras?.getLong("token", 0L)
-            if (token != null) {
-                prefs.edit().putLong("token", token).apply()
-            }
-        }
         CalculatorConfig.TOKEN = prefs.getLong("token", 0L)
         token_tv.text = "TOKEN: ${CalculatorConfig.TOKEN}"
 
