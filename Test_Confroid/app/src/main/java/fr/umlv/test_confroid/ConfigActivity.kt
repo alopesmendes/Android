@@ -3,6 +3,8 @@ package fr.umlv.test_confroid
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_all_versions.*
 import kotlinx.android.synthetic.main.activity_display_config.*
 import java.lang.StringBuilder
 
@@ -22,8 +24,12 @@ class ConfigActivity : AppCompatActivity() {
                 textVersionConfig.text = config.version.toString()
                 textTagConfig.text = config.tag
                 var content:String = config.content
-                textContent.text = content
-                Log.i("JSON", toListField(toList(content)).toString())
+                //textContent.text = content
+                var fields = toListField(toList(content))
+                Log.i("JSON", fields.toString())
+                RvValueField.adapter = FieldAdapter(fields)
+                RvValueField.layoutManager = LinearLayoutManager(this@ConfigActivity)
+                RvValueField.setHasFixedSize(true)
             }
         }
     }
