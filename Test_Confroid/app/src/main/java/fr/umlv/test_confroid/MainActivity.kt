@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.receivers.TokenDispenser
 import fr.umlv.test_confroid.services.ConfigurationPuller
 import fr.umlv.test_confroid.services.ConfigurationPusher
-import fr.umlv.test_confroid.services.ConfigurationVersions
 import fr.umlv.test_confroid.test.reflect.BillingDetail
 import fr.umlv.test_confroid.test.reflect.ShippingAddress
 import fr.umlv.test_confroid.test.reflect.ShoppingInfo
@@ -58,6 +57,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+
+        //////////////
+
         filter.addAction(broadcastConfigAction)
         filter.addAction(broadcastAllVersionsAction)
 
@@ -65,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
         /////////////////////////////////////////////////////////
 
-        val prefs = ShoppingPreferences(mutableMapOf())
+        val shoppingPreferences = ShoppingPreferences(mutableMapOf())
         val address1 = ShippingAddress("Bugdroid", "Bd Descartes", "Champs-sur-Marne", "France")
         val address2 =
             ShippingAddress("Bugdroid", "Rue des tartes au nougat", "Lollipop City", "Oreo Country")
@@ -76,10 +79,10 @@ class MainActivity : AppCompatActivity() {
             2021,
             123
         )
-        prefs.shoppingInfos["home"] = ShoppingInfo(address1, billingDetail, true)
-        prefs.shoppingInfos["work"] = ShoppingInfo(address2, billingDetail, false)
+        shoppingPreferences.shoppingInfos["home"] = ShoppingInfo(address1, billingDetail, true)
+        shoppingPreferences.shoppingInfos["work"] = ShoppingInfo(address2, billingDetail, false)
 
-        val fields = ConfroidUtils.deepGetFields(mutableMapOf(), prefs)
+        val fields = ConfroidUtils.deepGetFields(mutableMapOf(), shoppingPreferences)
         val content = ConfroidUtils.convertToBundle(fields)
 
         reflect_button.setOnClickListener {
@@ -105,31 +108,41 @@ class MainActivity : AppCompatActivity() {
                         val version = intent.getIntExtra("version", 1)
                         val content = intent.getSerializableExtra("content")
                         val tag = intent.getStringExtra("tag")
+                        val token = intent.getLongExtra("token", 0)
 
-                        Intent(this, ConfigurationPusher::class.java).apply {
-                            putExtra("app", app)
-                            putExtra("version", version)
-                            putExtra("content", content)
-                            putExtra("tag", tag)
-                            startService(this)
+                        if (prefs.getLong(app, 0) == token) {
+                            Intent(this, ConfigurationPusher::class.java).apply {
+                                putExtra("app", app)
+                                putExtra("version", version)
+                                putExtra("content", content)
+                                putExtra("tag", tag)
+                                startService(this)
+                            }
                         }
                     }
                     1 -> {
                         val app = intent.getStringExtra("app")
                         val version = intent.getIntExtra("version", 1)
+                        val token = intent.getLongExtra("token", 0)
 
-                        Intent(this, ConfigurationPuller::class.java).apply {
-                            putExtra("app", app)
-                            putExtra("version", version)
-                            startService(this)
+                        if (prefs.getLong(app, 0) == token) {
+                            Intent(this, ConfigurationPuller::class.java).apply {
+                                putExtra("app", app)
+                                putExtra("version", version)
+                                startService(this)
+                            }
                         }
                     }
                     2 -> {
                         val app = intent.getStringExtra("app")
-                        Toast.makeText(this, "all versions selected", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, AllVersionsActivity::class.java)
-                        intent.putExtra("app", app)
-                        startActivity(intent)
+                        val token = intent.getLongExtra("token", 0)
+
+                        if (prefs.getLong(app, 0) == token) {
+                            Intent(this, AllVersionsActivity::class.java).apply {
+                                putExtra("app", app)
+                                startActivity(this)
+                            }
+                        }
                     }
                     3 -> {
                         val app = intent.getStringExtra("app")
@@ -156,7 +169,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "app and version required", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "configuration added", Toast.LENGTH_SHORT).show()
-                ConfroidUtils.saveConfiguration(this, app, prefs, version)
+                ConfroidUtils.saveConfiguration(this, app, shoppingPreferences, version)
             }
         }
 
@@ -222,6 +235,11 @@ class MainActivity : AppCompatActivity() {
 
                 startActivity(this)
             }
+        }
+
+        show_token.setOnClickListener {
+            val app = prefs.getLong(app_editText.text.toString(), 0)
+            Toast.makeText(this, app.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 

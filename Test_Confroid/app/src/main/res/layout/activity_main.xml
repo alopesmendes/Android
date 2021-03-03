@@ -222,7 +222,17 @@
         android:layout_height="wrap_content"
         android:text="send to app"
         app:layout_constraintBottom_toTopOf="@id/all_versions_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/show_token"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/show_token"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="show token"
+        app:layout_constraintBottom_toTopOf="@id/reflect_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/send_to_app_button" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

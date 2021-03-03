@@ -2,6 +2,7 @@ package fr.umlv.test_calculator.utils
 
 import android.content.Context
 import android.content.Intent
+import fr.umlv.test_calculator.CalculatorConfig
 import java.util.function.Consumer
 
 object ConfroidUtils {
@@ -17,6 +18,7 @@ object ConfroidUtils {
             putExtra("version", versionName.toInt())
             putExtra("content", content)
             putExtra("tag", "TAG")
+            putExtra("token", CalculatorConfig.TOKEN)
 
             putExtra("request", 0)
 
@@ -35,6 +37,7 @@ object ConfroidUtils {
 
             putExtra("app", name)
             putExtra("version", version.toInt())
+            putExtra("token", CalculatorConfig.TOKEN)
 
             putExtra("request", 1)
 
@@ -67,6 +70,7 @@ object ConfroidUtils {
             action = Intent.ACTION_SEND
 
             putExtra("app", name)
+            putExtra("token", CalculatorConfig.TOKEN)
 
             putExtra("request", 2)
 
