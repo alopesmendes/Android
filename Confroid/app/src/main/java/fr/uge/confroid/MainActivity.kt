@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 transaction.replace(R.id.mainFrameLayout, FilesFragment()).commit()
             }
             R.id.loginItem -> {
-                Intent(applicationContext, LoginActivity::class.java).apply { startActivity(this) }
+                transaction.replace(R.id.loginItem, LoginFragment()).commit()
             }
             R.id.logoutItem -> {
                 SharedPreferences.getInstance(applicationContext).logout()
