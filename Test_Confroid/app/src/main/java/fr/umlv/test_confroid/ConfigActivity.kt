@@ -3,6 +3,7 @@ package fr.umlv.test_confroid
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_all_versions.*
@@ -41,6 +42,13 @@ class ConfigActivity : AppCompatActivity() {
                         putExtra("content", config.toString())
                         putExtra("request", 1)
 
+                        startActivity(this)
+                    }
+                }
+
+                delete_button.setOnClickListener {
+                    MainActivity.model.deleteConfig(config.app, config.id)
+                    Intent(this, MainActivity::class.java).apply {
                         startActivity(this)
                     }
                 }

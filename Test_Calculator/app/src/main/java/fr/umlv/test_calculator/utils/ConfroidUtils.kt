@@ -2,6 +2,7 @@ package fr.umlv.test_calculator.utils
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import fr.umlv.test_calculator.CalculatorConfig
 import java.util.function.Consumer
 
@@ -58,9 +59,10 @@ object ConfroidUtils {
         }
     }
 
-    //
-//    fun <T> cancelConfigurationSubscription(context: Context, callback: Consumer<T>) {}
-//
+    fun <T> cancelConfigurationSubscription(context: Context, callback: Consumer<T>?) {
+        CalculatorConfig.TOKEN = 0
+    }
+
     fun getConfigurationVersions(
         context: Context,
         name: String,

@@ -49,5 +49,11 @@ class MainActivity : AppCompatActivity() {
                 ConfroidUtils.getConfigurationVersions(this, "Calculator", null)
             }
         }
+
+        cancel_sub_button.setOnClickListener {
+            ConfroidUtils.cancelConfigurationSubscription<Any>(this, null)
+            prefs.edit().putLong("token", 0).apply()
+            token_tv.text = "TOKEN: ${CalculatorConfig.TOKEN}"
+        }
     }
 }

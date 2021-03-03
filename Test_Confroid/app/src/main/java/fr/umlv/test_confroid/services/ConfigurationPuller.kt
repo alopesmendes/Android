@@ -24,14 +24,6 @@ class ConfigurationPuller : Service() {
             val config = MainActivity.model.getConfig(app, version)
 
 //            ENVOIE LA CONFIG AU RECEIVER DU MAINACTIVITY VIA UNE INTENT
-//            Intent().apply {
-//                action = MainActivity.broadcastConfigAction
-//
-//                putExtra("config", config)
-//
-//                sendBroadcast(this)
-//            }
-
             if (config != null) {
                 Intent(this, ConfigActivity::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
