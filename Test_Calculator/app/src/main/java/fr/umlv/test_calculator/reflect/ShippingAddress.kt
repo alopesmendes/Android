@@ -1,4 +1,4 @@
-package fr.umlv.test_confroid.test.reflect
+package fr.umlv.test_calculator.reflect
 
 data class ShippingAddress(
     var name: String,

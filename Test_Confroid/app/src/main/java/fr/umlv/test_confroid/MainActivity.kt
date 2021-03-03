@@ -68,30 +68,30 @@ class MainActivity : AppCompatActivity() {
 
         /////////////////////////////////////////////////////////
 
-        val shoppingPreferences = ShoppingPreferences(mutableMapOf())
-        val address1 = ShippingAddress("Bugdroid", "Bd Descartes", "Champs-sur-Marne", "France")
-        val address2 =
-            ShippingAddress("Bugdroid", "Rue des tartes au nougat", "Lollipop City", "Oreo Country")
-        val billingDetail = BillingDetail(
-            "Bugdroid",
-            "123456789",
-            12,
-            2021,
-            123
-        )
-        shoppingPreferences.shoppingInfos["home"] = ShoppingInfo(address1, billingDetail, true)
-        shoppingPreferences.shoppingInfos["work"] = ShoppingInfo(address2, billingDetail, false)
-
-        val fields = ConfroidUtils.deepGetFields(mutableMapOf(), shoppingPreferences)
-        val content = ConfroidUtils.convertToBundle(fields)
-
-        reflect_button.setOnClickListener {
-            test1.text = fields.toString()
-        }
-
-        convert_to_bundle_button.setOnClickListener {
-            test1.text = content.toString()
-        }
+//        val shoppingPreferences = ShoppingPreferences(mutableMapOf())
+//        val address1 = ShippingAddress("Bugdroid", "Bd Descartes", "Champs-sur-Marne", "France")
+//        val address2 =
+//            ShippingAddress("Bugdroid", "Rue des tartes au nougat", "Lollipop City", "Oreo Country")
+//        val billingDetail = BillingDetail(
+//            "Bugdroid",
+//            "123456789",
+//            12,
+//            2021,
+//            123
+//        )
+//        shoppingPreferences.shoppingInfos["home"] = ShoppingInfo(address1, billingDetail, true)
+//        shoppingPreferences.shoppingInfos["work"] = ShoppingInfo(address2, billingDetail, false)
+//
+//        val fields = ConfroidUtils.deepGetFields(mutableMapOf(), shoppingPreferences)
+//        val content = ConfroidUtils.convertToBundle(fields)
+//
+//        reflect_button.setOnClickListener {
+//            test1.text = fields.toString()
+//        }
+//
+//        convert_to_bundle_button.setOnClickListener {
+//            test1.text = content.toString()
+//        }
 
         /////////////////////////////////////////////////////////
 
@@ -160,18 +160,18 @@ class MainActivity : AppCompatActivity() {
         /////////////////////////////////////////////////////
 
 //        ENVOIE LES DONNEES AU SERVICE DE PUSHER POUR STOCKER UNE CONFIG
-        insert_button.setOnClickListener {
-            Log.i("main", "pusher button")
-            val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
-            val version = version_editText.text.toString()
-
-            if (app.isBlank() || version.isBlank()) {
-                Toast.makeText(this, "app and version required", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "configuration added", Toast.LENGTH_SHORT).show()
-                ConfroidUtils.saveConfiguration(this, app, shoppingPreferences, version)
-            }
-        }
+//        insert_button.setOnClickListener {
+//            Log.i("main", "pusher button")
+//            val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
+//            val version = version_editText.text.toString()
+//
+//            if (app.isBlank() || version.isBlank()) {
+//                Toast.makeText(this, "app and version required", Toast.LENGTH_SHORT).show()
+//            } else {
+//                Toast.makeText(this, "configuration added", Toast.LENGTH_SHORT).show()
+//                ConfroidUtils.saveConfiguration(this, app, shoppingPreferences, version)
+//            }
+//        }
 
         delete_button.setOnClickListener {
             val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
@@ -226,16 +226,16 @@ class MainActivity : AppCompatActivity() {
         }
 
 //        ENVOIE LA CONFIG DEMANDEE A L'APP
-        send_to_app_button.setOnClickListener {
-            Intent().apply {
-                action = Intent.ACTION_SEND
-
-                putExtra("content", configToSend.toString())
-                putExtra("request", 1)
-
-                startActivity(this)
-            }
-        }
+//        send_to_app_button.setOnClickListener {
+//            Intent().apply {
+//                action = Intent.ACTION_SEND
+//
+//                putExtra("content", configToSend.toString())
+//                putExtra("request", 1)
+//
+//                startActivity(this)
+//            }
+//        }
 
         show_token.setOnClickListener {
             val app = prefs.getLong(app_editText.text.toString(), 0)

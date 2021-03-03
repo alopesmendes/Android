@@ -1,5 +1,6 @@
 package fr.umlv.test_confroid
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -23,60 +24,76 @@ class ConfigActivity : AppCompatActivity() {
                 AppNameConfig.text = config.app
                 textVersionConfig.text = config.version.toString()
                 textTagConfig.text = config.tag
-                var content:String = config.content
+                var content: String = config.content
                 //textContent.text = content
                 var fields = toListField(toList(content))
                 Log.i("JSON", fields.toString())
                 RvValueField.adapter = FieldAdapter(fields)
                 RvValueField.layoutManager = LinearLayoutManager(this@ConfigActivity)
                 RvValueField.setHasFixedSize(true)
+
+                ///////////////////////
+
+                send_to_app_button.setOnClickListener {
+                    Intent().apply {
+                        action = Intent.ACTION_SEND
+
+                        putExtra("content", config.toString())
+                        putExtra("request", 1)
+
+                        startActivity(this)
+                    }
+                }
             }
         }
     }
 
-    fun firstField(content: String): Pair<String,String> {
-        var i=0
+    fun firstField(content: String): Pair<String, String> {
+        var i = 0
         var nb_rec = 0
-        while (i<content.length){
-            if (content.get(i)=='{'){
+        while (i < content.length) {
+            if (content.get(i) == '{') {
                 nb_rec++
-            }else if (content.get(i)=='}'){
+            } else if (content.get(i) == '}') {
                 nb_rec--
-            }else if (content.get(i)==',' && (nb_rec==0)){
-                return Pair(content.subSequence(0,i).toString(),content.subSequence(i+1,content.length).toString())
+            } else if (content.get(i) == ',' && (nb_rec == 0)) {
+                return Pair(
+                    content.subSequence(0, i).toString(),
+                    content.subSequence(i + 1, content.length).toString()
+                )
             }
             i++
         }
         return Pair(content, "")
     }
 
-    fun toList(content: String):List<String>{
-        var test = content.subSequence(1,content.length-1).toString()
+    fun toList(content: String): List<String> {
+        var test = content.subSequence(1, content.length - 1).toString()
         var pair = firstField(test)
         var res = arrayListOf(pair.first)
         var bool = pair.second
-        while (bool.length!=0){
+        while (bool.length != 0) {
             pair = firstField(bool)
             res.add(pair.first)
-            Log.i("nouvelle entree",pair.first)
-            Log.i("reste a check",pair.second)
+            Log.i("nouvelle entree", pair.first)
+            Log.i("reste a check", pair.second)
             bool = pair.second
         }
         return res
     }
 
-    fun toListField(strs: List<String>): List<Field>{
+    fun toListField(strs: List<String>): List<Field> {
         var lst = arrayListOf<Field>()
-        for(str in strs){
-            var field = str.substring(0,str.indexOf("="))
-            var content = str.substring(str.indexOf("=")+1)
-            Log.i("field",field )
+        for (str in strs) {
+            var field = str.substring(0, str.indexOf("="))
+            var content = str.substring(str.indexOf("=") + 1)
+            Log.i("field", field)
             Log.i("content", content)
             var testList = toList(content)
-            if (testList.size==1){
-                lst.add(Field(field,content, null))
-            }else{
-                lst.add(Field(field,null,toListField(testList)))
+            if (testList.size == 1) {
+                lst.add(Field(field, content, null))
+            } else {
+                lst.add(Field(field, null, toListField(testList)))
             }
 
         }

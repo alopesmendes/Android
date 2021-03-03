@@ -3,10 +3,10 @@ package fr.umlv.test_calculator
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import fr.umlv.test_confroid.test.reflect.BillingDetail
-import fr.umlv.test_confroid.test.reflect.ShippingAddress
-import fr.umlv.test_confroid.test.reflect.ShoppingInfo
-import fr.umlv.test_confroid.test.reflect.ShoppingPreferences
+import fr.umlv.test_calculator.reflect.BillingDetail
+import fr.umlv.test_calculator.reflect.ShippingAddress
+import fr.umlv.test_calculator.reflect.ShoppingInfo
+import fr.umlv.test_calculator.reflect.ShoppingPreferences
 import fr.umlv.test_calculator.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_send_config.*
 import kotlinx.android.synthetic.main.activity_send_config.version_edit_text
