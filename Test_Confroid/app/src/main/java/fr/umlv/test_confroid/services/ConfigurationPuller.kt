@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import fr.umlv.test_confroid.ConfigActivity
 import fr.umlv.test_confroid.MainActivity
 
 class ConfigurationPuller : Service() {
@@ -23,10 +24,23 @@ class ConfigurationPuller : Service() {
             val config = MainActivity.model.getConfig(app, version)
 
 //            ENVOIE LA CONFIG AU RECEIVER DU MAINACTIVITY VIA UNE INTENT
-            val broadcastIntent = Intent()
-            broadcastIntent.action = MainActivity.broadcastConfigAction
-            broadcastIntent.putExtra("config", config)
-            sendBroadcast(broadcastIntent)
+//            Intent().apply {
+//                action = MainActivity.broadcastConfigAction
+//
+//                putExtra("config", config)
+//
+//                sendBroadcast(this)
+//            }
+
+            if (config != null) {
+                Intent(this, ConfigActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                    putExtra("config", config)
+
+                    startActivity(this)
+                }
+            }
         }
 
         return super.onStartCommand(intent, flags, startId)

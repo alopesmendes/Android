@@ -130,19 +130,19 @@
         android:layout_width="350dp"
         android:layout_height="250dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@id/send_to_app_button"
+        app:layout_constraintBottom_toTopOf="@id/show_token"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tag_textView" />
 
-    <Button
-        android:id="@+id/insert_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="insert"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/select_all_button"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--    <Button-->
+    <!--        android:id="@+id/insert_button"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="insert"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toStartOf="@id/select_all_button"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
     <Button
         android:id="@+id/delete_button"
@@ -160,7 +160,7 @@
         android:text="select all"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/delete_button"
-        app:layout_constraintStart_toEndOf="@id/insert_button" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/reset_button"
@@ -195,44 +195,44 @@
         android:layout_height="wrap_content"
         android:text="all versions"
         app:layout_constraintBottom_toTopOf="@id/delete_button"
-        app:layout_constraintEnd_toStartOf="@id/reflect_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/select_one_button" />
 
-    <Button
-        android:id="@+id/reflect_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="reflect"
-        app:layout_constraintBottom_toTopOf="@id/delete_button"
-        app:layout_constraintEnd_toStartOf="@id/convert_to_bundle_button"
-        app:layout_constraintStart_toEndOf="@id/all_versions_button" />
+    <!--    <Button-->
+    <!--        android:id="@+id/reflect_button"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="reflect"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/delete_button"-->
+    <!--        app:layout_constraintEnd_toStartOf="@id/convert_to_bundle_button"-->
+    <!--        app:layout_constraintStart_toEndOf="@id/all_versions_button" />-->
 
-    <Button
-        android:id="@+id/convert_to_bundle_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="to bundle"
-        app:layout_constraintBottom_toTopOf="@id/delete_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/reflect_button" />
+    <!--    <Button-->
+    <!--        android:id="@+id/convert_to_bundle_button"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="to bundle"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/delete_button"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@id/reflect_button" />-->
 
-    <Button
-        android:id="@+id/send_to_app_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="send to app"
-        app:layout_constraintBottom_toTopOf="@id/all_versions_button"
-        app:layout_constraintEnd_toStartOf="@id/show_token"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--    <Button-->
+    <!--        android:id="@+id/send_to_app_button"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="send to app"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/all_versions_button"-->
+    <!--        app:layout_constraintEnd_toStartOf="@id/show_token"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
     <Button
         android:id="@+id/show_token"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="show token"
-        app:layout_constraintBottom_toTopOf="@id/reflect_button"
+        app:layout_constraintBottom_toTopOf="@id/all_versions_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/send_to_app_button" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
