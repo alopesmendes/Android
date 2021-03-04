@@ -81,37 +81,17 @@ class MainActivity : AppCompatActivity() {
                 val content = intent.getSerializableExtra("content")
                 val tag = intent.getStringExtra("tag")
                 val token = intent.getStringExtra("token")
+                val receiver = intent.getStringExtra("receiver")
 
                 if (prefs.getString(app, "") == token) {
-
-                    when {
-//                        CONFIG PUSHING
-                        content != null -> {
-                            Intent(this, ConfigurationPusher::class.java).apply {
-                                putExtra("app", app)
-                                putExtra("version", version)
-                                putExtra("content", content)
-                                putExtra("tag", tag)
-                                putExtra("request", request)
-                                startService(this)
-                            }
-                        }
-//                        CONFIG PULLING
-                        version != -1 -> {
-                            Intent(this, ConfigurationPuller::class.java).apply {
-                                putExtra("app", app)
-                                putExtra("version", version)
-                                putExtra("request", request)
-                                startService(this)
-                            }
-                        }
-//                        ALL VERSIONS PULLING
-                        else -> {
-                            Intent(this, ConfigurationVersions::class.java).apply {
-                                putExtra("app", app)
-                                putExtra("request", request)
-                                startService(this)
-                            }
+                    if (receiver != null) {
+                        Intent(this, Class.forName(receiver)).apply {
+                            putExtra("app", app)
+                            putExtra("version", version)
+                            putExtra("content", content)
+                            putExtra("tag", tag)
+                            putExtra("request", request)
+                            startService(this)
                         }
                     }
 //                    TOKEN RETRIEVING

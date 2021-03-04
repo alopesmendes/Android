@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         cancel_sub_button.setOnClickListener {
             ConfroidUtils.cancelConfigurationSubscription<Any>(this, null)
-            prefs.edit().putLong("token", 0).apply()
+            prefs.edit().putString("token", "").apply()
             token_tv.text = "TOKEN: ${CalculatorConfig.TOKEN}"
         }
     }
