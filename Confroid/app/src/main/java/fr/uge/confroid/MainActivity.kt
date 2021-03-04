@@ -13,6 +13,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.material.navigation.NavigationView
+import fr.uge.confroid.configurations.AppFragment
 import fr.uge.confroid.settings.SettingFragment
 import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.web.*

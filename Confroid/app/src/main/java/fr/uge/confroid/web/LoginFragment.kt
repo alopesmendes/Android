@@ -7,7 +7,6 @@ import android.text.TextUtils
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import fr.uge.confroid.AppFragment
 import fr.uge.confroid.MainActivity
 import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.fragment_login.*
