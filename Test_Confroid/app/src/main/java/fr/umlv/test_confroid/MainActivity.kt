@@ -1,25 +1,17 @@
 package fr.umlv.test_confroid
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.receivers.TokenDispenser
 import fr.umlv.test_confroid.services.ConfigurationPuller
-import fr.umlv.test_confroid.services.ConfigurationPusher
 import fr.umlv.test_confroid.services.ConfigurationVersions
-import fr.umlv.test_confroid.test.reflect.BillingDetail
-import fr.umlv.test_confroid.test.reflect.ShippingAddress
-import fr.umlv.test_confroid.test.reflect.ShoppingInfo
-import fr.umlv.test_confroid.test.reflect.ShoppingPreferences
-import fr.umlv.test_confroid.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -34,24 +26,6 @@ class MainActivity : AppCompatActivity() {
         val broadcastConfigAction = "getConfig"
         val broadcastAllVersionsAction = "getAllVersions"
     }
-
-    /*
-    LORSQUE LE RECEIVER RECOIT LA CONFIG DU SERVICE PULLER,
-    AFFICHE LA CONFIG DANS LA TEXTVIEW
-    ET MET FIN AU SERVICE DE PULLER
-    */
-//    val receiver: BroadcastReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(context: Context?, intent: Intent) {
-//            if (intent.action == broadcastConfigAction) {
-//                val content = intent.getSerializableExtra("config")
-//                test1.text = content.toString()
-//                configToSend = content as Config?
-//            }
-//            Intent(this@MainActivity, ConfigurationPuller::class.java).apply {
-//                stopService(this)
-//            }
-//        }
-//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,37 +55,17 @@ class MainActivity : AppCompatActivity() {
                 val content = intent.getSerializableExtra("content")
                 val tag = intent.getStringExtra("tag")
                 val token = intent.getStringExtra("token")
+                val receiver = intent.getStringExtra("receiver")
 
                 if (prefs.getString(app, "") == token) {
-
-                    when {
-//                        CONFIG PUSHING
-                        content != null -> {
-                            Intent(this, ConfigurationPusher::class.java).apply {
-                                putExtra("app", app)
-                                putExtra("version", version)
-                                putExtra("content", content)
-                                putExtra("tag", tag)
-                                putExtra("request", request)
-                                startService(this)
-                            }
-                        }
-//                        CONFIG PULLING
-                        version != -1 -> {
-                            Intent(this, ConfigurationPuller::class.java).apply {
-                                putExtra("app", app)
-                                putExtra("version", version)
-                                putExtra("request", request)
-                                startService(this)
-                            }
-                        }
-//                        ALL VERSIONS PULLING
-                        else -> {
-                            Intent(this, ConfigurationVersions::class.java).apply {
-                                putExtra("app", app)
-                                putExtra("request", request)
-                                startService(this)
-                            }
+                    if (receiver != null) {
+                        Intent(this, Class.forName(receiver)).apply {
+                            putExtra("app", app)
+                            putExtra("version", version)
+                            putExtra("content", content)
+                            putExtra("tag", tag)
+                            putExtra("request", request)
+                            startService(this)
                         }
                     }
 //                    TOKEN RETRIEVING
@@ -188,15 +142,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    //    POUR ENREGISTRER LE RECEIVER DE L'INTENT DU SERVICE DE PULLER
-//    override fun onPause() {
-//        unregisterReceiver(receiver)
-//        super.onPause()
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        registerReceiver(receiver, filter)
-//    }
 }

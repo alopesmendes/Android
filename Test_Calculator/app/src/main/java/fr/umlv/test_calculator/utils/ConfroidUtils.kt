@@ -2,15 +2,16 @@ package fr.umlv.test_calculator.utils
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import fr.umlv.test_calculator.CalculatorConfig
 import java.util.function.Consumer
 import kotlin.random.Random
 
 object ConfroidUtils {
 
+    var TOKEN: String = ""
+    var REQUEST: Long = 0L
+
     fun saveConfiguration(context: Context, name: String, value: Any, versionName: String) {
-        CalculatorConfig.REQUEST = Random.nextLong()
+        REQUEST = Random.nextLong()
         val reflected = deepGetFields(mutableMapOf(), value)
         val content = convertToBundle(reflected)
 
@@ -21,8 +22,9 @@ object ConfroidUtils {
             putExtra("version", versionName.toInt())
             putExtra("content", content)
             putExtra("tag", "TAG")
-            putExtra("token", CalculatorConfig.TOKEN)
-            putExtra("request", CalculatorConfig.REQUEST)
+            putExtra("token", TOKEN)
+            putExtra("request", REQUEST)
+            putExtra("receiver", "fr.umlv.test_confroid.services.ConfigurationPusher")
 
             context.startActivity(this)
         }
@@ -34,15 +36,16 @@ object ConfroidUtils {
         version: String,
         callback: Consumer<T>?
     ) {
-        CalculatorConfig.REQUEST = Random.nextLong()
+        REQUEST = Random.nextLong()
 
         Intent().apply {
             action = Intent.ACTION_SEND
 
             putExtra("app", name)
             putExtra("version", version.toInt())
-            putExtra("token", CalculatorConfig.TOKEN)
-            putExtra("request", CalculatorConfig.REQUEST)
+            putExtra("token", TOKEN)
+            putExtra("request", REQUEST)
+            putExtra("receiver", "fr.umlv.test_confroid.services.ConfigurationPuller")
 
             context.startActivity(this)
         }
@@ -50,20 +53,20 @@ object ConfroidUtils {
 
 
     fun <T> subscribeConfiguration(context: Context, name: String, callback: Consumer<T>?) {
-        CalculatorConfig.REQUEST = Random.nextLong()
+        REQUEST = Random.nextLong()
 
         Intent().apply {
             action = Intent.ACTION_SEND
 
             putExtra("app", name)
-            putExtra("request", CalculatorConfig.REQUEST)
+            putExtra("request", REQUEST)
 
             context.startActivity(this)
         }
     }
 
     fun <T> cancelConfigurationSubscription(context: Context, callback: Consumer<T>?) {
-        CalculatorConfig.TOKEN = ""
+        TOKEN = ""
     }
 
     fun getConfigurationVersions(
@@ -71,14 +74,15 @@ object ConfroidUtils {
         name: String,
         callback: Consumer<List<Version>>?
     ) {
-        CalculatorConfig.REQUEST = Random.nextLong()
+        REQUEST = Random.nextLong()
 
         Intent().apply {
             action = Intent.ACTION_SEND
 
             putExtra("app", name)
-            putExtra("token", CalculatorConfig.TOKEN)
-            putExtra("request", CalculatorConfig.REQUEST)
+            putExtra("token", TOKEN)
+            putExtra("request", REQUEST)
+            putExtra("receiver", "fr.umlv.test_confroid.services.ConfigurationVersions")
 
             context.startActivity(this)
         }
