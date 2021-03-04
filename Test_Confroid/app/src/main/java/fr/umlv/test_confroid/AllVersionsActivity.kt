@@ -26,52 +26,53 @@ class AllVersionsActivity : AppCompatActivity() {
     AFFICHE LA CONFIG DANS LA TEXTVIEW
     ET MET FIN AU SERVICE DE PULLER
     */
-    val receiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent) {
-            if (intent.action == broadcastAction) {
-                Log.i("versions service", "receiver de AllVersions")
-                val versions = intent.getSerializableExtra("versions")
-                configs = ((versions as Array<Config>).toList())
-                configAdapter = configs?.let { ConfigAdapter(this@AllVersionsActivity, it) }
-                RvAllVersions.adapter = configAdapter
-                RvAllVersions.layoutManager = LinearLayoutManager(this@AllVersionsActivity)
-                RvAllVersions.setHasFixedSize(true)
-                Log.i("résultat", configs!!.size.toString())
-
-                Intent(this@AllVersionsActivity, ConfigurationPuller::class.java).apply {
-                    stopService(this)
-                }
-            }
-        }
-    }
+//    val receiver: BroadcastReceiver = object : BroadcastReceiver() {
+//        override fun onReceive(context: Context?, intent: Intent) {
+//            if (intent.action == broadcastAction) {
+//                Log.i("versions service", "receiver de AllVersions")
+//                val versions = intent.getSerializableExtra("versions")
+//                configs = ((versions as Array<Config>).toList())
+//                configAdapter = configs?.let { ConfigAdapter(this@AllVersionsActivity, it) }
+//                RvAllVersions.adapter = configAdapter
+//                RvAllVersions.layoutManager = LinearLayoutManager(this@AllVersionsActivity)
+//                RvAllVersions.setHasFixedSize(true)
+//                Log.i("résultat", configs!!.size.toString())
+//
+//                Intent(this@AllVersionsActivity, ConfigurationPuller::class.java).apply {
+//                    stopService(this)
+//                }
+//            }
+//        }
+//    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_versions)
         filter.addAction(broadcastAction)
-        val intent = intent
+
         if (intent != null) {
-            var appName: String = ""
-            if (intent.hasExtra("app")) {
-                appName = intent.getStringExtra("app").toString()
-                AppName.text = appName
-                ConfroidUtils.getConfigurationVersions(this, appName, null)
+            AppName.text = intent.getStringExtra("app")
+            val versions = intent.getSerializableExtra("versions")
+            configs = ((versions as Array<Config>).toList())
+            configAdapter = configs?.let { ConfigAdapter(this@AllVersionsActivity, it) }
+            RvAllVersions.adapter = configAdapter
+            RvAllVersions.layoutManager = LinearLayoutManager(this@AllVersionsActivity)
+            RvAllVersions.setHasFixedSize(true)
 
+            send_all_to_app_button.setOnClickListener {
+                val request = intent.getLongExtra("request", 0L)
+
+                Intent().apply {
+                    action = Intent.ACTION_SEND
+
+                    putExtra("content", configs?.joinToString("\n", "{", "}"))
+                    putExtra("request", request)
+
+                    startActivity(this)
+                }
             }
         }
-
-        send_all_to_app_button.setOnClickListener {
-            Intent().apply {
-                action = Intent.ACTION_SEND
-
-                putExtra("content", configs?.joinToString("\n", "{", "}"))
-                putExtra("request", 2)
-
-                startActivity(this)
-            }
-        }
-
     }
 
     fun onClickListener(position: Int) {
@@ -81,13 +82,13 @@ class AllVersionsActivity : AppCompatActivity() {
     }
 
     //    POUR ENREGISTRER LE RECEIVER DE L'INTENT DU SERVICE DE PULLER
-    override fun onPause() {
-        unregisterReceiver(receiver)
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        registerReceiver(receiver, filter)
-    }
+//    override fun onPause() {
+//        unregisterReceiver(receiver)
+//        super.onPause()
+//    }
+//
+//    override fun onResume() {
+//        super.onResume()
+//        registerReceiver(receiver, filter)
+//    }
 }

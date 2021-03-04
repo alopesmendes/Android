@@ -17,19 +17,17 @@ class ResultActivity : AppCompatActivity() {
 
         when {
             intent.action == Intent.ACTION_SEND -> {
-                val request = intent.getIntExtra("request", -1)
+                val content = intent.getStringExtra("content")
+                val token = intent.getStringExtra("token")
+                val request = intent.getLongExtra("request", 0L)
 
-                when (request) {
-                    1 -> {
-                        result_tv.text = intent.getStringExtra("content")
-                    }
-                    2 -> {
-                        result_tv.text = intent.getStringExtra("content")
-                    }
-                    3 -> {
-                        val token = intent.getStringExtra("token")
+                if (request == CalculatorConfig.REQUEST) {
+                    result_tv.text =
+                        "LAST REQUEST ID: ${CalculatorConfig.REQUEST}\nREQUEST ID: $request\n\n$content"
+
+                    if (token != null) {
                         prefs.edit().putString("token", token).apply()
-                        result_tv.text = token.toString()
+                        result_tv.text = token
                         Intent(this, MainActivity::class.java).apply {
                             putExtra("token", token)
                             startActivity(this)

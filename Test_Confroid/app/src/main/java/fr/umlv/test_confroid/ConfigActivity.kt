@@ -34,13 +34,13 @@ class ConfigActivity : AppCompatActivity() {
                 RvValueField.setHasFixedSize(true)
 
                 ///////////////////////
-
+                val request = intent.extras?.getLong("request")
                 send_to_app_button.setOnClickListener {
                     Intent().apply {
                         action = Intent.ACTION_SEND
 
                         putExtra("content", config.toString())
-                        putExtra("request", 1)
+                        putExtra("request", request)
 
                         startActivity(this)
                     }

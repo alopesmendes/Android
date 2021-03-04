@@ -35,6 +35,7 @@ class TokenActivity : AppCompatActivity() {
 
         if (intent != null) {
             val app = intent.extras?.getString("app")
+            val request = intent.getLongExtra("request", 0L)
             app_tv.text = app
 
             send_token_button.setOnClickListener {
@@ -44,7 +45,7 @@ class TokenActivity : AppCompatActivity() {
                         action = Intent.ACTION_SEND
 
                         putExtra("token", token)
-                        putExtra("request", 3)
+                        putExtra("request", request)
 
                         startActivity(this)
                     }
