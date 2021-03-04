@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import fr.umlv.test_confroid.AllVersionsActivity
 import fr.umlv.test_confroid.MainActivity
 
 class ConfigurationVersions : Service() {
@@ -15,21 +16,25 @@ class ConfigurationVersions : Service() {
 
     //    RECUPERE LES VERSIONS D'UNE APP, SI ELLE EXISTE, DEPUIS LA BDD
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.i("versions service", "start")
-        val app = intent?.extras?.getString("app")
-        Log.i("versions service", app.toString())
+        val app = intent?.getStringExtra("app")
+        val request = intent?.getLongExtra("request", 0L)
+
         if (app != null) {
             val versions = MainActivity.model.getAllVersions(app)
 
 //            ENVOIE LES VERSIONS AU RECEIVER DU MAINACTIVITY VIA UNE INTENT
             if (versions != null) {
-                val broadcastIntent = Intent()
-                broadcastIntent.action = "getAllVersions"
-                broadcastIntent.putExtra("versions", versions.toTypedArray())
-                sendBroadcast(broadcastIntent)
+                Intent(this, AllVersionsActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                    putExtra("app", app)
+                    putExtra("versions", versions.toTypedArray())
+                    putExtra("request", request)
+
+                    startActivity(this)
+                }
             }
         }
-
         return super.onStartCommand(intent, flags, startId)
     }
 }

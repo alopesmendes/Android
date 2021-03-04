@@ -16,9 +16,9 @@ class ConfigurationPuller : Service() {
 
     //    RECUPERE LA CONFIG, SI ELLE EXISTE, DEPUIS LA BDD
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.i("puller service", "start")
         val app = intent?.extras?.getString("app")
         val version = intent?.extras?.getInt("version")
+        val request = intent?.getLongExtra("request", 0L)
 
         if (app != null && version != null) {
             val config = MainActivity.model.getConfig(app, version)
@@ -29,6 +29,7 @@ class ConfigurationPuller : Service() {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
                     putExtra("config", config)
+                    putExtra("request", request)
 
                     startActivity(this)
                 }

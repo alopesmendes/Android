@@ -21,11 +21,11 @@ class ConfigurationPusher : Service() {
     //    AJOUTE LA CONFIG DANS LA BDD
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.i("pusher service", "start")
         val app = intent?.extras?.getString("app")
         val version = intent?.extras?.getInt("version")
         val content = intent?.extras?.getSerializable("content")
         val tag = intent?.extras?.getString("tag")
+        val request = intent?.getLongExtra("request", 0L)
 
         if (app != null && version != null && content != null && tag != null) {
             val config = MainActivity.model.addConfig(app, version, content.toString(), tag)
@@ -35,6 +35,7 @@ class ConfigurationPusher : Service() {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
                     putExtra("config", config)
+                    putExtra("request", request)
 
                     startActivity(this)
                 }

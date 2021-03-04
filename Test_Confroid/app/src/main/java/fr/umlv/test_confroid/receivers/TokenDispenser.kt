@@ -15,11 +15,13 @@ class TokenDispenser : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val app = intent?.extras?.getString("app")
+        val request = intent?.getLongExtra("request", 0L)
 
         if (app != null) {
             Intent(this, TokenActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 putExtra("app", app)
+                putExtra("request", request)
                 startActivity(this)
             }
         }

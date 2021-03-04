@@ -5,10 +5,12 @@ import android.content.Intent
 import android.graphics.Bitmap
 import fr.umlv.test_calculator.CalculatorConfig
 import java.util.function.Consumer
+import kotlin.random.Random
 
 object ConfroidUtils {
 
     fun saveConfiguration(context: Context, name: String, value: Any, versionName: String) {
+        CalculatorConfig.REQUEST = Random.nextLong()
         val reflected = deepGetFields(mutableMapOf(), value)
         val content = convertToBundle(reflected)
 
@@ -20,8 +22,7 @@ object ConfroidUtils {
             putExtra("content", content)
             putExtra("tag", "TAG")
             putExtra("token", CalculatorConfig.TOKEN)
-
-            putExtra("request", 0)
+            putExtra("request", CalculatorConfig.REQUEST)
 
             context.startActivity(this)
         }
@@ -33,14 +34,15 @@ object ConfroidUtils {
         version: String,
         callback: Consumer<T>?
     ) {
+        CalculatorConfig.REQUEST = Random.nextLong()
+
         Intent().apply {
             action = Intent.ACTION_SEND
 
             putExtra("app", name)
             putExtra("version", version.toInt())
             putExtra("token", CalculatorConfig.TOKEN)
-
-            putExtra("request", 1)
+            putExtra("request", CalculatorConfig.REQUEST)
 
             context.startActivity(this)
         }
@@ -48,12 +50,13 @@ object ConfroidUtils {
 
 
     fun <T> subscribeConfiguration(context: Context, name: String, callback: Consumer<T>?) {
+        CalculatorConfig.REQUEST = Random.nextLong()
+
         Intent().apply {
             action = Intent.ACTION_SEND
 
             putExtra("app", name)
-
-            putExtra("request", 3)
+            putExtra("request", CalculatorConfig.REQUEST)
 
             context.startActivity(this)
         }
@@ -68,13 +71,14 @@ object ConfroidUtils {
         name: String,
         callback: Consumer<List<Version>>?
     ) {
+        CalculatorConfig.REQUEST = Random.nextLong()
+
         Intent().apply {
             action = Intent.ACTION_SEND
 
             putExtra("app", name)
             putExtra("token", CalculatorConfig.TOKEN)
-
-            putExtra("request", 2)
+            putExtra("request", CalculatorConfig.REQUEST)
 
             context.startActivity(this)
         }
