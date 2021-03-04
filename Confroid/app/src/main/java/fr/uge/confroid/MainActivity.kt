@@ -1,6 +1,5 @@
 package fr.uge.confroid
 
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,7 +7,6 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.work.Constraints
 import androidx.work.NetworkType
@@ -32,16 +30,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         SettingFragment.enableMode(this)
 
 
-        MyProvider.writeFile(applicationContext, "mmtext.txt", "On est la".toByteArray())
-        MyProvider.writeFile(applicationContext, "save.txt", "Sauvegarde les secrets".toByteArray())
-        MyProvider.writeFile(applicationContext, "allo.txt", "Allo les gens".toByteArray())
-        MyProvider.writeFile(applicationContext, "bonjour.txt", "Bonjour les amis".toByteArray())
-        MyProvider.writeFile(applicationContext, "anime.txt", "Cest bien les animes".toByteArray())
-        MyProvider.writeFile(applicationContext, "cours.txt", "Pas ouf".toByteArray())
-        MyProvider.writeFile(applicationContext, "eau.txt", "H20".toByteArray())
-        MyProvider.writeFile(applicationContext, "avatar.txt", "Les 4 elements".toByteArray())
-
         if (SharedPreferences.getInstance(this).isLoggedIn()) {
+            MyProvider.writeFile(applicationContext, "mmtext.txt", "On est la".toByteArray())
+            MyProvider.writeFile(applicationContext, "save.txt", "Sauvegarde les secrets".toByteArray())
+            MyProvider.writeFile(applicationContext, "allo.txt", "Allo les gens".toByteArray())
+            MyProvider.writeFile(applicationContext, "bonjour.txt", "Bonjour les amis".toByteArray())
+            MyProvider.writeFile(applicationContext, "anime.txt", "Cest bien les animes".toByteArray())
+            MyProvider.writeFile(applicationContext, "cours.txt", "Pas ouf".toByteArray())
+            MyProvider.writeFile(applicationContext, "eau.txt", "H20".toByteArray())
+            MyProvider.writeFile(applicationContext, "avatar.txt", "Les 4 elements".toByteArray())
+
             val user = SharedPreferences.getInstance(this).getUser()
             LoginRequest.request(this, user.username, user.password) {}
             work()
