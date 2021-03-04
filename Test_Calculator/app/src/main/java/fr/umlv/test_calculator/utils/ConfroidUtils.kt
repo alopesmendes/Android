@@ -24,7 +24,7 @@ object ConfroidUtils {
             putExtra("tag", "TAG")
             putExtra("token", TOKEN)
             putExtra("request", REQUEST)
-            putExtra("receiver", "fr.umlv.test_confroid.services.ConfigurationPusher")
+            putExtra("receiver", "fr.uge.confroid.configurations.services.ConfigurationPusher")
 
             context.startActivity(this)
         }
@@ -45,7 +45,7 @@ object ConfroidUtils {
             putExtra("version", version.toInt())
             putExtra("token", TOKEN)
             putExtra("request", REQUEST)
-            putExtra("receiver", "fr.umlv.test_confroid.services.ConfigurationPuller")
+            putExtra("receiver", "fr.uge.confroid.configurations.services.ConfigurationPuller")
 
             context.startActivity(this)
         }
@@ -82,7 +82,7 @@ object ConfroidUtils {
             putExtra("app", name)
             putExtra("token", TOKEN)
             putExtra("request", REQUEST)
-            putExtra("receiver", "fr.umlv.test_confroid.services.ConfigurationVersions")
+            putExtra("receiver", "fr.uge.confroid.configurations.services.ConfigurationVersions")
 
             context.startActivity(this)
         }

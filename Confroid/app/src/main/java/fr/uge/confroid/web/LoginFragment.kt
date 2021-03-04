@@ -68,6 +68,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         //val transaction = activity!!.supportFragmentManager.beginTransaction().addToBackStack(null)
 
         LoginRequest.request(activity!!, username, String(cryptPassword!!)) {
+            //transaction.replace(R.id.mainFrameLayout, AppFragment()).commit()
             Intent(activity, MainActivity::class.java).apply { startActivity(this) }
         }
     }
