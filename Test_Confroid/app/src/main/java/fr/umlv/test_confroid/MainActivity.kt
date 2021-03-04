@@ -1,25 +1,17 @@
 package fr.umlv.test_confroid
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import fr.umlv.test_confroid.receivers.TokenDispenser
 import fr.umlv.test_confroid.services.ConfigurationPuller
-import fr.umlv.test_confroid.services.ConfigurationPusher
 import fr.umlv.test_confroid.services.ConfigurationVersions
-import fr.umlv.test_confroid.test.reflect.BillingDetail
-import fr.umlv.test_confroid.test.reflect.ShippingAddress
-import fr.umlv.test_confroid.test.reflect.ShoppingInfo
-import fr.umlv.test_confroid.test.reflect.ShoppingPreferences
-import fr.umlv.test_confroid.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

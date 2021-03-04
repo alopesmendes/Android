@@ -4,9 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import fr.umlv.test_confroid.utils.ConfroidUtils
-import kotlinx.android.synthetic.main.activity_all_versions.*
 import kotlinx.android.synthetic.main.activity_token.*
 import kotlin.random.Random
 

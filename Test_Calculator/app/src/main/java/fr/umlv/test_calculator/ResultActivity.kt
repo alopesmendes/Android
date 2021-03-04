@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import fr.umlv.test_calculator.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_load_config.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_result.*
@@ -21,9 +22,9 @@ class ResultActivity : AppCompatActivity() {
                 val token = intent.getStringExtra("token")
                 val request = intent.getLongExtra("request", 0L)
 
-                if (request == CalculatorConfig.REQUEST) {
+                if (request == ConfroidUtils.REQUEST) {
                     result_tv.text =
-                        "LAST REQUEST ID: ${CalculatorConfig.REQUEST}\nREQUEST ID: $request\n\n$content"
+                        "LAST REQUEST ID: ${ConfroidUtils.REQUEST}\nREQUEST ID: $request\n\n$content"
 
                     if (token != null) {
                         prefs.edit().putString("token", token).apply()
