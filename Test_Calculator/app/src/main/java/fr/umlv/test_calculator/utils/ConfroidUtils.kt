@@ -60,7 +60,7 @@ object ConfroidUtils {
     }
 
     fun <T> cancelConfigurationSubscription(context: Context, callback: Consumer<T>?) {
-        CalculatorConfig.TOKEN = 0
+        CalculatorConfig.TOKEN = ""
     }
 
     fun getConfigurationVersions(

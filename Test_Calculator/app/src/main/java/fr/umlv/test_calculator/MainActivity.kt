@@ -17,13 +17,13 @@ class MainActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
 
-        CalculatorConfig.TOKEN = prefs.getLong("token", 0L)
+        CalculatorConfig.TOKEN = prefs.getString("token", "").toString()
         token_tv.text = "TOKEN: ${CalculatorConfig.TOKEN}"
 
         /////////////////////////////
 
         send_config_button.setOnClickListener {
-            if (CalculatorConfig.TOKEN == 0L) {
+            if (CalculatorConfig.TOKEN.isBlank()) {
                 ConfroidUtils.subscribeConfiguration<Any>(this, "Calculator", null)
             } else {
                 Intent(this, SendConfig::class.java).apply {
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         load_config_button.setOnClickListener {
-            if (CalculatorConfig.TOKEN == 0L) {
+            if (CalculatorConfig.TOKEN.isBlank()) {
                 ConfroidUtils.subscribeConfiguration<Any>(this, "Calculator", null)
             } else {
                 Intent(this, LoadConfig::class.java).apply {
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         all_versions_button.setOnClickListener {
-            if (CalculatorConfig.TOKEN == 0L) {
+            if (CalculatorConfig.TOKEN.isBlank()) {
                 ConfroidUtils.subscribeConfiguration<Any>(this, "Calculator", null)
             } else {
                 ConfroidUtils.getConfigurationVersions(this, "Calculator", null)

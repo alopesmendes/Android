@@ -27,8 +27,8 @@ class ResultActivity : AppCompatActivity() {
                         result_tv.text = intent.getStringExtra("content")
                     }
                     3 -> {
-                        val token = intent.getLongExtra("token", 0)
-                        prefs.edit().putLong("token", token).apply()
+                        val token = intent.getStringExtra("token")
+                        prefs.edit().putString("token", token).apply()
                         result_tv.text = token.toString()
                         Intent(this, MainActivity::class.java).apply {
                             putExtra("token", token)
