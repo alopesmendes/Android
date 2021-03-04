@@ -1,6 +1,5 @@
 package fr.uge.confroid.web
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,7 +8,7 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import fr.uge.confroid.R
-import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.fragment_register.*
 
 /**
  * This activity will allow the user to register

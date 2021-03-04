@@ -1,13 +1,15 @@
 package fr.uge.confroid.web
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import fr.uge.confroid.MainActivity
 import fr.uge.confroid.R
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.fragment_login.*
 
 
 /**
@@ -32,7 +34,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         textViewRegisterNowLogin.setOnClickListener {
-            transaction.replace(R.id.mainFrameLayout, LoginFragment()).commit()
+            transaction.replace(R.id.mainFrameLayout, RegisterFragment()).commit()
         }
 
     }
@@ -63,10 +65,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
         val cryptPassword = CryptKey.encrypt(password.toByteArray(), CryptKey.secretKey, 2)
 
-        val transaction = activity!!.supportFragmentManager.beginTransaction().addToBackStack(null)
+        //val transaction = activity!!.supportFragmentManager.beginTransaction().addToBackStack(null)
 
         LoginRequest.request(activity!!, username, String(cryptPassword!!)) {
-            transaction.replace(R.id.mainFrameLayout, AppFragment()).commit()
+            Intent(activity, MainActivity::class.java).apply { startActivity(this) }
         }
     }
 
