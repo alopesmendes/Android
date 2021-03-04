@@ -35,24 +35,6 @@ class MainActivity : AppCompatActivity() {
         val broadcastAllVersionsAction = "getAllVersions"
     }
 
-    /*
-    LORSQUE LE RECEIVER RECOIT LA CONFIG DU SERVICE PULLER,
-    AFFICHE LA CONFIG DANS LA TEXTVIEW
-    ET MET FIN AU SERVICE DE PULLER
-    */
-//    val receiver: BroadcastReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(context: Context?, intent: Intent) {
-//            if (intent.action == broadcastConfigAction) {
-//                val content = intent.getSerializableExtra("config")
-//                test1.text = content.toString()
-//                configToSend = content as Config?
-//            }
-//            Intent(this@MainActivity, ConfigurationPuller::class.java).apply {
-//                stopService(this)
-//            }
-//        }
-//    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,15 +150,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    //    POUR ENREGISTRER LE RECEIVER DE L'INTENT DU SERVICE DE PULLER
-//    override fun onPause() {
-//        unregisterReceiver(receiver)
-//        super.onPause()
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        registerReceiver(receiver, filter)
-//    }
 }

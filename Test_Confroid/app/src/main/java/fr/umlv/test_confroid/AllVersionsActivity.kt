@@ -21,31 +21,6 @@ class AllVersionsActivity : AppCompatActivity() {
     private var configAdapter: ConfigAdapter? = null
     private var configs: List<Config>? = null
 
-    /*
-    LORSQUE LE RECEIVER RECOIT LA CONFIG DU SERVICE PULLER,
-    AFFICHE LA CONFIG DANS LA TEXTVIEW
-    ET MET FIN AU SERVICE DE PULLER
-    */
-//    val receiver: BroadcastReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(context: Context?, intent: Intent) {
-//            if (intent.action == broadcastAction) {
-//                Log.i("versions service", "receiver de AllVersions")
-//                val versions = intent.getSerializableExtra("versions")
-//                configs = ((versions as Array<Config>).toList())
-//                configAdapter = configs?.let { ConfigAdapter(this@AllVersionsActivity, it) }
-//                RvAllVersions.adapter = configAdapter
-//                RvAllVersions.layoutManager = LinearLayoutManager(this@AllVersionsActivity)
-//                RvAllVersions.setHasFixedSize(true)
-//                Log.i("résultat", configs!!.size.toString())
-//
-//                Intent(this@AllVersionsActivity, ConfigurationPuller::class.java).apply {
-//                    stopService(this)
-//                }
-//            }
-//        }
-//    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_versions)
@@ -80,15 +55,4 @@ class AllVersionsActivity : AppCompatActivity() {
         intent.putExtra("config", configs?.get(position))
         startActivity(intent)
     }
-
-    //    POUR ENREGISTRER LE RECEIVER DE L'INTENT DU SERVICE DE PULLER
-//    override fun onPause() {
-//        unregisterReceiver(receiver)
-//        super.onPause()
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        registerReceiver(receiver, filter)
-//    }
 }
