@@ -32,6 +32,8 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
 
         if (SharedPreferences.getInstance(activity!!).isLoggedIn()) {
             getAllFiles()
+            val user = SharedPreferences.getInstance(activity!!).getUser()
+            fileRelativeTextView.text = user.username
         }
 
         filesRecyclerView.adapter = fileAdapter
