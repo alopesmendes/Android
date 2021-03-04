@@ -4,16 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    app:cardElevation="12dp"
+    app:cardCornerRadius="20dp"
+    android:layout_margin="12dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fileCardConstraintLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/round_border"
-        android:layout_margin="15dp"
         android:padding="25dp"
+        android:background="@drawable/round_bg"
         >
 
         <ImageView
@@ -26,13 +28,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/secondary" />
+            app:tint="@color/primary" />
 
         <TextView
             android:id="@+id/textCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
+            android:textColor="@color/primary"
             app:layout_constraintEnd_toEndOf="@+id/fileCardImageView"
             app:layout_constraintStart_toStartOf="@+id/fileCardImageView"
             app:layout_constraintTop_toBottomOf="@+id/fileCardImageView"
