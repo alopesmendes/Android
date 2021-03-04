@@ -11,7 +11,12 @@ import kotlinx.android.synthetic.main.activity_token.*
 import kotlin.random.Random
 
 class TokenActivity : AppCompatActivity() {
-    var token: Long = 0
+    var token: String = ""
+
+    companion object {
+        const val STRING_LENGTH: Int = 20
+        val REGEX: List<Char> = ('a'..'z') + ('A'..'Z')
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +27,9 @@ class TokenActivity : AppCompatActivity() {
         //////////////////////////////////
 
         generate_token_button.setOnClickListener {
-            token = Random.nextLong()
+            token =
+                (1..STRING_LENGTH).map { i -> Random.nextInt(0, REGEX.size) }.map(REGEX::get)
+                    .joinToString("")
             token_tv.text = "TOKEN: $token"
         }
 
@@ -31,8 +38,8 @@ class TokenActivity : AppCompatActivity() {
             app_tv.text = app
 
             send_token_button.setOnClickListener {
-                if (token != 0L) {
-                    prefs.edit().putLong("$app", token).apply()
+                if (token != "") {
+                    prefs.edit().putString("$app", token).apply()
                     Intent().apply {
                         action = Intent.ACTION_SEND
 

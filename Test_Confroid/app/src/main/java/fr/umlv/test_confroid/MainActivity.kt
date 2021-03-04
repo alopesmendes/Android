@@ -81,9 +81,9 @@ class MainActivity : AppCompatActivity() {
                         val version = intent.getIntExtra("version", 1)
                         val content = intent.getSerializableExtra("content")
                         val tag = intent.getStringExtra("tag")
-                        val token = intent.getLongExtra("token", 0)
+                        val token = intent.getStringExtra("token")
 
-                        if (prefs.getLong(app, 0) == token) {
+                        if (prefs.getString(app, "") == token) {
                             Intent(this, ConfigurationPusher::class.java).apply {
                                 putExtra("app", app)
                                 putExtra("version", version)
@@ -96,9 +96,9 @@ class MainActivity : AppCompatActivity() {
                     1 -> {
                         val app = intent.getStringExtra("app")
                         val version = intent.getIntExtra("version", 1)
-                        val token = intent.getLongExtra("token", 0)
+                        val token = intent.getStringExtra("token")
 
-                        if (prefs.getLong(app, 0) == token) {
+                        if (prefs.getString(app, "") == token) {
                             Intent(this, ConfigurationPuller::class.java).apply {
                                 putExtra("app", app)
                                 putExtra("version", version)
@@ -108,9 +108,9 @@ class MainActivity : AppCompatActivity() {
                     }
                     2 -> {
                         val app = intent.getStringExtra("app")
-                        val token = intent.getLongExtra("token", 0)
+                        val token = intent.getStringExtra("token")
 
-                        if (prefs.getLong(app, 0) == token) {
+                        if (prefs.getString(app, "") == token) {
                             Intent(this, AllVersionsActivity::class.java).apply {
                                 putExtra("app", app)
                                 startActivity(this)
@@ -173,24 +173,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-//        ENVOIE LES DONNEES AU SERVICE DE PULLER POUR DEMANDER TOUTES LES VERSIONS D'UNE APPLI
-//        all_versions_button.setOnClickListener {
-//            val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
-//            if (app.isBlank()) {
-//                Toast.makeText(this, "configuration app required", Toast.LENGTH_SHORT)
-//                    .show()
-//            } else {
-//                Toast.makeText(this, "all versions selected", Toast.LENGTH_SHORT).show()
-//                val intent = Intent(this, AllVersionsActivity::class.java)
-//                intent.putExtra("app", app)
-//                startActivity(intent)
-//
-//            }
-//        }
-
         show_token.setOnClickListener {
-            val app = prefs.getLong(app_editText.text.toString(), 0)
-            Toast.makeText(this, app.toString(), Toast.LENGTH_SHORT).show()
+            val app = prefs.getString(app_editText.text.toString(), "")
+            Toast.makeText(this, app, Toast.LENGTH_SHORT).show()
         }
     }
 
