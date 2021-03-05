@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
@@ -18,7 +21,7 @@ class SettingViewModel : ViewModel() {
 }
 
 
-class SettingFragment : Fragment(R.layout.fragment_setting) {
+class SettingFragment : Fragment(R.layout.fragment_setting), AdapterView.OnItemSelectedListener {
 
     private val viewModel: SettingViewModel by activityViewModels()
 
@@ -26,6 +29,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        createSpinnerLanguages();
         val appSettingPrefs: SharedPreferences = activity!!.getSharedPreferences(PREFS, 0)
         val sharedPreferencesEdit = appSettingPrefs.edit()
         val isNightMode = enableMode(activity!!)
@@ -51,6 +55,23 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         }
     }
 
+    private fun createSpinnerLanguages() {
+        val languages = resources.getStringArray(R.array.languages_list)
+        Log.i("languages", languages.toString())
+
+        ArrayAdapter(
+            activity!!,
+            android.R.layout.simple_spinner_item,
+            languages
+        ).also {
+                arrayAdapter ->
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerLanguages.adapter = arrayAdapter
+        }
+        spinnerLanguages.onItemSelectedListener = this
+
+    }
+
     companion object {
         const val PREFS = "AppSettingPrefs"
         const val NIGHT_MODE = "NightMode"
@@ -67,5 +88,15 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
             }
             return isNightModeOn
         }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val language = spinnerLanguages.adapter.getItem(position)
+        Log.i("spinnerLanguage", language.toString())
+
     }
 }

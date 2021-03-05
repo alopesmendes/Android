@@ -39,7 +39,34 @@
             app:layout_constraintStart_toEndOf="@+id/textDarkMode"
             app:layout_constraintTop_toTopOf="@+id/textDarkMode" />
 
+
+        <TextView
+            android:id="@+id/textLanguages"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            android:fontFamily="monospace"
+            android:padding="15dp"
+            android:text="@string/languages_text"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="@+id/textDarkMode"
+            app:layout_constraintTop_toBottomOf="@+id/textDarkMode" />
+
+
+        <Spinner
+            android:id="@+id/spinnerLanguages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textLanguages"
+            app:layout_constraintEnd_toEndOf="@+id/switchDarkMode"
+            app:layout_constraintStart_toStartOf="@+id/switchDarkMode"
+            app:layout_constraintTop_toTopOf="@+id/textLanguages" />
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 </FrameLayout>

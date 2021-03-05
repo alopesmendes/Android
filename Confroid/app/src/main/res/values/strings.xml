@@ -14,4 +14,12 @@
     <string name="light_mode_text">Light Mode</string>
     <string name="moon_and_sun">Moon and sun</string>
 
+    <string name="languages_text">Languages</string>
+
+    <string-array name="languages_list">
+        <item name="English"></item>
+        <item name="French"></item>
+    </string-array>
+
+
 </resources>
