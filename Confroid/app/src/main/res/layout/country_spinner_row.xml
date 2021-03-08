@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/countryFlag"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_french" />
+
+    <TextView
+        android:id="@+id/countryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="French"
+        android:gravity="center"
+        android:layout_alignBottom="@+id/countryFlag"
+        android:layout_toEndOf="@+id/countryFlag"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_toRightOf="@+id/countryFlag" />
+
+</RelativeLayout>
