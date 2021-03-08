@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import fr.uge.confroid.R
 
@@ -25,6 +26,24 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
 
         fun update(fileAttributes: FileAttributes) {
             textView.text = fileAttributes.name
+        }
+    }
+
+    inner class FileDiffUtil(val old : List<FileAttributes>, val current : List<FileAttributes>) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int {
+            return old.size
+        }
+
+        override fun getNewListSize(): Int {
+            return current.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return old[oldItemPosition] == current[newItemPosition]
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return old[oldItemPosition] == current[newItemPosition]
         }
     }
 
@@ -48,5 +67,14 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
 
     override fun getItemCount(): Int {
         return requests.size
+    }
+
+    fun updateRequests(fileAttributes: List<FileAttributes>) {
+        val old = requests
+        val diff = DiffUtil.calculateDiff(
+            FileDiffUtil(old, fileAttributes)
+        )
+        requests = fileAttributes
+        diff.dispatchUpdatesTo(this)
     }
 }
