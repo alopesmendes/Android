@@ -12,6 +12,8 @@ import fr.uge.confroid.R
 import fr.uge.confroid.configurations.receivers.TokenDispenser
 import fr.uge.confroid.configurations.services.ConfigurationPuller
 import fr.uge.confroid.configurations.services.ConfigurationVersions
+import fr.uge.confroid.storageprovider.MyProvider
+import fr.uge.confroid.web.WebSharedPreferences
 import kotlinx.android.synthetic.main.fragment_app.*
 
 class AppFragment : Fragment(R.layout.fragment_app) {
@@ -44,6 +46,12 @@ class AppFragment : Fragment(R.layout.fragment_app) {
         model = Model(activity!!)
         model.open()
 
+        if (WebSharedPreferences.getInstance(activity!!).isLoggedIn()) {
+            val configs = model.getAllConfigs()
+            for (c in configs) {
+                MyProvider.writeFile(activity!!, "${c.app}_${c.version}.txt", c.content.toByteArray())
+            }
+        }
         when {
             activity!!.intent.action == Intent.ACTION_SEND -> {
                 val request = activity!!.intent.getLongExtra("request", 0L)
@@ -94,6 +102,13 @@ class AppFragment : Fragment(R.layout.fragment_app) {
         select_all_button.setOnClickListener {
             val configs = model.getAllConfigs()
             test1.text = configs.joinToString("\n\n", "{", "}")
+            for (c in configs) {
+                MyProvider.writeFile(activity!!, "${c.app}_${c.version}.txt", c.content.toByteArray())
+            }
+
+            
+
+
         }
 
         reset_button.setOnClickListener {

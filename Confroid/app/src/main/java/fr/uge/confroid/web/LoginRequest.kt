@@ -10,12 +10,12 @@ object LoginRequest {
     fun request(applicationContext: Context, username: String, password: String, callback: () -> Unit) {
         val customRequest = object : CustomRequest<User>(Method.POST, URL.ROOT_LOGIN, User::class.java,
             {
-                SharedPreferences.getInstance(applicationContext).userLogin(it)
+                WebSharedPreferences.getInstance(applicationContext).userLogin(it)
                 callback()
             },
             {
                 Log.i("bad", it.toString())
-                SharedPreferences.getInstance(applicationContext).logout()
+                WebSharedPreferences.getInstance(applicationContext).logout()
             }
         ) {
             @RequiresApi(Build.VERSION_CODES.O)

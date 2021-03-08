@@ -15,7 +15,6 @@ import androidx.work.WorkManager
 import com.google.android.material.navigation.NavigationView
 import fr.uge.confroid.configurations.AppFragment
 import fr.uge.confroid.settings.SettingFragment
-import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.web.*
 import fr.uge.confroid.worker.UploadWorker
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,7 +30,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         SettingFragment.enableMode(this)
 
 
-        if (SharedPreferences.getInstance(this).isLoggedIn()) {
+        if (WebSharedPreferences.getInstance(this).isLoggedIn()) {
+            /*
             MyProvider.writeFile(applicationContext, "mmtext.txt", "On est la".toByteArray())
             MyProvider.writeFile(applicationContext, "save.txt", "Sauvegarde les secrets".toByteArray())
             MyProvider.writeFile(applicationContext, "allo.txt", "Allo les gens".toByteArray())
@@ -41,7 +41,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             MyProvider.writeFile(applicationContext, "eau.txt", "H20".toByteArray())
             MyProvider.writeFile(applicationContext, "avatar.txt", "Les 4 elements".toByteArray())
 
-            val user = SharedPreferences.getInstance(this).getUser()
+             */
+
+            val user = WebSharedPreferences.getInstance(this).getUser()
             LoginRequest.request(this, user.username, user.password) {}
             work()
 
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun isLoggedInVisibility() {
-        if (SharedPreferences.getInstance(applicationContext).isLoggedIn()) {
+        if (WebSharedPreferences.getInstance(applicationContext).isLoggedIn()) {
             mainNavigationView.menu.findItem(R.id.logoutItem).isVisible = true
             mainNavigationView.menu.findItem(R.id.filesItem).isVisible = true
             mainNavigationView.menu.findItem(R.id.loginItem).isVisible = false
@@ -103,7 +105,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 transaction.replace(R.id.mainFrameLayout, LoginFragment()).commit()
             }
             R.id.logoutItem -> {
-                SharedPreferences.getInstance(applicationContext).logout()
+                WebSharedPreferences.getInstance(applicationContext).logout()
             }
 
             R.id.settingItem -> {

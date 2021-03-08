@@ -13,13 +13,13 @@ import fr.uge.confroid.MainActivity
  * @author Akram MALEK
  * @author Gérald LIN
  */
-class SharedPreferences(private val context: Context) {
+class WebSharedPreferences(private val context: Context) {
     companion object {
         @Volatile
-        private var INSTANCE : SharedPreferences? = null
+        private var INSTANCE : WebSharedPreferences? = null
 
         fun getInstance(context: Context) = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: SharedPreferences(context).also {
+            INSTANCE ?: WebSharedPreferences(context).also {
                 INSTANCE = it
             }
         }

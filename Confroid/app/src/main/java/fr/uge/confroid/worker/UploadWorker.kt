@@ -15,10 +15,10 @@ import javax.crypto.spec.SecretKeySpec
 class UploadWorker(appContext: Context, workerParams: WorkerParameters):
     Worker(appContext, workerParams) {
     override fun doWork(): Result {
-        if (!SharedPreferences.getInstance(applicationContext).isLoggedIn()) {
+        if (!WebSharedPreferences.getInstance(applicationContext).isLoggedIn()) {
             return Result.failure()
         }
-        val user = SharedPreferences.getInstance(applicationContext).getUser()
+        val user = WebSharedPreferences.getInstance(applicationContext).getUser()
         LoginRequest.request(applicationContext, user.username, user.password) {}
         val files = MyProvider.getFiles(applicationContext)
         for (file in files) {

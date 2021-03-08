@@ -17,6 +17,7 @@ object MyProvider {
 
     fun writeFile(context: Context, fileName : String, content : ByteArray) : File {
         val file = StorageUtils.createFile(fileName, context.filesDir.absolutePath)
+        Log.i("file path", "path $file")
 
         try {
             val outputStream = FileOutputStream(file);

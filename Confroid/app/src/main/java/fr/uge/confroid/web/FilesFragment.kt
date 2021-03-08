@@ -16,8 +16,6 @@ import com.android.volley.toolbox.StringRequest
 import com.google.gson.Gson
 import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.fragment_files.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import javax.crypto.SecretKey
@@ -30,9 +28,9 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (SharedPreferences.getInstance(activity!!).isLoggedIn()) {
+        if (WebSharedPreferences.getInstance(activity!!).isLoggedIn()) {
             getAllFiles()
-            val user = SharedPreferences.getInstance(activity!!).getUser()
+            val user = WebSharedPreferences.getInstance(activity!!).getUser()
             fileRelativeTextView.text = user.username
         }
 
@@ -43,7 +41,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
     }
 
     override fun onClickListener(fileAttributes: FileAttributes) {
-        val user = SharedPreferences.getInstance(activity!!).getUser()
+        val user = WebSharedPreferences.getInstance(activity!!).getUser()
         getFile(fileAttributes.name, user.password, user.token)
     }
 
@@ -72,7 +70,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
             },
             {
                 Log.e("error get", it.toString())
-                SharedPreferences.getInstance(activity!!).logout()
+                WebSharedPreferences.getInstance(activity!!).logout()
             })
         {
             override fun getHeaders(): MutableMap<String, String> {
@@ -88,8 +86,8 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
     }
 
     private fun getAllFiles() {
-        if (SharedPreferences.getInstance(activity!!).isLoggedIn()) {
-            val user = SharedPreferences.getInstance(activity!!).getUser()
+        if (WebSharedPreferences.getInstance(activity!!).isLoggedIn()) {
+            val user = WebSharedPreferences.getInstance(activity!!).getUser()
             LoginRequest.request(activity!!, user.username, user.password) {}
 
             Log.i("shared user", user.toString())
@@ -122,7 +120,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
             },
             {
                 Log.e("files error", it.toString())
-                SharedPreferences.getInstance(activity!!).logout()
+                WebSharedPreferences.getInstance(activity!!).logout()
             })
         {
             override fun getHeaders(): MutableMap<String, String> {
