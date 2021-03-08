@@ -107,8 +107,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
 
     private suspend fun updateAdapter(requestBody : String) {
         val files = parse(requestBody)
-        fileAdapter.requests = files
-        fileAdapter.notifyDataSetChanged()
+        fileAdapter.updateRequests(files)
     }
 
     private fun getFiles(token: String) {
