@@ -17,9 +17,14 @@
     <string name="languages_text">Languages</string>
 
     <string-array name="languages_list">
-        <item name="English"></item>
-        <item name="French"></item>
+        <item name="1">English</item>
+        <item name="2">French</item>
     </string-array>
+
+    <integer-array name="flags_list">
+        <item name="1">@drawable/ic_england</item>
+        <item name="2">@drawable/ic_french</item>
+    </integer-array>
 
 
 </resources>

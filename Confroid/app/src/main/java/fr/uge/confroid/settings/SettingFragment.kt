@@ -2,6 +2,7 @@ package fr.uge.confroid.settings
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.TypedArray
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 import fr.uge.confroid.R
+import kotlinx.android.synthetic.main.country_spinner_row.*
+import kotlinx.android.synthetic.main.country_spinner_row.view.*
 import kotlinx.android.synthetic.main.fragment_setting.*
 
 class SettingViewModel : ViewModel() {
@@ -21,11 +24,12 @@ class SettingViewModel : ViewModel() {
 }
 
 
-class SettingFragment : Fragment(R.layout.fragment_setting), AdapterView.OnItemSelectedListener {
+class SettingFragment : Fragment(R.layout.fragment_setting) {
 
     private val viewModel: SettingViewModel by activityViewModels()
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,20 +59,13 @@ class SettingFragment : Fragment(R.layout.fragment_setting), AdapterView.OnItemS
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun createSpinnerLanguages() {
-        val languages = resources.getStringArray(R.array.languages_list)
-        Log.i("languages", languages.toString())
+        val languageNames = resources.getStringArray(R.array.languages_list)
+        val flags = resources.obtainTypedArray(R.array.flags_list)
 
-        ArrayAdapter(
-            activity!!,
-            android.R.layout.simple_spinner_item,
-            languages
-        ).also {
-                arrayAdapter ->
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinnerLanguages.adapter = arrayAdapter
-        }
-        spinnerLanguages.onItemSelectedListener = this
+        val customDropDownAdapter = LanguageAdapter(activity!!, languageNames, flags)
+        spinnerLanguages.adapter = customDropDownAdapter
 
     }
 
@@ -90,13 +87,6 @@ class SettingFragment : Fragment(R.layout.fragment_setting), AdapterView.OnItemS
         }
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
 
-    }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val language = spinnerLanguages.adapter.getItem(position)
-        Log.i("spinnerLanguage", language.toString())
-
-    }
 }
