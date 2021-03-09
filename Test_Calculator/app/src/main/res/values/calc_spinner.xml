@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="calc_spinner">
+        <item>Standard</item>
+        <item>Scientific</item>
+        <item>Programmer</item>
+        <item>Date Calculator</item>
+    </string-array>
+</resources>
