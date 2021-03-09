@@ -34,7 +34,7 @@ $ npm install swagger-jsdoc swagger-ui-express
 ### Linux
 Firstly we have to launch the program NodeJs. **nodemon** is preferable since we can change the programn and there no need to restart the program. But we can also only use node
 ```bash
-Android/ConfroidWebServices$ nodemon index.js
+Android/ConfroidWebServices$ nodemon server.js
 [nodemon] 2.0.6
 [nodemon] to restart at any time, enter `rs`
 [nodemon] watching path(s): *.*
@@ -51,7 +51,7 @@ your url is: https://valkyroid.loca.lt
 or 
 
 ```bash
-Android/ConfroidWebServices$ node index.js
+Android/ConfroidWebServices$ node server.js
 Votre app est disponible sur localhost:8080 !
 ```
 
@@ -64,7 +64,7 @@ Then we launch AndroidStudio and run the application
 
 ### Windows 
 ```bash
-Android/ConfroidWebServices$ nodemon index.js
+Android/ConfroidWebServices$ nodemon server.js
 [nodemon] 2.0.6
 [nodemon] to restart at any time, enter `rs`
 [nodemon] watching path(s): *.*
@@ -81,7 +81,7 @@ your url is: https://valkyroid.loca.lt
 or 
 
 ```bash
-Android/ConfroidWebServices$ node index.js
+Android/ConfroidWebServices$ node server.js
 Votre app est disponible sur localhost:8080 !
 ```
 
