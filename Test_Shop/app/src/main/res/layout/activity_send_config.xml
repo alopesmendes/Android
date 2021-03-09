@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SendConfig">
+
+    <TextView
+        android:id="@+id/version_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="version"
+        app:layout_constraintEnd_toStartOf="@id/version_edit_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/version_edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/version_text_view"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/config_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/show_config_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/info_title_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/version_edit_text" />
+
+    <TextView
+        android:id="@+id/address_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="address"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/info_title_et" />
+
+    <EditText
+        android:id="@+id/name_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/address_tv" />
+
+    <EditText
+        android:id="@+id/street_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="street"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_et" />
+
+    <EditText
+        android:id="@+id/city_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="city"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/street_et" />
+
+    <EditText
+        android:id="@+id/country_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="country"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/city_et" />
+
+    <TextView
+        android:id="@+id/billing_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="billing detail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/country_et" />
+
+    <EditText
+        android:id="@+id/card_holder_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="card holder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/billing_tv" />
+
+    <EditText
+        android:id="@+id/card_number_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="card number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_holder_et" />
+
+    <EditText
+        android:id="@+id/month_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="expiration month"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_number_et" />
+
+    <EditText
+        android:id="@+id/year_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="expiration year"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/month_et" />
+
+    <EditText
+        android:id="@+id/cryptogram_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="cryptogram"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/year_et" />
+
+    <CheckBox
+        android:id="@+id/favorite_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="favorite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cryptogram_et" />
+
+    <Button
+        android:id="@+id/add_address_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add address"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/show_config_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/show_config_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="show config"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/send_to_confroid_button"
+        app:layout_constraintStart_toEndOf="@id/add_address_button" />
+
+    <Button
+        android:id="@+id/send_to_confroid_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="send to confroid"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/show_config_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
