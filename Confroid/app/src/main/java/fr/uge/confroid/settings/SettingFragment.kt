@@ -91,12 +91,6 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    override fun onResume() {
-        super.onResume()
-        MainActivity.localeSaved(resources, requireContext())
-    }
-
     @RequiresApi(Build.VERSION_CODES.N)
     private fun createSpinnerLanguages() {
         val appSettingPrefs: SharedPreferences = requireActivity().getSharedPreferences(PREFS, 0)
@@ -116,7 +110,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
             ) {
                 if (position != 0) {
                     val lang = spinnerLanguages.adapter.getItem(position).toString()
-                    val appSettingPrefs: SharedPreferences = activity!!.getSharedPreferences(PREFS, 0)
+                    val appSettingPrefs: SharedPreferences = requireActivity().getSharedPreferences(PREFS, 0)
                     val sharedPreferencesEdit = appSettingPrefs.edit()
 
                     sharedPreferencesEdit.putInt(LANG, position)
