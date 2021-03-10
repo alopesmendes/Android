@@ -7,28 +7,28 @@
         <item
             android:id="@+id/homeItem"
             android:icon="@drawable/ic_home"
-            android:title="Home"
+            android:title="@string/home"
             />
 
         <item
             android:id="@+id/filesItem"
             android:icon="@drawable/ic_donwload"
-            android:title="Files Download"
+            android:title="@string/files_download"
             android:visible="false"
             />
     </group>
 
-    <item android:title="Profile">
+    <item android:title="@string/profile">
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/loginItem"
-                    android:title="Login"
+                    android:title="@string/login_text"
                     android:icon="@drawable/ic_login"
                     />
 
                 <item android:id="@+id/logoutItem"
-                    android:title="Logout"
+                    android:title="@string/logout_text"
                     android:icon="@drawable/ic_logout"
                     android:visible="false"
                     />
@@ -36,23 +36,23 @@
         </menu>
     </item>
 
-    <item android:title="Settings">
+    <item android:title="@string/settings">
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/settingItem"
-                    android:title="Settings"
+                    android:title="@string/settings"
                     android:icon="@drawable/ic_settings"
                     />
 
                 <item android:id="@+id/helpItem"
-                    android:title="Help"
+                    android:title="@string/help"
                     android:icon="@drawable/ic_help"
 
                     />
 
                 <item android:id="@+id/licenseItem"
-                    android:title="License"
+                    android:title="@string/license"
                     android:icon="@drawable/ic_license"/>
             </group>
         </menu>

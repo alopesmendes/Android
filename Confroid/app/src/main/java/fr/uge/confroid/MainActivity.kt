@@ -1,13 +1,17 @@
 package fr.uge.confroid
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
@@ -15,33 +19,38 @@ import androidx.work.WorkManager
 import com.google.android.material.navigation.NavigationView
 import fr.uge.confroid.configurations.AppFragment
 import fr.uge.confroid.settings.SettingFragment
+import fr.uge.confroid.settings.SettingViewModel
 import fr.uge.confroid.web.*
 import fr.uge.confroid.worker.UploadWorker
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private val viewModel: SettingViewModel by viewModels()
+
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        localeSaved()
+
+        viewModel.selectedItem.observe(this, {
+            val conf = resources.configuration
+            conf.setLocale(Locale(it.toLowerCase()))
+            resources.updateConfiguration(conf, resources.displayMetrics)
+            //baseContext.applicationContext.createConfigurationContext(conf)
+            //baseContext.resources.displayMetrics.setTo(resources.displayMetrics)
+            //Intent(this, MainActivity::class.java).apply { startActivity(this) }
+            //supportFragmentManager.beginTransaction().replace(R.id.mainFrameLayout, SettingFragment()).commit()
+        })
         SettingFragment.enableMode(this)
 
 
         if (WebSharedPreferences.getInstance(this).isLoggedIn()) {
-            /*
-            MyProvider.writeFile(applicationContext, "mmtext.txt", "On est la".toByteArray())
-            MyProvider.writeFile(applicationContext, "save.txt", "Sauvegarde les secrets".toByteArray())
-            MyProvider.writeFile(applicationContext, "allo.txt", "Allo les gens".toByteArray())
-            MyProvider.writeFile(applicationContext, "bonjour.txt", "Bonjour les amis".toByteArray())
-            MyProvider.writeFile(applicationContext, "anime.txt", "Cest bien les animes".toByteArray())
-            MyProvider.writeFile(applicationContext, "cours.txt", "Pas ouf".toByteArray())
-            MyProvider.writeFile(applicationContext, "eau.txt", "H20".toByteArray())
-            MyProvider.writeFile(applicationContext, "avatar.txt", "Les 4 elements".toByteArray())
-
-             */
 
             val user = WebSharedPreferences.getInstance(this).getUser()
             LoginRequest.request(this, user.username, user.password) {}
@@ -68,6 +77,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             mainNavigationView.setCheckedItem(R.id.homeItem)
         }
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private fun localeSaved() {
+        val appSettingPrefs: SharedPreferences = getSharedPreferences(SettingFragment.PREFS, 0)
+        val languageNames = resources.getStringArray(R.array.languages_list)
+        val pos = appSettingPrefs.getInt(SettingFragment.LANG, 0)
+        val lang = languageNames[pos]
+        val conf = resources.configuration
+        conf.setLocale(Locale(lang.toLowerCase()))
+        resources.updateConfiguration(conf, resources.displayMetrics)
     }
 
     private fun isLoggedInVisibility() {

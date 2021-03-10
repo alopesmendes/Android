@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Confroid</string>
+    <string name="login_text">Conecte-se</string>
+    <string name="register_text">Registro</string>
+    <string name="hint_name">Nome de usuário</string>
+    <string name="hint_password">Palavra passe</string>
+    <string name="hint_confirm_password">Confirmar Palavra Passe</string>
+    <string name="register_new_user_text">Novo usuário? Registrar agora</string>
+    <string name="button_send_file_text">Enviar arquivo</string>
+    <string name="dark_mode_text">Modo escuro</string>
+    <string name="light_mode_text">Modo claro</string>
+    <string name="moon_and_sun">Lua e Sol</string>
+    <string name="home">Casa</string>
+    <string name="languages_text">Línguas</string>
+    <string name="files_download">Baixar arquivos</string>
+    <string name="profile">Usuário</string>
+    <string name="logout_text">Deixar</string>
+    <string name="settings">Configurações</string>
+    <string name="help">Ajuda</string>
+    <string name="license">Licença</string>
+</resources>

@@ -21,7 +21,7 @@ class LanguageAdapter(val context: Context, var languageNameList: Array<String>,
     }
 
     override fun getItem(i: Int): Any? {
-        return null
+        return languageNameList[i]
     }
 
     override fun getItemId(i: Int): Long {

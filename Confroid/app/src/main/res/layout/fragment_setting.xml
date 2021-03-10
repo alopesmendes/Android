@@ -57,6 +57,7 @@
             android:id="@+id/spinnerLanguages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/textLanguages"
             app:layout_constraintEnd_toEndOf="@+id/switchDarkMode"
             app:layout_constraintStart_toStartOf="@+id/switchDarkMode"
