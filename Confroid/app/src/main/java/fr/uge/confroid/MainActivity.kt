@@ -30,10 +30,7 @@ import com.google.android.material.navigation.NavigationView
 import fr.uge.confroid.configurations.AppFragment
 import fr.uge.confroid.settings.SettingFragment
 import fr.uge.confroid.settings.SettingViewModel
-import fr.uge.confroid.web.FilesFragment
-import fr.uge.confroid.web.LoginFragment
-import fr.uge.confroid.web.LoginRequest
-import fr.uge.confroid.web.WebSharedPreferences
+import fr.uge.confroid.web.*
 import fr.uge.confroid.worker.UploadWorker
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -41,7 +38,8 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NavController.OnDestinationChangedListener  {
 
-    private val viewModel: SettingViewModel by viewModels()
+    private val settingViewModel: SettingViewModel by viewModels()
+    private val loginViewModel : LoginViewModel by viewModels()
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration : AppBarConfiguration
@@ -63,7 +61,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         configureDrawerLayout()
         configureNavigationView()
 
-        viewModel.selectedItem.observe(this, {
+        loginViewModel.selectedItem.observe(this, {
+            mainNavigationView.menu.clear()
+            mainNavigationView.inflateMenu(R.menu.nav_menu)
+            isLoggedInVisibility()
+        })
+
+        settingViewModel.selectedItem.observe(this, {
             val conf = resources.configuration
             conf.setLocale(Locale(it.toLowerCase()))
             resources.updateConfiguration(conf, resources.displayMetrics)
@@ -115,7 +119,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.i("shared user", user.toString())
 
         }
-
         isLoggedInVisibility()
     }
 
