@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.fragment_register.*
 
@@ -21,9 +23,13 @@ import kotlinx.android.synthetic.main.fragment_register.*
  */
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
+    private lateinit var navController: NavController
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
+
 
         buttonRegister.setOnClickListener {
             userRegister()
@@ -64,7 +70,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         val password = editTextPasswordRegister.text.toString()
         val confirmPassword = editTextConfirmPasswordRegister.text.toString()
 
-        val transaction = activity!!.supportFragmentManager.beginTransaction().addToBackStack(null)
+        //val transaction = requireActivity().supportFragmentManager.beginTransaction().addToBackStack(null)
 
         if (isMissingFields(username, password, confirmPassword)) {
             return
@@ -74,7 +80,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             {
                 Log.i("good", it.toString())
                 //SharedPreferences.getInstance(applicationContext).userLogin(it)
-                transaction.replace(R.id.mainFrameLayout, LoginFragment()).commit()
+                //transaction.replace(R.id.mainFrameLayout, LoginFragment()).commit()
+                navController.navigate(R.id.action_registerFragment_to_loginFragment2)
 
             },
             {
@@ -92,6 +99,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
         }
 
-        VolleySingleton.getInstance(activity!!).addToRequestQueue(customRequest)
+        VolleySingleton.getInstance(requireActivity()).addToRequestQueue(customRequest)
     }
 }

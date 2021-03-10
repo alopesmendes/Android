@@ -6,9 +6,13 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import fr.uge.confroid.MainActivity
 import fr.uge.confroid.R
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
@@ -23,18 +27,21 @@ import kotlinx.android.synthetic.main.fragment_login.*
  */
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
+    private lateinit var navController: NavController
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val transaction = activity!!.supportFragmentManager.beginTransaction().addToBackStack(null)
+        navController = Navigation.findNavController(view)
+
 
         buttonLogin.setOnClickListener {
             userLogin()
         }
 
         textViewRegisterNowLogin.setOnClickListener {
-            transaction.replace(R.id.mainFrameLayout, RegisterFragment()).commit()
+            navController.navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
     }
@@ -65,12 +72,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
         val cryptPassword = CryptKey.encrypt(password.toByteArray(), CryptKey.secretKey, 2)
 
-        //val transaction = activity!!.supportFragmentManager.beginTransaction().addToBackStack(null)
+        LoginRequest.request(requireActivity(), username, String(cryptPassword!!)) {
+            //Intent(activity, MainActivity::class.java).apply { startActivity(this) }
+            navController.navigate(R.id.action_loginFragment_to_appFragment)
+            mainDrawerLayout.invalidate()
 
-        LoginRequest.request(activity!!, username, String(cryptPassword!!)) {
-            //transaction.replace(R.id.mainFrameLayout, AppFragment()).commit()
-            Intent(activity, MainActivity::class.java).apply { startActivity(this) }
         }
     }
-
 }

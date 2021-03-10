@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
@@ -25,12 +27,18 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
 
     private val fileAdapter : FileAdapter = FileAdapter(this, listOf())
 
+    private lateinit var navController: NavController
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (WebSharedPreferences.getInstance(activity!!).isLoggedIn()) {
+        navController = Navigation.findNavController(view)
+
+
+        if (WebSharedPreferences.getInstance(requireActivity()).isLoggedIn()) {
             getAllFiles()
-            val user = WebSharedPreferences.getInstance(activity!!).getUser()
+            val user = WebSharedPreferences.getInstance(requireActivity()).getUser()
             fileRelativeTextView.text = user.username
         }
 
@@ -41,7 +49,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
     }
 
     override fun onClickListener(fileAttributes: FileAttributes) {
-        val user = WebSharedPreferences.getInstance(activity!!).getUser()
+        val user = WebSharedPreferences.getInstance(requireActivity()).getUser()
         getFile(fileAttributes.name, user.password, user.token)
     }
 
@@ -54,10 +62,10 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
                         val secretKey : SecretKey = SecretKeySpec(CryptKey.decrypt(password.toByteArray(), CryptKey.secretKey), "AES")
                         val decrypted = CryptKey.decrypt(it, secretKey)
 
-                        val outputStream = activity!!.openFileOutput(name, Context.MODE_PRIVATE)
+                        val outputStream = requireActivity().openFileOutput(name, Context.MODE_PRIVATE)
                         outputStream.write(decrypted)
                         outputStream.close()
-                        val file = File(activity!!.filesDir, name)
+                        val file = File(requireActivity().filesDir, name)
                         //CryptKey.decryptFile(file)
                         //Log.i("content", "after->${String(CryptKey.decrypt(it)!!)}")
                         Toast.makeText(activity, "Download $name completed", Toast.LENGTH_LONG).show()
@@ -70,7 +78,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
             },
             {
                 Log.e("error get", it.toString())
-                WebSharedPreferences.getInstance(activity!!).logout()
+                WebSharedPreferences.getInstance(requireActivity()).logout()
             })
         {
             override fun getHeaders(): MutableMap<String, String> {
@@ -82,13 +90,13 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
             }
         }
 
-        VolleySingleton.getInstance(activity!!).addToRequestQueue(customRequest)
+        VolleySingleton.getInstance(requireActivity()).addToRequestQueue(customRequest)
     }
 
     private fun getAllFiles() {
-        if (WebSharedPreferences.getInstance(activity!!).isLoggedIn()) {
-            val user = WebSharedPreferences.getInstance(activity!!).getUser()
-            LoginRequest.request(activity!!, user.username, user.password) {}
+        if (WebSharedPreferences.getInstance(requireActivity()).isLoggedIn()) {
+            val user = WebSharedPreferences.getInstance(requireActivity()).getUser()
+            LoginRequest.request(requireActivity(), user.username, user.password) {}
 
             Log.i("shared user", user.toString())
             getFiles(user.token)
@@ -119,7 +127,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
             },
             {
                 Log.e("files error", it.toString())
-                WebSharedPreferences.getInstance(activity!!).logout()
+                WebSharedPreferences.getInstance(requireActivity()).logout()
             })
         {
             override fun getHeaders(): MutableMap<String, String> {
@@ -127,7 +135,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
             }
         }
 
-        VolleySingleton.getInstance(activity!!).addToRequestQueue(filesRequest)
+        VolleySingleton.getInstance(requireActivity()).addToRequestQueue(filesRequest)
     }
 
 }

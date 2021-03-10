@@ -8,6 +8,8 @@ import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import fr.uge.confroid.R
 import fr.uge.confroid.configurations.receivers.TokenDispenser
 import fr.uge.confroid.configurations.services.ConfigurationPuller
@@ -25,14 +27,18 @@ class AppFragment : Fragment(R.layout.fragment_app) {
 
     companion object {
         lateinit var model: Model
-        val broadcastConfigAction = "getConfig"
-        val broadcastAllVersionsAction = "getAllVersions"
+        const val broadcastConfigAction = "getConfig"
+        const val broadcastAllVersionsAction = "getAllVersions"
     }
+
+    private lateinit var navController: NavController
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val prefs = activity!!.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+        navController = Navigation.findNavController(view)
+        val prefs = requireActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE)
 
         //////////////
 
@@ -43,25 +49,25 @@ class AppFragment : Fragment(R.layout.fragment_app) {
 
         /////////////////////////////////////////////////////////
 
-        model = Model(activity!!)
+        model = Model(requireActivity())
         model.open()
 
-        if (WebSharedPreferences.getInstance(activity!!).isLoggedIn()) {
+        if (WebSharedPreferences.getInstance(requireActivity()).isLoggedIn()) {
             val configs = model.getAllConfigs()
             for (c in configs) {
-                MyProvider.writeFile(activity!!, "${c.app}_${c.version}.txt", c.content.toByteArray())
+                MyProvider.writeFile(requireActivity(), "${c.app}_${c.version}.txt", c.content.toByteArray())
             }
         }
         when {
-            activity!!.intent.action == Intent.ACTION_SEND -> {
-                val request = activity!!.intent.getLongExtra("request", 0L)
+            requireActivity().intent.action == Intent.ACTION_SEND -> {
+                val request = requireActivity().intent.getLongExtra("request", 0L)
 
-                val app = activity!!.intent.getStringExtra("app")
-                val version = activity!!.intent.getIntExtra("version", -1)
-                val content = activity!!.intent.getSerializableExtra("content")
-                val tag = activity!!.intent.getStringExtra("tag")
-                val token = activity!!.intent.getStringExtra("token")
-                val receiver = activity!!.intent.getStringExtra("receiver")
+                val app = requireActivity().intent.getStringExtra("app")
+                val version = requireActivity().intent.getIntExtra("version", -1)
+                val content = requireActivity().intent.getSerializableExtra("content")
+                val tag = requireActivity().intent.getStringExtra("tag")
+                val token = requireActivity().intent.getStringExtra("token")
+                val receiver = requireActivity().intent.getStringExtra("receiver")
 
                 if (prefs.getString(app, "") == token) {
                     if (receiver != null) {
@@ -71,7 +77,7 @@ class AppFragment : Fragment(R.layout.fragment_app) {
                             putExtra("content", content)
                             putExtra("tag", tag)
                             putExtra("request", request)
-                            activity!!.startService(this)
+                            requireActivity().startService(this)
                         }
                     }
 //                    TOKEN RETRIEVING
@@ -79,7 +85,7 @@ class AppFragment : Fragment(R.layout.fragment_app) {
                     Intent(activity, TokenDispenser::class.java).apply {
                         putExtra("app", app)
                         putExtra("request", request)
-                        activity!!.startService(this)
+                        requireActivity().startService(this)
                     }
                 }
             }
@@ -103,11 +109,8 @@ class AppFragment : Fragment(R.layout.fragment_app) {
             val configs = model.getAllConfigs()
             test1.text = configs.joinToString("\n\n", "{", "}")
             for (c in configs) {
-                MyProvider.writeFile(activity!!, "${c.app}_${c.version}.txt", c.content.toByteArray())
+                MyProvider.writeFile(requireActivity(), "${c.app}_${c.version}.txt", c.content.toByteArray())
             }
-
-            
-
 
         }
 
@@ -135,7 +138,7 @@ class AppFragment : Fragment(R.layout.fragment_app) {
                 Intent(activity, ConfigurationPuller::class.java).apply {
                     putExtra("app", app)
                     putExtra("version", Integer.parseInt(version))
-                    activity!!.startService(this)
+                    requireActivity().startService(this)
                 }
             }
         }
@@ -154,7 +157,7 @@ class AppFragment : Fragment(R.layout.fragment_app) {
                 Toast.makeText(activity, "all versions selected", Toast.LENGTH_SHORT).show()
                 Intent(activity, ConfigurationVersions::class.java).apply {
                     putExtra("app", app)
-                    activity!!.startService(this)
+                    requireActivity().startService(this)
                 }
 
             }
