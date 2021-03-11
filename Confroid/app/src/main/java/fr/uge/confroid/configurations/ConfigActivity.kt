@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import fr.uge.confroid.MainActivity
 import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.activity_display_config.*
 
@@ -14,6 +17,7 @@ class ConfigActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_config)
+
 
         val intent = intent
         if (intent != null) {
@@ -45,12 +49,12 @@ class ConfigActivity : AppCompatActivity() {
                 }
 
                 delete_button.setOnClickListener {
-                    val transaction = supportFragmentManager.beginTransaction().addToBackStack(null)
+                    //val transaction = supportFragmentManager.beginTransaction().addToBackStack(null)
                     AppFragment.model.deleteConfig(config.app, config.id)
-                    transaction.replace(R.id.mainFrameLayout, AppFragment()).commit()
-//                    Intent(this, MainActivity::class.java).apply {
-//                        startActivity(this)
-//                    }
+                    //transaction.replace(R.id.mainFrameLayout, AppFragment()).commit()
+                    Intent(this, MainActivity::class.java).apply {
+                        startActivity(this)
+                   }
                 }
             }
         }

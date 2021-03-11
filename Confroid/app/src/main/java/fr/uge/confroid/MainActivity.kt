@@ -1,17 +1,27 @@
 package fr.uge.confroid
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.Navigation
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
@@ -26,9 +36,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NavController.OnDestinationChangedListener  {
 
-    private val viewModel: SettingViewModel by viewModels()
+    private val settingViewModel: SettingViewModel by viewModels()
+    private val loginViewModel : LoginViewModel by viewModels()
+
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration : AppBarConfiguration
 
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -36,20 +50,66 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        localeSaved()
+        localeSaved(resources, this)
+        mainNavigationView.menu.clear()
+        mainNavigationView.inflateMenu(R.menu.nav_menu)
 
-        viewModel.selectedItem.observe(this, {
+        navController = Navigation.findNavController(findViewById(R.id.nav_host_fragment))
+        appBarConfiguration = AppBarConfiguration(navController.graph, mainDrawerLayout)
+
+        configureToolBar()
+        configureDrawerLayout()
+        configureNavigationView()
+
+        loginViewModel.selectedItem.observe(this, {
+            mainNavigationView.menu.clear()
+            mainNavigationView.inflateMenu(R.menu.nav_menu)
+            isLoggedInVisibility()
+        })
+
+        settingViewModel.selectedItem.observe(this, {
             val conf = resources.configuration
             conf.setLocale(Locale(it.toLowerCase()))
             resources.updateConfiguration(conf, resources.displayMetrics)
-            //baseContext.applicationContext.createConfigurationContext(conf)
-            //baseContext.resources.displayMetrics.setTo(resources.displayMetrics)
-            //Intent(this, MainActivity::class.java).apply { startActivity(this) }
-            //supportFragmentManager.beginTransaction().replace(R.id.mainFrameLayout, SettingFragment()).commit()
+            mainNavigationView.menu.clear()
+            mainNavigationView.inflateMenu(R.menu.nav_menu)
+
         })
+
         SettingFragment.enableMode(this)
 
+        logAction()
 
+
+
+        if (savedInstanceState == null) {
+            navController.navigate(R.id.appFragment)
+            mainNavigationView.setCheckedItem(R.id.homeItem)
+        }
+
+    }
+
+    private fun configureToolBar() {
+        setSupportActionBar(mainToolbar)
+    }
+
+    private fun configureDrawerLayout() {
+        /*
+        val toggle = ActionBarDrawerToggle(this, mainDrawerLayout, mainToolbar, R.string.navigation_open_drawer, R.string.navigation_close_drawer)
+        mainDrawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        */
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navController.addOnDestinationChangedListener(this)
+        mainNavigationView.setupWithNavController(navController)
+    }
+
+    private fun configureNavigationView() {
+        mainNavigationView.setNavigationItemSelectedListener(this)
+    }
+
+
+    private fun logAction() {
         if (WebSharedPreferences.getInstance(this).isLoggedIn()) {
 
             val user = WebSharedPreferences.getInstance(this).getUser()
@@ -59,35 +119,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.i("shared user", user.toString())
 
         }
-
-
         isLoggedInVisibility()
-
-        setSupportActionBar(mainToolbar)
-
-        mainNavigationView.bringToFront()
-        val toggle = ActionBarDrawerToggle(this, mainDrawerLayout, mainToolbar, R.string.navigation_open_drawer, R.string.navigation_close_drawer)
-        mainDrawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        mainNavigationView.setNavigationItemSelectedListener(this)
-
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().replace(R.id.mainFrameLayout, AppFragment()).commit()
-            mainNavigationView.setCheckedItem(R.id.homeItem)
-        }
-
-    }
-
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private fun localeSaved() {
-        val appSettingPrefs: SharedPreferences = getSharedPreferences(SettingFragment.PREFS, 0)
-        val languageNames = resources.getStringArray(R.array.languages_list)
-        val pos = appSettingPrefs.getInt(SettingFragment.LANG, 0)
-        val lang = languageNames[pos]
-        val conf = resources.configuration
-        conf.setLocale(Locale(lang.toLowerCase()))
-        resources.updateConfiguration(conf, resources.displayMetrics)
     }
 
     private fun isLoggedInVisibility() {
@@ -102,6 +134,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
     override fun onBackPressed() {
         if (mainDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
@@ -113,23 +149,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val transaction = supportFragmentManager.beginTransaction().addToBackStack(null)
         when(item.itemId) {
             R.id.homeItem -> {
-                transaction.replace(R.id.mainFrameLayout, AppFragment()).commit()
+                navController.navigate(R.id.action_appFragment_self)
             }
             R.id.filesItem -> {
-                transaction.replace(R.id.mainFrameLayout, FilesFragment()).commit()
+                navController.navigate(R.id.action_appFragment_to_filesFragment)
             }
             R.id.loginItem -> {
-                transaction.replace(R.id.mainFrameLayout, LoginFragment()).commit()
+                navController.navigate(R.id.action_appFragment_to_loginFragment)
             }
             R.id.logoutItem -> {
                 WebSharedPreferences.getInstance(applicationContext).logout()
             }
 
             R.id.settingItem -> {
-                transaction.replace(R.id.mainFrameLayout, SettingFragment()).commit()
+                navController.navigate(R.id.action_appFragment_to_settingFragment)
             }
         }
         mainDrawerLayout.closeDrawer(GravityCompat.START)
@@ -151,117 +186,39 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val workManager = WorkManager.getInstance(this)
         workManager.enqueue(work)
     }
-/*
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.register_login, menu)
-        menu?.findItem(R.id.logoutItem)?.isVisible = SharedPreferences.getInstance(this).isLoggedIn()
-        return super.onCreateOptionsMenu(menu)
+
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
+
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
-            R.id.loginItem -> {
-                Intent(this, LoginActivity::class.java).apply { startActivity(this) }
-                true
-            }
-            R.id.logoutItem -> {
-                SharedPreferences.getInstance(this).logout()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun onResume() {
+        super.onResume()
+        navController.addOnDestinationChangedListener(this)
+        localeSaved(resources, this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        navController.removeOnDestinationChangedListener(this)
+
+    }
+
+    companion object {
+        @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+        fun localeSaved(resources : Resources, context: Context) {
+            val appSettingPrefs: SharedPreferences = context.getSharedPreferences(SettingFragment.PREFS, 0)
+            val languageNames = resources.getStringArray(R.array.languages_list)
+            val pos = appSettingPrefs.getInt(SettingFragment.LANG, 0)
+            val lang = languageNames[pos]
+            val conf = resources.configuration
+            conf.setLocale(Locale(lang.toLowerCase()))
+            resources.updateConfiguration(conf, resources.displayMetrics)
+
         }
     }
-
-    private fun parse(result: String) : List<FileAttributes> {
-        val list = Gson().fromJson(result, List::class.java)
-        return list.map {
-            val jsonObject = it as Map<String, String>
-            FileAttributes(jsonObject["name"] ?: error(""), jsonObject["url"] ?: error(""))
-        }
-    }
-
-    private fun getFiles(token: String) {
-        val filesRequest = object : StringRequest(Method.GET, URL.ROOT_FILES,
-            {
-                runBlocking {
-                    updateAdapter(it)
-                }
-
-            },
-            {
-                Log.e("files error", it.toString())
-                SharedPreferences.getInstance(this).logout()
-            })
-        {
-            override fun getHeaders(): MutableMap<String, String> {
-                return mutableMapOf("authorization" to token)
-            }
-        }
-        VolleySingleton.getInstance(this).addToRequestQueue(filesRequest)
-    }
-
-    private fun getFile(name : String, password: String, token : String) {
-        val customRequest : CustomRequest<ByteArray> = @RequiresApi(Build.VERSION_CODES.O)
-        object : CustomRequest<ByteArray>(Method.GET, "${URL.ROOT_FILE}/$name", ByteArray::class.java,
-            {
-                try {
-                    if (it != null) {
-                        val secretKey : SecretKey = SecretKeySpec(CryptKey.decrypt(password.toByteArray(), CryptKey.secretKey), "AES")
-                        val decrypted = CryptKey.decrypt(it, secretKey)
-
-                        val outputStream = openFileOutput(name, Context.MODE_PRIVATE)
-                        outputStream.write(decrypted)
-                        outputStream.close()
-                        val file = File(filesDir, name)
-                        //CryptKey.decryptFile(file)
-                        //Log.i("content", "after->${String(CryptKey.decrypt(it)!!)}")
-                        Toast.makeText(this, "Download completed", Toast.LENGTH_LONG).show()
-                        Log.i("file", "content:${file.readText()}")
-                    }
-                } catch (e : Exception) {
-                    Log.e("KEY_ERROR", "UNABLE TO DOWNLOAD FILE")
-                    e.printStackTrace()
-                }
-            },
-            {
-                Log.e("error get", it.toString())
-                SharedPreferences.getInstance(this).logout()
-            })
-        {
-            override fun getHeaders(): MutableMap<String, String> {
-                return mutableMapOf("authorization" to token)
-            }
-
-            override fun parseNetworkResponse(response: NetworkResponse?): Response<ByteArray> {
-                return Response.success( response?.data, HttpHeaderParser.parseCacheHeaders(response));
-            }
-        }
-
-        VolleySingleton.getInstance(this).addToRequestQueue(customRequest)
-    }
-
-    private suspend fun updateAdapter(requestBody : String) {
-        val files = parse(requestBody)
-        ArrayAdapter(
-            this, android.R.layout.simple_spinner_item, files
-        ).also {
-            arrayAdapter ->
-                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                requestSpinner.adapter = arrayAdapter
-        }
-        requestSpinner.onItemSelectedListener = this
-
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val user = SharedPreferences.getInstance(this).getUser()
-        val fileAttributes : FileAttributes = parent?.getItemAtPosition(position) as FileAttributes
-        getFile(fileAttributes.name, user.password, user.token)
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
-    */
 }
