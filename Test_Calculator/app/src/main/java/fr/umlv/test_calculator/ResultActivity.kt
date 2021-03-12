@@ -2,11 +2,9 @@ package fr.umlv.test_calculator
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import fr.umlv.test_calculator.utils.ConfroidUtils
-import kotlinx.android.synthetic.main.activity_load_config.*
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
+import fr.umlv.confroidutils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_result.*
 
 class ResultActivity : AppCompatActivity() {
