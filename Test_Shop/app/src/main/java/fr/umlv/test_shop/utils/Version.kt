@@ -1,4 +1,4 @@
-package fr.umlv.test_shop.utils
-
-class Version {
-}
+//package fr.umlv.test_shop.utils
+//
+//class Version {
+//}

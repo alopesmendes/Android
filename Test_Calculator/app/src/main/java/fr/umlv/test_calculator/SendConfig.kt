@@ -4,16 +4,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import fr.umlv.confroidutils.ConfroidUtils
 import fr.umlv.test_calculator.config.CalculatorPreferences
-import fr.umlv.test_calculator.reflect.BillingDetail
-import fr.umlv.test_calculator.reflect.ShippingAddress
-import fr.umlv.test_calculator.reflect.ShoppingInfo
-import fr.umlv.test_calculator.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_send_config.*
-import kotlinx.android.synthetic.main.activity_send_config.version_edit_text
 
 class SendConfig : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

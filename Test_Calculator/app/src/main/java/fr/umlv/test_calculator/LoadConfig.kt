@@ -1,10 +1,9 @@
 package fr.umlv.test_calculator
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import fr.umlv.test_calculator.utils.ConfroidUtils
+import androidx.appcompat.app.AppCompatActivity
+import fr.umlv.confroidutils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_load_config.*
 
 class LoadConfig : AppCompatActivity() {

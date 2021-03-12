@@ -3,13 +3,12 @@ package fr.umlv.test_shop
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import fr.umlv.confroidutils.ConfroidUtils
 import fr.umlv.test_shop.config.BillingDetail
 import fr.umlv.test_shop.config.ShippingAddress
 import fr.umlv.test_shop.config.ShoppingInfo
 import fr.umlv.test_shop.config.ShoppingPreferences
-import fr.umlv.test_shop.utils.ConfroidUtils
 import kotlinx.android.synthetic.main.activity_send_config.*
-import kotlinx.android.synthetic.main.activity_send_config.version_edit_text
 
 class SendConfig : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
