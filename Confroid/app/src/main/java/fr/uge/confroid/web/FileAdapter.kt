@@ -1,18 +1,21 @@
 package fr.uge.confroid.web
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import fr.uge.confroid.R
 
-class FileAdapter(val listener: OnFileListener, var requests: List<FileAttributes>) : RecyclerView.Adapter<FileAdapter.ViewHolder>() {
+class FileAdapter(val listener: OnFileListener, var requests: List<FileAttributes>) : RecyclerView.Adapter<FileAdapter.ViewHolder>(), Filterable {
+    private lateinit var requestsFull : List<FileAttributes>
 
-    inner class ViewHolder(itemView : View) :  RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class ViewHolder(itemView: View) :  RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val textView : TextView = itemView.findViewById(R.id.textCardView)
         private val constraintLayout : ConstraintLayout = itemView.findViewById(R.id.fileCardConstraintLayout)
 
@@ -29,7 +32,10 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
         }
     }
 
-    inner class FileDiffUtil(val old : List<FileAttributes>, val current : List<FileAttributes>) : DiffUtil.Callback() {
+    inner class FileDiffUtil(
+        private val old: List<FileAttributes>,
+        private val current: List<FileAttributes>
+    ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int {
             return old.size
         }
@@ -69,6 +75,10 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
         return requests.size
     }
 
+    fun initFullList(fileAttributes: List<FileAttributes>) {
+        requestsFull = fileAttributes.toList()
+    }
+
     fun updateRequests(fileAttributes: List<FileAttributes>) {
         val old = requests
         val diff = DiffUtil.calculateDiff(
@@ -76,5 +86,38 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
         )
         requests = fileAttributes
         diff.dispatchUpdatesTo(this)
+    }
+
+    override fun getFilter(): Filter {
+        return filter
+    }
+
+    private val filter : Filter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+            val filteredList = ArrayList<FileAttributes>()
+            if (constraint == null || constraint.isEmpty()) {
+                filteredList.addAll(requestsFull)
+            } else {
+                val filterPattern = constraint.toString().toLowerCase().trim()
+                for (item in requestsFull) {
+                    if (item.name.toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item)
+                    }
+                }
+            }
+            val results = FilterResults()
+            results.values = filteredList
+            return results
+        }
+
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+            val results = results?.values as List<FileAttributes>
+            if (results == null) {
+                updateRequests(requests)
+            } else {
+                updateRequests(results)
+            }
+        }
+
     }
 }
