@@ -162,6 +162,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.logoutItem -> {
                 WebSharedPreferences.getInstance(applicationContext).logout()
             }
+            R.id.licenseItem -> {
+                navController.navigate(R.id.action_appFragment_to_licenseFragment)
+            }
+            R.id.helpItem -> {
+                navController.navigate(R.id.action_appFragment_to_helpFragment)
+            }
 
             R.id.settingItem -> {
                 navController.navigate(R.id.action_appFragment_to_settingFragment)
