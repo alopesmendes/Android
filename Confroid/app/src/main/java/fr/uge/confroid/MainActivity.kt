@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             resources.updateConfiguration(conf, resources.displayMetrics)
             mainNavigationView.menu.clear()
             mainNavigationView.inflateMenu(R.menu.nav_menu)
+            isLoggedInVisibility()
 
         })
 
