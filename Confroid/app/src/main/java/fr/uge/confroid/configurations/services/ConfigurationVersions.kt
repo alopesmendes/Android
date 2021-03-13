@@ -4,7 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import fr.uge.confroid.configurations.AllVersionsActivity
+import fr.uge.confroid.configurations.AllVersionsFragment
 import fr.uge.confroid.configurations.AppFragment
 
 class ConfigurationVersions : Service() {
@@ -24,15 +24,12 @@ class ConfigurationVersions : Service() {
 
 //            ENVOIE LES VERSIONS AU RECEIVER DU MAINACTIVITY VIA UNE INTENT
             if (versions != null) {
-                Intent(this, AllVersionsActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-                    putExtra("app", app)
-                    putExtra("versions", versions.toTypedArray())
-                    putExtra("request", request)
-
-                    startActivity(this)
-                }
+                val broadcastIntent = Intent()
+                broadcastIntent.action = AllVersionsFragment.broadcastAction
+                broadcastIntent.putExtra("app", app)
+                broadcastIntent.putExtra("versions", versions.toTypedArray())
+                broadcastIntent.putExtra("request", request)
+                sendBroadcast(broadcastIntent)
             }
         }
         return super.onStartCommand(intent, flags, startId)

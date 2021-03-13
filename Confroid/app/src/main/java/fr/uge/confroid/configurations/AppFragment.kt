@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -55,7 +56,11 @@ class AppFragment : Fragment(R.layout.fragment_app) {
         if (WebSharedPreferences.getInstance(requireActivity()).isLoggedIn()) {
             val configs = model.getAllConfigs()
             for (c in configs) {
-                MyProvider.writeFile(requireActivity(), "${c.app}_${c.version}.txt", c.content.toByteArray())
+                MyProvider.writeFile(
+                    requireActivity(),
+                    "${c.app}_${c.version}.txt",
+                    c.content.toByteArray()
+                )
             }
         }
         when {
@@ -71,13 +76,21 @@ class AppFragment : Fragment(R.layout.fragment_app) {
 
                 if (prefs.getString(app, "") == token) {
                     if (receiver != null) {
-                        Intent(activity, Class.forName(receiver)).apply {
-                            putExtra("app", app)
-                            putExtra("version", version)
-                            putExtra("content", content)
-                            putExtra("tag", tag)
-                            putExtra("request", request)
-                            requireActivity().startService(this)
+                        if (receiver == "fr.uge.confroid.configurations.services.ConfigurationVersions") {
+                            val bundle = bundleOf("app" to app, "request" to request)
+                            navController.navigate(
+                                R.id.action_appFragment_to_allVersionsFragment,
+                                bundle
+                            )
+                        } else {
+                            Intent(activity, Class.forName(receiver)).apply {
+                                putExtra("app", app)
+                                putExtra("version", version)
+                                putExtra("content", content)
+                                putExtra("tag", tag)
+                                putExtra("request", request)
+                                requireActivity().startService(this)
+                            }
                         }
                     }
 //                    TOKEN RETRIEVING
@@ -109,7 +122,11 @@ class AppFragment : Fragment(R.layout.fragment_app) {
             val configs = model.getAllConfigs()
             test1.text = configs.joinToString("\n\n", "{", "}")
             for (c in configs) {
-                MyProvider.writeFile(requireActivity(), "${c.app}_${c.version}.txt", c.content.toByteArray())
+                MyProvider.writeFile(
+                    requireActivity(),
+                    "${c.app}_${c.version}.txt",
+                    c.content.toByteArray()
+                )
             }
 
         }
@@ -154,12 +171,14 @@ class AppFragment : Fragment(R.layout.fragment_app) {
                 Toast.makeText(activity, "configuration app required", Toast.LENGTH_SHORT)
                     .show()
             } else {
-                Toast.makeText(activity, "all versions selected", Toast.LENGTH_SHORT).show()
-                Intent(activity, ConfigurationVersions::class.java).apply {
-                    putExtra("app", app)
-                    requireActivity().startService(this)
-                }
+//                Toast.makeText(activity, "all versions selected", Toast.LENGTH_SHORT).show()
+//                Intent(activity, ConfigurationVersions::class.java).apply {
+//                    putExtra("app", app)
+//                    requireActivity().startService(this)
+//                }
 
+                val bundle = bundleOf("app" to app)
+                navController.navigate(R.id.action_appFragment_to_allVersionsFragment, bundle)
             }
         }
     }

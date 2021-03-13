@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.uge.confroid.R
 
-class ConfigAdapter (val listener: AllVersionsActivity, private val listConfigs: List<Config>):RecyclerView.Adapter<ConfigAdapter.ViewHolder>(){
+class ConfigAdapter (val listener: AllVersionsFragment, private val listConfigs: List<Config>):RecyclerView.Adapter<ConfigAdapter.ViewHolder>(){
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         private val textVersion : TextView = itemView.findViewById(R.id.textVersion)
