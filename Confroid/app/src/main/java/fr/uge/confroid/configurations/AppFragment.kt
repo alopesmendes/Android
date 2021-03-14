@@ -14,7 +14,6 @@ import androidx.navigation.Navigation
 import fr.uge.confroid.R
 import fr.uge.confroid.configurations.receivers.TokenDispenser
 import fr.uge.confroid.configurations.services.ConfigurationPuller
-import fr.uge.confroid.configurations.services.ConfigurationVersions
 import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.web.WebSharedPreferences
 import kotlinx.android.synthetic.main.fragment_app.*
@@ -76,20 +75,37 @@ class AppFragment : Fragment(R.layout.fragment_app) {
 
                 if (prefs.getString(app, "") == token) {
                     if (receiver != null) {
-                        if (receiver == "fr.uge.confroid.configurations.services.ConfigurationVersions") {
-                            val bundle = bundleOf("app" to app, "request" to request)
-                            navController.navigate(
-                                R.id.action_appFragment_to_allVersionsFragment,
-                                bundle
-                            )
-                        } else {
-                            Intent(activity, Class.forName(receiver)).apply {
-                                putExtra("app", app)
-                                putExtra("version", version)
-                                putExtra("content", content)
-                                putExtra("tag", tag)
-                                putExtra("request", request)
-                                requireActivity().startService(this)
+                        when (receiver) {
+                            "fr.uge.confroid.configurations.services.ConfigurationVersions" -> {
+                                val bundle = bundleOf("app" to app, "request" to request)
+                                navController.navigate(
+                                    R.id.action_appFragment_to_allVersionsFragment,
+                                    bundle
+                                )
+                            }
+                            "fr.uge.confroid.configurations.services.ConfigurationPuller" -> {
+                                val bundle = bundleOf(
+                                    "app" to app,
+                                    "version" to version,
+                                    "request" to request
+                                )
+                                navController.navigate(
+                                    R.id.action_appFragment_to_configFragment,
+                                    bundle
+                                )
+                            }
+                            "fr.uge.confroid.configurations.services.ConfigurationPusher" -> {
+                                val bundle = bundleOf(
+                                    "app" to app,
+                                    "version" to version,
+                                    "content" to content,
+                                    "tag" to tag,
+                                    "request" to request
+                                )
+                                navController.navigate(
+                                    R.id.action_appFragment_to_configFragment,
+                                    bundle
+                                )
                             }
                         }
                     }
@@ -171,12 +187,6 @@ class AppFragment : Fragment(R.layout.fragment_app) {
                 Toast.makeText(activity, "configuration app required", Toast.LENGTH_SHORT)
                     .show()
             } else {
-//                Toast.makeText(activity, "all versions selected", Toast.LENGTH_SHORT).show()
-//                Intent(activity, ConfigurationVersions::class.java).apply {
-//                    putExtra("app", app)
-//                    requireActivity().startService(this)
-//                }
-
                 val bundle = bundleOf("app" to app)
                 navController.navigate(R.id.action_appFragment_to_allVersionsFragment, bundle)
             }

@@ -5,12 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,15 +47,6 @@ class AllVersionsFragment : Fragment() {
                     val request = intent.getLongExtra("request", 0L)
                     if (request != 0L) {
                         send_all_to_app_button.visibility = View.VISIBLE
-
-                        send_all_to_app_button.setOnClickListener {
-                            Intent().apply {
-                                action = Intent.ACTION_SEND
-                                putExtra("content", configs?.joinToString("\n", "{", "}"))
-                                putExtra("request", request)
-                                startActivity(this)
-                            }
-                        }
                     }
 
                     Intent(activity, ConfigurationVersions::class.java).apply {
@@ -81,6 +71,15 @@ class AllVersionsFragment : Fragment() {
             putExtra("request", request)
             requireActivity().startService(this)
         }
+
+        send_all_to_app_button.setOnClickListener {
+            Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra("content", configs?.joinToString("\n", "{", "}"))
+                putExtra("request", request)
+                startActivity(this)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -92,12 +91,10 @@ class AllVersionsFragment : Fragment() {
     }
 
     fun onClickListener(position: Int) {
-        val intent = Intent(activity, ConfigActivity::class.java)
-        intent.putExtra("config", configs?.get(position))
-        startActivity(intent)
-
-//        val bundle = bundleOf("config" to configs?.get(position))
-//        navController.navigate(R.id.action_allVersionsFragment_to_configFragment, bundle)
+        val config = configs?.get(position)
+        val bundle =
+            bundleOf("config" to config, "app" to config?.app, "version" to config?.version)
+        navController.navigate(R.id.action_allVersionsFragment_to_configFragment, bundle)
     }
 
     //    POUR ENREGISTRER LE RECEIVER DE L'INTENT DU SERVICE DE PULLER
