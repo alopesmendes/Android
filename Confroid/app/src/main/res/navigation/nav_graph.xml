@@ -57,6 +57,13 @@
                 android:defaultValue=""
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_appFragment_to_configFragment"
+            app:destination="@id/configFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -168,6 +175,34 @@
             android:name="app"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/action_allVersionsFragment_to_configFragment"
+            app:destination="@id/configFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/configFragment"
+        android:name="fr.uge.confroid.configurations.ConfigFragment"
+        android:label="fragment_config"
+        tools:layout="@layout/fragment_config">
+        <action
+            android:id="@+id/action_configFragment_to_allVersionsFragment"
+            app:destination="@id/allVersionsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_configFragment_to_appFragment"
+            app:destination="@id/appFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 </navigation>

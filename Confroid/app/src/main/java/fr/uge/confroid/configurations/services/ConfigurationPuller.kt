@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import fr.uge.confroid.configurations.AppFragment
-import fr.uge.confroid.configurations.ConfigActivity
+import fr.uge.confroid.configurations.ConfigFragment
+
+//import fr.uge.confroid.configurations.ConfigActivity
 
 class ConfigurationPuller : Service() {
 
@@ -25,14 +27,20 @@ class ConfigurationPuller : Service() {
 
 //            ENVOIE LA CONFIG AU RECEIVER DU MAINACTIVITY VIA UNE INTENT
             if (config != null) {
-                Intent(this, ConfigActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                Intent(this, ConfigActivity::class.java).apply {
+//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//
+//                    putExtra("config", config)
+//                    putExtra("request", request)
+//
+//                    startActivity(this)
+//                }
 
-                    putExtra("config", config)
-                    putExtra("request", request)
-
-                    startActivity(this)
-                }
+                val broadcastIntent = Intent()
+                broadcastIntent.action = ConfigFragment.broadcastAction
+                broadcastIntent.putExtra("config", config)
+                broadcastIntent.putExtra("request", request)
+                sendBroadcast(broadcastIntent)
             }
         }
 

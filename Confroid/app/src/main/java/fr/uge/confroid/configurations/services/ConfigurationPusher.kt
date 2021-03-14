@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import fr.uge.confroid.configurations.AppFragment
 import fr.uge.confroid.configurations.ConfigActivity
+import fr.uge.confroid.configurations.ConfigFragment
 
 class ConfigurationPusher : Service() {
 
@@ -29,14 +30,20 @@ class ConfigurationPusher : Service() {
             val config = AppFragment.model.addConfig(app, version, content.toString(), tag)
 
             if (config != null) {
-                Intent(this, ConfigActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                Intent(this, ConfigActivity::class.java).apply {
+//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//
+//                    putExtra("config", config)
+//                    putExtra("request", request)
+//
+//                    startActivity(this)
+//                }
 
-                    putExtra("config", config)
-                    putExtra("request", request)
-
-                    startActivity(this)
-                }
+                val broadcastIntent = Intent()
+                broadcastIntent.action = ConfigFragment.broadcastAction
+                broadcastIntent.putExtra("config", config)
+                broadcastIntent.putExtra("request", request)
+                sendBroadcast(broadcastIntent)
             }
         }
 
