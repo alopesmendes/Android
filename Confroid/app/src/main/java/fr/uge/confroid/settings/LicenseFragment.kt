@@ -1,15 +1,16 @@
-package fr.uge.confroid
+package fr.uge.confroid.settings
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import fr.uge.confroid.R
 
-class HelpFragment : Fragment(R.layout.fragment_help) {
+class LicenseFragment : Fragment(R.layout.fragment_license) {
 
     private lateinit var navController: NavController
 
@@ -25,8 +26,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         savedInstanceState: Bundle?
     ): View? {
 
-        val rootView = inflater.inflate(R.layout.fragment_help, container, false)
-        // TODO: change URL
+        val rootView = inflater.inflate(R.layout.fragment_license, container, false)
         val url = "https://raw.githubusercontent.com/alopesmendes/Android/main/LICENSE"
         val view = rootView.findViewById(R.id.webView) as WebView
         view.settings.javaScriptEnabled = true
@@ -34,4 +34,5 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
 
         return rootView ;
     }
+
 }

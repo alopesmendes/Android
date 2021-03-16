@@ -22,6 +22,7 @@
     <string name="help">Help</string>
     <string name="license">License</string>
     <string name="search">Search</string>
+    <string name="tutorial">Tutorial</string>
 
     <string-array name="languages_list">
         <item name="0">En</item>
