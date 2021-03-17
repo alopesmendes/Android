@@ -65,8 +65,19 @@ object ConfroidUtils {
         }
     }
 
-    fun <T> cancelConfigurationSubscription(context: Context, callback: Consumer<T>?) {
-        TOKEN = ""
+    fun <T> cancelConfigurationSubscription(
+        context: Context,
+        name: String,
+        callback: Consumer<T>?
+    ) {
+        Intent().apply {
+            action = Intent.ACTION_SEND
+
+            putExtra("app", name)
+            putExtra("token", TOKEN)
+
+            context.startActivity(this)
+        }
     }
 
     fun getConfigurationVersions(

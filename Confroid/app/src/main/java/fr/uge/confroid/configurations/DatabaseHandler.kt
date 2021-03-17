@@ -73,4 +73,8 @@ class DatabaseHandler(
     fun containsTable(app: String): Boolean {
         return TABLES.contains(app)
     }
+
+    fun removeApp(app: String) {
+        TABLES.remove(app)
+    }
 }

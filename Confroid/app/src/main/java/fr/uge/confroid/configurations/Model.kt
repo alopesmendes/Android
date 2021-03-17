@@ -74,6 +74,11 @@ class Model(context: Context) {
         db.delete(app, "${DatabaseHandler.KEY_ID} = $id", null)
     }
 
+    fun deleteApp(app: String) {
+        db.execSQL("DROP TABLE IF EXISTS $app")
+        handler.removeApp(app)
+    }
+
     fun getConfig(app: String, version: Int): Config? {
         if (!handler.containsTable(app)) {
             return null
