@@ -147,7 +147,7 @@
 
     <fragment
         android:id="@+id/helpFragment"
-        android:name="fr.uge.confroid.settings.HelpFragment"
+        android:name="fr.uge.confroid.settings.help.HelpFragment"
         tools:layout="@layout/fragment_help">
         <action
             android:id="@+id/action_helpFragment_to_appFragment"
