@@ -37,6 +37,8 @@
         <item name="2">@drawable/ic_french</item>
         <item name="3">@drawable/ic_portugal</item>
     </integer-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="menu">Menu</string>
 
 
 </resources>

@@ -6,26 +6,27 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/titleHelpItem"
-        android:layout_width="wrap_content"
+        android:id="@+id/tutorialTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:padding="15dp"
         android:gravity="center_horizontal"
         android:textAlignment="center"
-        android:textSize="15sp"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/helpImage"
+        android:id="@+id/tutorialImage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/descriptionHelpItem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleHelpItem" />
+        app:layout_constraintTop_toBottomOf="@+id/tutorialTitle"
+        android:layout_margin="15dp"/>
 
     <TextView
         android:id="@+id/descriptionHelpItem"
@@ -35,7 +36,8 @@
         android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="15sp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
