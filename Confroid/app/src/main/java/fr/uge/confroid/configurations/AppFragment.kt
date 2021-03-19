@@ -11,6 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import fr.uge.confroid.R
 import fr.uge.confroid.configurations.receivers.TokenDispenser
 import fr.uge.confroid.configurations.services.ConfigurationPuller
@@ -51,6 +52,9 @@ class AppFragment : Fragment(R.layout.fragment_app) {
 
         model = Model(requireActivity())
         model.open()
+
+        ////////////////////////////////////////////////
+        initAppRecyclerView()
 
         if (WebSharedPreferences.getInstance(requireActivity()).isLoggedIn()) {
             val configs = model.getAllConfigs()
@@ -147,6 +151,7 @@ class AppFragment : Fragment(R.layout.fragment_app) {
 
         }
 
+        // SUPPRIME TOUTES LES DONNEES DE LA DB
         reset_button.setOnClickListener {
             model.reset()
         }
@@ -193,4 +198,18 @@ class AppFragment : Fragment(R.layout.fragment_app) {
         }
     }
 
+    private fun initAppRecyclerView() {
+        appRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@AppFragment.context)
+            adapter = ApplicationAdapter(initAppList())
+        }
+    }
+
+    private fun initAppList(): List<Application> {
+        val appLst = ArrayList<Application>()
+        for (app in model.showTables()) {
+            appLst.add(Application(app, 0))
+        }
+        return appLst
+    }
 }
