@@ -19,7 +19,7 @@ import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.web.WebSharedPreferences
 import kotlinx.android.synthetic.main.fragment_app.*
 
-class AppFragment : Fragment(R.layout.fragment_app) {
+class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemClickListener {
 
     val filter: IntentFilter = IntentFilter()
 
@@ -33,7 +33,8 @@ class AppFragment : Fragment(R.layout.fragment_app) {
     }
 
     private lateinit var navController: NavController
-
+    private lateinit var appLst: ArrayList<Application>
+    private lateinit var appAdapter: ApplicationAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -199,17 +200,26 @@ class AppFragment : Fragment(R.layout.fragment_app) {
     }
 
     private fun initAppRecyclerView() {
+        appLst = initAppList()
+        appAdapter = ApplicationAdapter(appLst, this@AppFragment)
         appRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@AppFragment.context)
-            adapter = ApplicationAdapter(initAppList())
+            adapter = appAdapter
         }
     }
 
-    private fun initAppList(): List<Application> {
+    private fun initAppList(): ArrayList<Application> {
         val appLst = ArrayList<Application>()
         for (app in model.showTables()) {
             appLst.add(Application(app, 0))
         }
         return appLst
+    }
+
+    override fun onItemClick(position: Int) {
+        Toast.makeText(this@AppFragment.context, "Item test $position", Toast.LENGTH_SHORT).show()
+        val clickedItem = appLst[position]
+        clickedItem.configCount += 1
+        appAdapter.notifyItemChanged(position)
     }
 }

@@ -7,15 +7,31 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.application_view.view.*
 
-class ApplicationAdapter(private val listApplications: List<Application>) : RecyclerView.Adapter<ApplicationAdapter.ViewHolder>() {
+class ApplicationAdapter(
+    private val listApplications: List<Application>,
+    private val listener: OnItemClickListener
+) : RecyclerView.Adapter<ApplicationAdapter.ViewHolder>() {
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
         val appName = itemView.appNameTextView
         val configCount = itemView.configCountTextView
+
+        init {
+            itemView.setOnClickListener(this)
+        }
 
         fun update(application: Application) {
             appName.text = application.name
             configCount.text = "${application.configCount} configurations"
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(position)
+            }
         }
 
     }
@@ -34,6 +50,10 @@ class ApplicationAdapter(private val listApplications: List<Application>) : Recy
 
     override fun getItemCount(): Int {
         return listApplications.size
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
     }
 
 }
