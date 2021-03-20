@@ -1,6 +1,6 @@
 package fr.uge.confroid.configurations
 
-class Application(
+data class Application(
     val name: String,
     var configCount: Int
 ) {
