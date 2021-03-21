@@ -31,7 +31,7 @@ class ConfigActivity : AppCompatActivity() {
                 //textContent.text = content
                 var fields = toListField(toList(content))
                 Log.i("JSON", fields.toString())
-                RvValueField.adapter = FieldAdapter(fields)
+                RvValueField.adapter = FieldAdapter(ConfigFragment(),fields)
                 RvValueField.layoutManager = LinearLayoutManager(this@ConfigActivity)
                 RvValueField.setHasFixedSize(true)
 
@@ -94,7 +94,7 @@ class ConfigActivity : AppCompatActivity() {
         return res
     }
 
-    fun toListField(strs: List<String>): List<Field> {
+    fun toListField(strs: List<String>): ArrayList<Field> {
         var lst = arrayListOf<Field>()
         for (str in strs) {
             var field = str.substring(0, str.indexOf("="))

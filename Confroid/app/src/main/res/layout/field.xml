@@ -33,11 +33,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/nameField" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RvValueField"
-            android:layout_height="0dp"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/nameField"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

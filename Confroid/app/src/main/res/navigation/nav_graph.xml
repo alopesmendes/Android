@@ -203,6 +203,21 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_configFragment_to_leafFragment"
+            app:destination="@id/leafFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+    <fragment
+        android:id="@+id/leafFragment"
+        android:name="fr.uge.confroid.configurations.LeafFragment"
+        android:label="fragment_leaf"
+        tools:layout="@layout/fragment_leaf">
+    </fragment>
+
 
 </navigation>
