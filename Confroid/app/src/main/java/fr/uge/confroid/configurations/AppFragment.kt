@@ -28,13 +28,23 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
 
     companion object {
         lateinit var model: Model
+        lateinit var appAdapter: ApplicationAdapter
+        lateinit var appLst: ArrayList<Application>
         const val broadcastConfigAction = "getConfig"
         const val broadcastAllVersionsAction = "getAllVersions"
+
+        fun initAppList(): ArrayList<Application> {
+            val res = ArrayList<Application>()
+            var configCount = 0
+            for (app in model.showTables()) {
+                configCount = (model.getAllVersions(app))?.size ?: 0
+                res.add(Application(app, configCount))
+            }
+            return res
+        }
     }
 
     private lateinit var navController: NavController
-    private lateinit var appLst: ArrayList<Application>
-    private lateinit var appAdapter: ApplicationAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -155,6 +165,7 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
         // SUPPRIME TOUTES LES DONNEES DE LA DB
         reset_button.setOnClickListener {
             model.reset()
+            appAdapter.updateRequests(initAppList())
         }
 
         show_all_tables_button.setOnClickListener {
@@ -208,18 +219,10 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
         }
     }
 
-    private fun initAppList(): ArrayList<Application> {
-        val appLst = ArrayList<Application>()
-        for (app in model.showTables()) {
-            appLst.add(Application(app, 0))
-        }
-        return appLst
-    }
-
     override fun onItemClick(position: Int) {
-        Toast.makeText(this@AppFragment.context, "Item test $position", Toast.LENGTH_SHORT).show()
         val clickedItem = appLst[position]
-        clickedItem.configCount += 1
-        appAdapter.notifyItemChanged(position)
+        val app = clickedItem.name
+        val bundle = bundleOf("app" to app)
+        navController.navigate(R.id.action_appFragment_to_allVersionsFragment, bundle)
     }
 }
