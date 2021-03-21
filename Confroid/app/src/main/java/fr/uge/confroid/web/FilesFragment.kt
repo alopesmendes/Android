@@ -46,7 +46,6 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
 
         navController = Navigation.findNavController(view)
 
-
         if (WebSharedPreferences.getInstance(requireActivity()).isLoggedIn()) {
             getAllFiles()
             val user = WebSharedPreferences.getInstance(requireActivity()).getUser()

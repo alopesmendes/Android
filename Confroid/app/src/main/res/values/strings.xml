@@ -23,6 +23,10 @@
     <string name="license">License</string>
     <string name="search">Search</string>
     <string name="tutorial">Tutorial</string>
+    <string name="menu">Menu</string>
+    <string name="language_explanation_text">Select which language you want your app in</string>
+    <string name="login_fail">We were unable to login. Try again</string>
+    <string name="help_explain_login">Enter username and password. Then the login button. If it does not work will display an error message.</string>
 
     <string-array name="languages_list">
         <item name="0">En</item>
@@ -37,8 +41,9 @@
         <item name="2">@drawable/ic_french</item>
         <item name="3">@drawable/ic_portugal</item>
     </integer-array>
+    <string name="help_explain_register_button">Clicking the text will bring you to the register</string>
+    <string name="help_explain_register_text">Enter username and same password then click on register</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="menu">Menu</string>
 
 
 </resources>

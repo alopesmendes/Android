@@ -12,7 +12,7 @@
         android:id="@+id/imageLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/condroid_logo"/>
+        android:src="@drawable/confroid_logo"/>
 
 
 </LinearLayout>

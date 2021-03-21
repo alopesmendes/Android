@@ -10,9 +10,9 @@
     <application
         android:allowBackup="true"
         android:configChanges="locale"
-        android:icon="@drawable/condroid_logo"
+        android:icon="@drawable/confroid_logo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/condroid_logo"
+        android:roundIcon="@drawable/confroid_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Confroid">
 

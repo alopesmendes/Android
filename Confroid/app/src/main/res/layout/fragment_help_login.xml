@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    tools:context=".settings.help.fragments.HelpLoginFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/helpLoginTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_text"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center_horizontal" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEndHorizontalLoginImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEndVerticalLoginImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEndHorizontalLoginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.28" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStartHorizontalTextLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.52" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEndHorizontalTextLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.65" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStartVerticalTextLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStartHorizontalLoginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.22" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEndVerticalTextLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.7" />
+
+        <ImageView
+            android:id="@+id/helpPointRegisterTextOfLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_right_point"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineEndHorizontalLoginImage"
+            app:layout_constraintStart_toStartOf="@+id/guidelineEndVerticalLoginImage" />
+
+        <ImageView
+            android:id="@+id/helpLoginImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/login_help"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineEndHorizontalLoginImage"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEndVerticalLoginImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helpLoginTitle" />
+
+        <ImageView
+            android:id="@+id/helpLoginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_login_button"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineEndHorizontalLoginButton"
+            app:layout_constraintStart_toStartOf="@+id/guidelineEndVerticalLoginImage"
+            app:layout_constraintTop_toTopOf="@+id/guidelineStartHorizontalLoginButton" />
+
+        <ImageView
+            android:id="@+id/helpExplainLoginImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_man_explain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEndVerticalLoginImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helpLoginImage"
+            />
+
+        <TextView
+            android:id="@+id/helpExplainLoginText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/help_explain_login"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineEndHorizontalTextLogin"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEndVerticalTextLogin"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStartVerticalTextLogin"
+            app:layout_constraintTop_toTopOf="@+id/guidelineStartHorizontalTextLogin"
+            android:visibility="invisible"
+            android:scrollbars = "vertical"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
