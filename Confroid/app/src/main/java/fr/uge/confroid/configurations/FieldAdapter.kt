@@ -11,7 +11,7 @@ import fr.uge.confroid.CustomDiffUtil
 import fr.uge.confroid.R
 
 
-class FieldAdapter(val listener: ConfigFragment, private var listFields: ArrayList<Field>) : RecyclerView.Adapter<FieldAdapter.ViewHolder>(){
+class FieldAdapter(val listenerPrimary: ConfigFragment,val listenerSecondary: BranchFragment, private var listFields: ArrayList<Field>, private val status: Boolean) : RecyclerView.Adapter<FieldAdapter.ViewHolder>(){
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         private val nameField : TextView = itemView.findViewById(R.id.nameField)
@@ -32,7 +32,12 @@ class FieldAdapter(val listener: ConfigFragment, private var listFields: ArrayLi
         }
 
         override fun onClick(v: View?) {
-            listener.onClickListener(adapterPosition)
+            if (status){
+                listenerPrimary.onClickListener(adapterPosition)
+            }else{
+                listenerSecondary.onClickListener(adapterPosition)
+            }
+
         }
     }
 
@@ -47,21 +52,12 @@ class FieldAdapter(val listener: ConfigFragment, private var listFields: ArrayLi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.i("values $position", "${listFields[position]}")
+        //Log.i("values $position", "${listFields[position]}")
         holder.update(listFields[position])
     }
 
     override fun getItemCount(): Int {
         return listFields.size
-    }
-
-    fun updateRequests(fields: ArrayList<Field>) {
-        val old = listFields
-        val diff = DiffUtil.calculateDiff(
-            CustomDiffUtil(old, fields)
-        )
-        listFields = fields
-        diff.dispatchUpdatesTo(this)
     }
 
     fun updatevalue(positionToChange: Int, field: Field?) {

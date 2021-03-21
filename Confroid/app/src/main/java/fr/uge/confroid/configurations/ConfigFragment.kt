@@ -50,7 +50,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                     if (list.isEmpty()) {
                         list = fields
                     }
-                    adapter = FieldAdapter(this@ConfigFragment, list)
+                    adapter = FieldAdapter(this@ConfigFragment, BranchFragment(),list, true)
                     RvValueField.adapter = adapter
                     RvValueField.layoutManager = LinearLayoutManager(activity)
                     RvValueField.setHasFixedSize(true)
@@ -110,12 +110,17 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Field>(
             "updateField"
         )?.observe(viewLifecycleOwner, { field ->
-            Log.i("changement a faire", field.toString())
+            //Log.i("changement a faire", field.toString())
             list[positionToChange] = field
             adapter.updatevalue(positionToChange,field)
             adapter.notifyItemChanged(positionToChange)
-            Log.i("changement",adapter.getfield(positionToChange).toString())
+            //Log.i("changement",adapter.getfield(positionToChange).toString())
         })
+
+        createConfig.setOnClickListener{
+            val bundle = bundleOf("fields" to list)
+            findNavController().navigate(R.id.action_configFragment_to_addConfigFragment, bundle)
+        }
     }
 
     //    POUR ENREGISTRER LE RECEIVER DE L'INTENT DU SERVICE DE PULLER
@@ -183,12 +188,18 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
         findNavController().navigate(R.id.action_configFragment_to_leafFragment, bundle)
     }
 
+    private fun navigateToBranch(field: Field) {
+        Log.i("gotoLeaf", field.toString())
+        val bundle = bundleOf("field" to field)
+        findNavController().navigate(R.id.action_configFragment_to_branchFragment, bundle)
+    }
+
     fun onClickListener(position: Int){
         val field = adapter.getfield(position)
+        positionToChange = position
         if (field.content.isNullOrBlank()){
-
+            navigateToBranch(field)
         }else{
-            positionToChange = position
             navigateToLeaf(field)
         }
     }
