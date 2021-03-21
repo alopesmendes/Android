@@ -1,11 +1,13 @@
 package fr.uge.confroid.configurations
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import fr.uge.confroid.CustomDiffUtil
 import fr.uge.confroid.R
 
 
@@ -45,6 +47,7 @@ class FieldAdapter(val listener: ConfigFragment, private var listFields: ArrayLi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.i("values $position", "${listFields[position]}")
         holder.update(listFields[position])
     }
 
@@ -52,9 +55,18 @@ class FieldAdapter(val listener: ConfigFragment, private var listFields: ArrayLi
         return listFields.size
     }
 
+    fun updateRequests(fields: ArrayList<Field>) {
+        val old = listFields
+        val diff = DiffUtil.calculateDiff(
+            CustomDiffUtil(old, fields)
+        )
+        listFields = fields
+        diff.dispatchUpdatesTo(this)
+    }
+
     fun updatevalue(positionToChange: Int, field: Field?) {
         if (field != null) {
-            listFields.set(positionToChange, field)
+            listFields[positionToChange] = field
         }
     }
 
@@ -63,7 +75,7 @@ class FieldAdapter(val listener: ConfigFragment, private var listFields: ArrayLi
     }
 
     fun getfield(position: Int): Field{
-        return listFields.get(position)
+        return listFields[position]
     }
 
 

@@ -30,6 +30,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
     val filter: IntentFilter = IntentFilter()
     lateinit var adapter: FieldAdapter
     var positionToChange = -1
+    var list : ArrayList<Field> = arrayListOf()
 
     companion object {
         val broadcastAction = "getOneVersion"
@@ -46,7 +47,10 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
 
                     val content: String = config.content
                     var fields = toListField(toList(content))
-                    adapter = FieldAdapter(this@ConfigFragment, fields)
+                    if (list.isEmpty()) {
+                        list = fields
+                    }
+                    adapter = FieldAdapter(this@ConfigFragment, list)
                     RvValueField.adapter = adapter
                     RvValueField.layoutManager = LinearLayoutManager(activity)
                     RvValueField.setHasFixedSize(true)
@@ -105,10 +109,11 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Field>(
             "updateField"
-        )?.observe(viewLifecycleOwner, Observer { field ->
+        )?.observe(viewLifecycleOwner, { field ->
             Log.i("changement a faire", field.toString())
+            list[positionToChange] = field
             adapter.updatevalue(positionToChange,field)
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemChanged(positionToChange)
             Log.i("changement",adapter.getfield(positionToChange).toString())
         })
     }
