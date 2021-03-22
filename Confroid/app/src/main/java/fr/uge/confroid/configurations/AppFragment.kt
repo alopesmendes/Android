@@ -165,7 +165,7 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
         // SUPPRIME TOUTES LES DONNEES DE LA DB
         reset_button.setOnClickListener {
             model.reset()
-            appAdapter.updateRequests(initAppList())
+            appAdapter.updateApps(initAppList())
         }
 
         show_all_tables_button.setOnClickListener {

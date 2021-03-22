@@ -87,7 +87,7 @@ class ApplicationAdapter(
 
     }
 
-    fun updateRequests(newApps: List<Application>) {
+    fun updateApps(newApps: List<Application>) {
         val old = listApplications
         val diff = DiffUtil.calculateDiff(
             AppDiffUtil(old, newApps)
