@@ -182,7 +182,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/appFragment"/>
+            app:popUpTo="@id/appFragment" />
     </fragment>
 
     <fragment
@@ -197,8 +197,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/appFragment"
-            />
+            app:popUpTo="@id/appFragment" />
 
         <action
             android:id="@+id/action_configFragment_to_appFragment"
@@ -206,8 +205,8 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popUpTo="@id/appFragment"   
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/appFragment" />
         <action
             android:id="@+id/action_configFragment_to_leafFragment"
             app:destination="@id/leafFragment"
@@ -235,8 +234,7 @@
         android:id="@+id/leafFragment"
         android:name="fr.uge.confroid.configurations.LeafFragment"
         android:label="fragment_leaf"
-        tools:layout="@layout/fragment_leaf">
-    </fragment>
+        tools:layout="@layout/fragment_leaf"></fragment>
 
     <fragment
         android:id="@+id/branchFragment"
@@ -263,8 +261,15 @@
         android:id="@+id/createConfigFragment"
         android:name="fr.uge.confroid.configurations.AddConfigFragment"
         android:label="fragment_createConfig"
-        tools:layout="@layout/fragment_add_config"/>
-
+        tools:layout="@layout/fragment_add_config">
+        <action
+            android:id="@+id/action_createConfigFragment_to_appFragment"
+            app:destination="@id/appFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
 
 </navigation>

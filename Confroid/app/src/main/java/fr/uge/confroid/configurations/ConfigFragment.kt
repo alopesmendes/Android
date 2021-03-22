@@ -118,7 +118,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
         })
 
         createConfig.setOnClickListener{
-            val bundle = bundleOf("fields" to list)
+            val bundle = bundleOf("fields" to list, "app_name" to app, "version_number" to version)
             findNavController().navigate(R.id.action_configFragment_to_addConfigFragment, bundle)
         }
     }
