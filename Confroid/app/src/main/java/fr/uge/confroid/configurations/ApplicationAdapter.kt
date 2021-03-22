@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import fr.uge.confroid.R
-import fr.uge.confroid.web.FileAttributes
 import kotlinx.android.synthetic.main.application_view.view.*
 
 class ApplicationAdapter(
@@ -52,7 +51,9 @@ class ApplicationAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when(holder) {
-            is ViewHolder -> {holder.update(listApplications[position])}
+            is ViewHolder -> {
+                holder.update(listApplications[position])
+            }
         }
     }
 
@@ -86,12 +87,12 @@ class ApplicationAdapter(
 
     }
 
-    fun updateRequests(apps: List<Application>) {
+    fun updateRequests(newApps: List<Application>) {
         val old = listApplications
         val diff = DiffUtil.calculateDiff(
-            AppDiffUtil(old, apps)
+            AppDiffUtil(old, newApps)
         )
-        listApplications = apps
+        listApplications = newApps
         diff.dispatchUpdatesTo(this)
     }
 }

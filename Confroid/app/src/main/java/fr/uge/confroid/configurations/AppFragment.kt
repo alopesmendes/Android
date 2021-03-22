@@ -225,4 +225,9 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
         val bundle = bundleOf("app" to app)
         navController.navigate(R.id.action_appFragment_to_allVersionsFragment, bundle)
     }
+
+    override fun onResume() {
+        super.onResume()
+        initAppRecyclerView()
+    }
 }
