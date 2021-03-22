@@ -1,56 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
     tools:context=".settings.help.fragments.HelpMenuFragment">
 
-    <TextView
-        android:id="@+id/helpMenuTitle"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:textSize="15sp"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:fontFamily="monospace"
-        android:gravity="center_horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/menu"
-        />
-
-    <RelativeLayout
-        android:id="@+id/relativelayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/helpMenuTitle">
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/helpMenuTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center_horizontal"
+            android:padding="15dp"
+            android:text="@string/menu"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="15dp"/>
 
         <ImageView
-            android:id="@+id/myImageView"
+            android:id="@+id/helpToolBarImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/help_1" />
+            android:src="@drawable/help_1"
+            app:layout_constraintStart_toEndOf="@+id/helpPointToolBarImage"
+            app:layout_constraintTop_toBottomOf="@+id/helpMenuTitle" />
 
         <ImageView
-            android:id="@+id/myImageViewText"
-            android:layout_width="120dp"
-            android:layout_height="95dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="281dp"
-            android:layout_marginRight="281dp"
-            android:layout_marginBottom="553dp"
-            android:gravity="center"
-            android:padding="15dp"
-            android:src="@drawable/round_border" />
+            android:id="@+id/helpPointToolBarImage"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_left_point"
+            app:layout_constraintBottom_toBottomOf="@+id/helpToolBarImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helpMenuTitle" />
 
-    </RelativeLayout>
+        <ImageView
+            android:id="@+id/helpMenuImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/menu"
+            android:visibility="invisible"
+            app:layout_constraintStart_toEndOf="@+id/helpPointToolBarImage"
+            app:layout_constraintTop_toBottomOf="@+id/helpToolBarImage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

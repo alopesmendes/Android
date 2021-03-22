@@ -181,27 +181,32 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/appFragment"/>
     </fragment>
 
     <fragment
         android:id="@+id/configFragment"
         android:name="fr.uge.confroid.configurations.ConfigFragment"
-        android:label="fragment_config"
         tools:layout="@layout/fragment_config">
+
         <action
             android:id="@+id/action_configFragment_to_allVersionsFragment"
             app:destination="@id/allVersionsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/appFragment"
+            />
+
         <action
             android:id="@+id/action_configFragment_to_appFragment"
             app:destination="@id/appFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
+            app:popUpTo="@id/appFragment"   
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_configFragment_to_leafFragment"

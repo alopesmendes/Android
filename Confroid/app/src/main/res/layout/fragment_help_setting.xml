@@ -1,23 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".settings.help.fragments.HelpSettingFragment">
 
-    <TextView
-        android:id="@+id/helpSettingTitle"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:textSize="15sp"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:fontFamily="monospace"
-        android:gravity="center_horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/settings"
-        />
+        android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/helpSettingTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/settings"
+            />
+
+        <ImageView
+            android:id="@+id/helpSettingsImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/settings_light"
+            app:layout_constraintEnd_toStartOf="@+id/helpPointTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helpSettingTitle" />
+
+        <ImageView
+            android:id="@+id/helpPointTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_right_point"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helpSettingTitle" />
+
+        <ImageView
+            android:id="@+id/helpPointLanguages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:src="@drawable/ic_right_point"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helpPointTheme"
+            />
+
+        <ImageView
+            android:id="@+id/helpImageExplainLanguage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_man_explain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helpSettingsImage"
+            app:layout_constraintVertical_bias="0.0"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/helpExplainLanguageSetting"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/language_explanation_text"
+            android:fontFamily="monospace"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineEndHorizontalText"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEndVerticalText"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStartVerticalText"
+            app:layout_constraintTop_toTopOf="@+id/guidelineStartHorizontalText"
+            android:visibility="invisible"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStartVerticalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.47" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStartHorizontalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.55" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEndVerticalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.83" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEndHorizontalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.73" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</ScrollView>
