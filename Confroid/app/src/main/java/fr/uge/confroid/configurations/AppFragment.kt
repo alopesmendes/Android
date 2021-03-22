@@ -11,6 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import fr.uge.confroid.R
 import fr.uge.confroid.configurations.receivers.TokenDispenser
 import fr.uge.confroid.configurations.services.ConfigurationPuller
@@ -18,7 +19,7 @@ import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.web.WebSharedPreferences
 import kotlinx.android.synthetic.main.fragment_app.*
 
-class AppFragment : Fragment(R.layout.fragment_app) {
+class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemClickListener {
 
     val filter: IntentFilter = IntentFilter()
 
@@ -27,12 +28,23 @@ class AppFragment : Fragment(R.layout.fragment_app) {
 
     companion object {
         lateinit var model: Model
+        lateinit var appAdapter: ApplicationAdapter
+        lateinit var appLst: ArrayList<Application>
         const val broadcastConfigAction = "getConfig"
         const val broadcastAllVersionsAction = "getAllVersions"
+
+        fun initAppList(): ArrayList<Application> {
+            val res = ArrayList<Application>()
+            var configCount = 0
+            for (app in model.showTables()) {
+                configCount = (model.getAllVersions(app))?.size ?: 0
+                res.add(Application(app, configCount))
+            }
+            return res
+        }
     }
 
     private lateinit var navController: NavController
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,6 +63,9 @@ class AppFragment : Fragment(R.layout.fragment_app) {
 
         model = Model(requireActivity())
         model.open()
+
+        ////////////////////////////////////////////////
+        initAppRecyclerView()
 
         if (WebSharedPreferences.getInstance(requireActivity()).isLoggedIn()) {
             val configs = model.getAllConfigs()
@@ -152,8 +167,10 @@ class AppFragment : Fragment(R.layout.fragment_app) {
 
         }
 
+        // SUPPRIME TOUTES LES DONNEES DE LA DB
         reset_button.setOnClickListener {
             model.reset()
+            appAdapter.updateApps(initAppList())
         }
 
         show_all_tables_button.setOnClickListener {
@@ -208,4 +225,24 @@ class AppFragment : Fragment(R.layout.fragment_app) {
         }
     }
 
+    private fun initAppRecyclerView() {
+        appLst = initAppList()
+        appAdapter = ApplicationAdapter(appLst, this@AppFragment)
+        appRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@AppFragment.context)
+            adapter = appAdapter
+        }
+    }
+
+    override fun onItemClick(position: Int) {
+        val clickedItem = appLst[position]
+        val app = clickedItem.name
+        val bundle = bundleOf("app" to app)
+        navController.navigate(R.id.action_appFragment_to_allVersionsFragment, bundle)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initAppRecyclerView()
+    }
 }
