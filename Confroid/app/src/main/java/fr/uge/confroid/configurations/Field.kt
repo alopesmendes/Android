@@ -11,4 +11,23 @@ data class Field(
     override fun toString(): String {
         return "Field(name=$name, contenu=$content, reste=$recursiveContent')"
     }
+
+    fun toJsonFormat(): String {
+        var res:StringBuilder = java.lang.StringBuilder()
+        res.append(name)
+        res.append("=")
+        if (!content.isNullOrBlank()){
+            res.append(content)
+        }else if (recursiveContent != null){
+            res.append("{")
+            for(i in recursiveContent.indices){
+                res.append(recursiveContent[i].toJsonFormat())
+                if (i < recursiveContent.size-1){
+                    res.append(",")
+                }
+            }
+            res.append("}")
+        }
+        return res.toString()
+    }
 }
