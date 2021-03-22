@@ -20,4 +20,13 @@
     <string name="help">Aide</string>
     <string name="license">Lincence</string>
     <string name="search">Cherche</string>
+    <string name="tutorial">Tutoriel</string>
+    <string name="menu">Menu</string>
+
+    <string name="language_explanation_text">Sélectionnez la langue dans laquelle vous souhaitez utiliser votre application</string>
+    <string name="login_fail">La connection n\'a pas fonctionne. Veuillez réessayer</string>
+    <string name="help_explain_login">Entrez votre nom d\'utilisateur et mot de passe. Puis cliquez sur le button login. Si cela ne marche pas ca va afficher un message d\'erreur.</string>
+    <string name="help_explain_register_button">Clique sur le text vous ramenez vers s\'inscrire</string>
+    <string name="help_explain_register_text">Entrez le nom d\'utilisateur et le même mot de passe. Puis cliquez sur s\'inscrire</string>
+
 </resources>

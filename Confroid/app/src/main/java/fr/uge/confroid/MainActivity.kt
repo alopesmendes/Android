@@ -51,8 +51,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
 
         localeSaved(resources, this)
-        mainNavigationView.menu.clear()
-        mainNavigationView.inflateMenu(R.menu.nav_menu)
+        resetMenu()
 
         navController = Navigation.findNavController(findViewById(R.id.nav_host_fragment))
         appBarConfiguration = AppBarConfiguration(navController.graph, mainDrawerLayout)
@@ -62,19 +61,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         configureNavigationView()
 
         loginViewModel.selectedItem.observe(this, {
-            mainNavigationView.menu.clear()
-            mainNavigationView.inflateMenu(R.menu.nav_menu)
-            isLoggedInVisibility()
+            resetMenu()
         })
 
         settingViewModel.selectedItem.observe(this, {
             val conf = resources.configuration
             conf.setLocale(Locale(it.toLowerCase()))
             resources.updateConfiguration(conf, resources.displayMetrics)
-            mainNavigationView.menu.clear()
-            mainNavigationView.inflateMenu(R.menu.nav_menu)
-            isLoggedInVisibility()
-
+            resetMenu()
         })
 
         SettingFragment.enableMode(this)
@@ -88,6 +82,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             mainNavigationView.setCheckedItem(R.id.homeItem)
         }
 
+    }
+
+    private fun resetMenu() {
+        mainNavigationView.menu.clear()
+        mainNavigationView.inflateMenu(R.menu.nav_menu)
+        isLoggedInVisibility()
     }
 
     private fun configureToolBar() {
@@ -162,6 +162,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.logoutItem -> {
                 WebSharedPreferences.getInstance(applicationContext).logout()
+                resetMenu()
             }
             R.id.licenseItem -> {
                 navController.navigate(R.id.action_appFragment_to_licenseFragment)

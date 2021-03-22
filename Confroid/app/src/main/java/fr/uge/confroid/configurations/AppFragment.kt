@@ -124,6 +124,11 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
                             }
                         }
                     }
+                    else {
+                        if (app != null) {
+                            model.deleteApp(app)
+                        }
+                    }
 //                    TOKEN RETRIEVING
                 } else {
                     Intent(activity, TokenDispenser::class.java).apply {
@@ -206,6 +211,16 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
             } else {
                 val bundle = bundleOf("app" to app)
                 navController.navigate(R.id.action_appFragment_to_allVersionsFragment, bundle)
+            }
+        }
+
+        drop_table_button.setOnClickListener {
+            val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
+            if (app.isBlank()) {
+                Toast.makeText(activity, "configuration app required", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                model.deleteApp(app)
             }
         }
     }

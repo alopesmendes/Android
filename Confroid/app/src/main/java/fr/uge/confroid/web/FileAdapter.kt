@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import fr.uge.confroid.CustomDiffUtil
 import fr.uge.confroid.R
 
 class FileAdapter(val listener: OnFileListener, var requests: List<FileAttributes>) : RecyclerView.Adapter<FileAdapter.ViewHolder>(), Filterable {
@@ -32,6 +33,7 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
         }
     }
 
+    /*
     inner class FileDiffUtil(
         private val old: List<FileAttributes>,
         private val current: List<FileAttributes>
@@ -52,6 +54,7 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
             return old[oldItemPosition] == current[newItemPosition]
         }
     }
+    */
 
     interface OnFileListener {
         fun onClickListener(fileAttributes: FileAttributes)
@@ -82,7 +85,7 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
     fun updateRequests(fileAttributes: List<FileAttributes>) {
         val old = requests
         val diff = DiffUtil.calculateDiff(
-            FileDiffUtil(old, fileAttributes)
+            CustomDiffUtil(old, fileAttributes)
         )
         requests = fileAttributes
         diff.dispatchUpdatesTo(this)

@@ -75,7 +75,7 @@ class WebSharedPreferences(private val context: Context) {
         val editor = sharedPreferences?.edit()
         editor?.clear()
         editor?.apply()
-        INSTANCE?.context?.startActivity(Intent(INSTANCE?.context, MainActivity::class.java))
+        //INSTANCE?.context?.startActivity(Intent(INSTANCE?.context, MainActivity::class.java))
 
     }
 }

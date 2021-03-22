@@ -49,7 +49,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         cancel_sub_button.setOnClickListener {
-            ConfroidUtils.cancelConfigurationSubscription<Any>(this, null)
+            ConfroidUtils.cancelConfigurationSubscription<Any>(this, "Shop", null)
+            ConfroidUtils.TOKEN = ""
             prefs.edit().putString("token", "").apply()
             token_tv.text = "TOKEN: ${ConfroidUtils.TOKEN}"
         }
