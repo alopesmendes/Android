@@ -206,19 +206,65 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/appFragment"
-            />
+            app:popUpTo="@id/appFragment"   
+            app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_configFragment_self"
-            app:destination="@id/configFragment"
+            android:id="@+id/action_configFragment_to_leafFragment"
+            app:destination="@id/leafFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/appFragment"
-            app:popUpToInclusive="true"/>
-
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_configFragment_to_branchFragment"
+            app:destination="@id/branchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_configFragment_to_addConfigFragment"
+            app:destination="@id/createConfigFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+    <fragment
+        android:id="@+id/leafFragment"
+        android:name="fr.uge.confroid.configurations.LeafFragment"
+        android:label="fragment_leaf"
+        tools:layout="@layout/fragment_leaf">
+    </fragment>
+
+    <fragment
+        android:id="@+id/branchFragment"
+        android:name="fr.uge.confroid.configurations.BranchFragment"
+        android:label="fragment_branch"
+        tools:layout="@layout/fragment_branch">
+        <action
+            android:id="@+id/action_branchFragment_to_leafFragment"
+            app:destination="@id/leafFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_branchFragment_to_branchFragment"
+            app:destination="@id/branchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createConfigFragment"
+        android:name="fr.uge.confroid.configurations.AddConfigFragment"
+        android:label="fragment_createConfig"
+        tools:layout="@layout/fragment_add_config"/>
+
+
 
 </navigation>

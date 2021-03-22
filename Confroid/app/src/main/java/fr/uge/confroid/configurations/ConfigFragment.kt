@@ -9,7 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.uge.confroid.R
 import fr.uge.confroid.configurations.services.ConfigurationPuller
@@ -22,9 +25,12 @@ import kotlinx.android.synthetic.main.fragment_config.*
  * Use the [ConfigFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ConfigFragment : Fragment() {
+class ConfigFragment : Fragment(R.layout.fragment_config) {
 
     val filter: IntentFilter = IntentFilter()
+    lateinit var adapter: FieldAdapter
+    var positionToChange = -1
+    var list : ArrayList<Field> = arrayListOf()
 
     companion object {
         val broadcastAction = "getOneVersion"
@@ -40,8 +46,12 @@ class ConfigFragment : Fragment() {
                     textTagConfig.text = config.tag
 
                     val content: String = config.content
-                    val fields = toListField(toList(content))
-                    RvValueField.adapter = FieldAdapter(fields)
+                    var fields = toListField(toList(content))
+                    if (list.isEmpty()) {
+                        list = fields
+                    }
+                    adapter = FieldAdapter(this@ConfigFragment, BranchFragment(),list, true)
+                    RvValueField.adapter = adapter
                     RvValueField.layoutManager = LinearLayoutManager(activity)
                     RvValueField.setHasFixedSize(true)
 
@@ -96,14 +106,21 @@ class ConfigFragment : Fragment() {
                 requireActivity().startService(this)
             }
         }
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_config, container, false)
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Field>(
+            "updateField"
+        )?.observe(viewLifecycleOwner, { field ->
+            //Log.i("changement a faire", field.toString())
+            list[positionToChange] = field
+            adapter.updatevalue(positionToChange,field)
+            adapter.notifyItemChanged(positionToChange)
+            //Log.i("changement",adapter.getfield(positionToChange).toString())
+        })
+
+        createConfig.setOnClickListener{
+            val bundle = bundleOf("fields" to list)
+            findNavController().navigate(R.id.action_configFragment_to_addConfigFragment, bundle)
+        }
     }
 
     //    POUR ENREGISTRER LE RECEIVER DE L'INTENT DU SERVICE DE PULLER
@@ -117,7 +134,7 @@ class ConfigFragment : Fragment() {
         activity?.registerReceiver(receiver, filter)
     }
 
-    fun firstField(content: String): Pair<String, String> {
+    private fun firstField(content: String): Pair<String, String> {
         var i = 0
         var nb_rec = 0
         while (i < content.length) {
@@ -136,28 +153,24 @@ class ConfigFragment : Fragment() {
         return Pair(content, "")
     }
 
-    fun toList(content: String): List<String> {
+    private fun toList(content: String): List<String> {
         var test = content.subSequence(1, content.length - 1).toString()
         var pair = firstField(test)
         var res = arrayListOf(pair.first)
         var bool = pair.second
-        while (bool.length != 0) {
+        while (bool.isNotEmpty()) {
             pair = firstField(bool)
             res.add(pair.first)
-            Log.i("nouvelle entree", pair.first)
-            Log.i("reste a check", pair.second)
             bool = pair.second
         }
         return res
     }
 
-    fun toListField(strs: List<String>): List<Field> {
+    private fun toListField(strs: List<String>): ArrayList<Field> {
         var lst = arrayListOf<Field>()
         for (str in strs) {
             var field = str.substring(0, str.indexOf("="))
             var content = str.substring(str.indexOf("=") + 1)
-            Log.i("field", field)
-            Log.i("content", content)
             var testList = toList(content)
             if (testList.size == 1) {
                 lst.add(Field(field, content, null))
@@ -168,5 +181,28 @@ class ConfigFragment : Fragment() {
         }
         return lst
     }
+
+    private fun navigateToLeaf(field: Field) {
+        Log.i("gotoLeaf", field.toString())
+        val bundle = bundleOf("field" to field)
+        findNavController().navigate(R.id.action_configFragment_to_leafFragment, bundle)
+    }
+
+    private fun navigateToBranch(field: Field) {
+        Log.i("gotoLeaf", field.toString())
+        val bundle = bundleOf("field" to field)
+        findNavController().navigate(R.id.action_configFragment_to_branchFragment, bundle)
+    }
+
+    fun onClickListener(position: Int){
+        val field = adapter.getfield(position)
+        positionToChange = position
+        if (field.content.isNullOrBlank()){
+            navigateToBranch(field)
+        }else{
+            navigateToLeaf(field)
+        }
+    }
+
 
 }

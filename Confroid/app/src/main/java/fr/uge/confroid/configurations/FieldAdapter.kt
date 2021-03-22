@@ -1,19 +1,21 @@
 package fr.uge.confroid.configurations
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import fr.uge.confroid.CustomDiffUtil
 import fr.uge.confroid.R
 
-class FieldAdapter(private val listFields: List<Field>) : RecyclerView.Adapter<FieldAdapter.ViewHolder>(){
+
+class FieldAdapter(val listenerPrimary: ConfigFragment,val listenerSecondary: BranchFragment, private var listFields: ArrayList<Field>, private val status: Boolean) : RecyclerView.Adapter<FieldAdapter.ViewHolder>(){
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         private val nameField : TextView = itemView.findViewById(R.id.nameField)
         private val valueField : TextView = itemView.findViewById(R.id.valueField)
-        private val rvRecField: RecyclerView = itemView.findViewById(R.id.RvValueField)
 
 
         init {
@@ -22,17 +24,20 @@ class FieldAdapter(private val listFields: List<Field>) : RecyclerView.Adapter<F
 
         fun update(field: Field){
             nameField.text = field.name
-            valueField.text = field.content
-            var fieldAdapter = field.recursiveContent?.let { FieldAdapter(it) }
-            rvRecField.adapter = fieldAdapter
-            rvRecField.layoutManager = LinearLayoutManager(
-                rvRecField.context,
-                LinearLayoutManager.VERTICAL,
-                false
-            );
+            if (field.recursiveContent.isNullOrEmpty()){
+                valueField.text = field.content
+            }else{
+                valueField.text = "[Click to show details]"
+            }
         }
 
         override fun onClick(v: View?) {
+            if (status){
+                listenerPrimary.onClickListener(adapterPosition)
+            }else{
+                listenerSecondary.onClickListener(adapterPosition)
+            }
+
         }
     }
 
@@ -47,10 +52,27 @@ class FieldAdapter(private val listFields: List<Field>) : RecyclerView.Adapter<F
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        //Log.i("values $position", "${listFields[position]}")
         holder.update(listFields[position])
     }
 
     override fun getItemCount(): Int {
         return listFields.size
     }
+
+    fun updatevalue(positionToChange: Int, field: Field?) {
+        if (field != null) {
+            listFields[positionToChange] = field
+        }
+    }
+
+    fun getfields(): ArrayList<Field> {
+        return listFields
+    }
+
+    fun getfield(position: Int): Field{
+        return listFields[position]
+    }
+
+
 }

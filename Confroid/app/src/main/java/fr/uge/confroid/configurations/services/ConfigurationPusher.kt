@@ -7,7 +7,6 @@ import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
 import fr.uge.confroid.configurations.AppFragment
-import fr.uge.confroid.configurations.ConfigActivity
 import fr.uge.confroid.configurations.ConfigFragment
 
 class ConfigurationPusher : Service() {

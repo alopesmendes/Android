@@ -5,7 +5,7 @@ import java.io.Serializable
 data class Field(
     val name: String,
     val content: String?,
-    val recursiveContent: List<Field>?
+    val recursiveContent: ArrayList<Field>?
 ) : Serializable {
 
     override fun toString(): String {
