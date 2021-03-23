@@ -3,6 +3,7 @@ package fr.uge.confroid.web
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -12,8 +13,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import fr.uge.confroid.R
+import fr.uge.confroid.worker.UploadWorker
 import kotlinx.android.synthetic.main.fragment_login.*
+import java.util.concurrent.TimeUnit
 
 
 class LoginViewModel : ViewModel() {
@@ -87,8 +94,36 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             //Intent(activity, MainActivity::class.java).apply { startActivity(this) }
             viewModel.selectItem(this)
             navController.navigate(R.id.action_loginFragment_to_appFragment)
+            logAction()
             //mainDrawerLayout.invalidate()
 
         }
+    }
+
+    private fun logAction() {
+        if (WebSharedPreferences.getInstance(requireContext()).isLoggedIn()) {
+
+            val user = WebSharedPreferences.getInstance(requireContext()).getUser()
+            LoginRequest.request(requireContext(), user.username, user.password) {}
+            work()
+
+            Log.i("shared user", user.toString())
+
+        }
+    }
+
+    private fun work() {
+        val constraints = Constraints.Builder()
+            .setRequiresBatteryNotLow(true)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresStorageNotLow(true)
+            .build()
+
+        val work = PeriodicWorkRequestBuilder<UploadWorker>(20, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .build()
+
+        val workManager = WorkManager.getInstance(requireContext())
+        workManager.enqueue(work)
     }
 }

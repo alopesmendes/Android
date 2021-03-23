@@ -26,6 +26,7 @@ import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.google.gson.Gson
 import fr.uge.confroid.R
+import fr.uge.confroid.utils.FilterUtils
 import kotlinx.android.synthetic.main.fragment_files.*
 import kotlinx.coroutines.runBlocking
 import java.io.File
@@ -65,6 +66,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        /*
         inflater.inflate(R.menu.files_menu, menu)
         val searchItem: MenuItem = menu.findItem(R.id.searchItem)
         val searchView: SearchView = searchItem.actionView as SearchView
@@ -82,6 +84,11 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
                 return false
             }
         })
+
+        */
+        FilterUtils.onCreateOptionsMenu(requireContext(), resources, menu, inflater) {
+            fileAdapter.filter.filter(it)
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 

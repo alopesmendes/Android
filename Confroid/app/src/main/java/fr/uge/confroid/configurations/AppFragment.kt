@@ -3,10 +3,14 @@ package fr.uge.confroid.configurations
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -16,6 +20,7 @@ import fr.uge.confroid.R
 import fr.uge.confroid.configurations.receivers.TokenDispenser
 import fr.uge.confroid.configurations.services.ConfigurationPuller
 import fr.uge.confroid.storageprovider.MyProvider
+import fr.uge.confroid.utils.FilterUtils
 import fr.uge.confroid.web.WebSharedPreferences
 import kotlinx.android.synthetic.main.fragment_app.*
 
@@ -48,6 +53,7 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
         navController = Navigation.findNavController(view)
         val prefs = requireActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE)
@@ -56,8 +62,6 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
 
         filter.addAction(broadcastConfigAction)
         filter.addAction(broadcastAllVersionsAction)
-
-        test1.movementMethod = ScrollingMovementMethod()
 
         /////////////////////////////////////////////////////////
 
@@ -142,87 +146,21 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
 
         /////////////////////////////////////////////////////
 
-        delete_button.setOnClickListener {
-            val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
-            val id = id_editText.text.toString()
-            if (app.isBlank() || id.isBlank()) {
-                Toast.makeText(activity, "configuration app and id required", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(activity, "configuration deleted", Toast.LENGTH_SHORT).show()
-                model.deleteConfig(app, id.toInt())
-            }
-        }
-
-        select_all_button.setOnClickListener {
-            val configs = model.getAllConfigs()
-            test1.text = configs.joinToString("\n\n", "{", "}")
-            for (c in configs) {
-                MyProvider.writeFile(
-                    requireActivity(),
-                    "${c.app}_${c.version}.txt",
-                    c.content.toByteArray()
-                )
-            }
-
-        }
-
         // SUPPRIME TOUTES LES DONNEES DE LA DB
         reset_button.setOnClickListener {
             model.reset()
             appAdapter.updateApps(initAppList())
         }
 
-        show_all_tables_button.setOnClickListener {
-            test1.text = model.showTables().joinToString("\n", "{", "}")
-        }
 
-//        ENVOIE LES DONNEES AU SERVICE DE PULLER POUR DEMANDER UNE CONFIG
-        select_one_button.setOnClickListener {
-            val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
-            val version = version_editText.text.toString()
-            if (app.isBlank() || version.isBlank()) {
-                Toast.makeText(
-                    activity,
-                    "configuration app and version required",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            } else {
-                Toast.makeText(activity, "configuration selected", Toast.LENGTH_SHORT).show()
-                Intent(activity, ConfigurationPuller::class.java).apply {
-                    putExtra("app", app)
-                    putExtra("version", Integer.parseInt(version))
-                    requireActivity().startService(this)
-                }
-            }
-        }
+    }
 
-        show_token.setOnClickListener {
-            val app = prefs.getString(app_editText.text.toString(), "")
-            Toast.makeText(activity, app, Toast.LENGTH_SHORT).show()
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        FilterUtils.onCreateOptionsMenu(requireContext(), resources, menu, inflater) {
+            appAdapter.filter.filter(it)
         }
-
-        all_versions_button.setOnClickListener {
-            val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
-            if (app.isBlank()) {
-                Toast.makeText(activity, "configuration app required", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                val bundle = bundleOf("app" to app)
-                navController.navigate(R.id.action_appFragment_to_allVersionsFragment, bundle)
-            }
-        }
-
-        drop_table_button.setOnClickListener {
-            val app = app_editText.text.toString().replace("\\s+".toRegex(), "")
-            if (app.isBlank()) {
-                Toast.makeText(activity, "configuration app required", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                model.deleteApp(app)
-            }
-        }
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun initAppRecyclerView() {

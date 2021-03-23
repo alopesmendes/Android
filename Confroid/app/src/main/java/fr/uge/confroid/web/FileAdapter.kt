@@ -1,6 +1,5 @@
 package fr.uge.confroid.web
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,9 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import fr.uge.confroid.CustomDiffUtil
+import fr.uge.confroid.utils.CustomDiffUtil
 import fr.uge.confroid.R
+import fr.uge.confroid.utils.FilterUtils
 
 class FileAdapter(val listener: OnFileListener, var requests: List<FileAttributes>) : RecyclerView.Adapter<FileAdapter.ViewHolder>(), Filterable {
     private lateinit var requestsFull : List<FileAttributes>
@@ -32,29 +32,6 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
             textView.text = fileAttributes.name
         }
     }
-
-    /*
-    inner class FileDiffUtil(
-        private val old: List<FileAttributes>,
-        private val current: List<FileAttributes>
-    ) : DiffUtil.Callback() {
-        override fun getOldListSize(): Int {
-            return old.size
-        }
-
-        override fun getNewListSize(): Int {
-            return current.size
-        }
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return old[oldItemPosition] == current[newItemPosition]
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return old[oldItemPosition] == current[newItemPosition]
-        }
-    }
-    */
 
     interface OnFileListener {
         fun onClickListener(fileAttributes: FileAttributes)
@@ -92,9 +69,10 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
     }
 
     override fun getFilter(): Filter {
-        return filter
+        return FilterUtils.filter(requestsFull, this::updateRequests)
     }
 
+    /*
     private val filter : Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val filteredList = ArrayList<FileAttributes>()
@@ -123,4 +101,5 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
         }
 
     }
+    */
 }

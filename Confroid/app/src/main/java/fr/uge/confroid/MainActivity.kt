@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         configureNavigationView()
 
         loginViewModel.selectedItem.observe(this, {
+            //logAction()
             resetMenu()
         })
 
@@ -120,7 +121,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.i("shared user", user.toString())
 
         }
-        isLoggedInVisibility()
     }
 
     private fun isLoggedInVisibility() {

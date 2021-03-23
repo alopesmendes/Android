@@ -3,21 +3,28 @@ package fr.uge.confroid.configurations
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import fr.uge.confroid.utils.CustomDiffUtil
 import fr.uge.confroid.R
+import fr.uge.confroid.utils.FilterUtils
 import kotlinx.android.synthetic.main.application_view.view.*
 
 class ApplicationAdapter(
     private var listApplications: List<Application>,
     private val listener: OnItemClickListener
-) : RecyclerView.Adapter<ApplicationAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ApplicationAdapter.ViewHolder>(), Filterable {
+
+    private val listApplicationsFull = listApplications
 
     inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
-        val appName = itemView.appNameTextView
-        val configCount = itemView.configCountTextView
+        private val appName: TextView = itemView.appNameTextView
+        private val configCount: TextView = itemView.configCountTextView
 
         init {
             itemView.setOnClickListener(this)
@@ -26,11 +33,7 @@ class ApplicationAdapter(
         fun update(application: Application) {
             appName.text = application.name
             val count = application.configCount
-            if (count > 1) {
-                configCount.text = "$count configurations"
-            } else {
-                configCount.text = "$count configuration"
-            }
+            configCount.text = "$count"
 
         }
 
@@ -50,11 +53,7 @@ class ApplicationAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        when(holder) {
-            is ViewHolder -> {
-                holder.update(listApplications[position])
-            }
-        }
+        holder.update(listApplications[position])
     }
 
     override fun getItemCount(): Int {
@@ -65,34 +64,16 @@ class ApplicationAdapter(
         fun onItemClick(position: Int)
     }
 
-    inner class AppDiffUtil(
-        private val old: List<Application>,
-        private val current: List<Application>
-    ) : DiffUtil.Callback() {
-        override fun getOldListSize(): Int {
-            return old.size
-        }
-
-        override fun getNewListSize(): Int {
-            return current.size
-        }
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return old[oldItemPosition] == current[newItemPosition]
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return old[oldItemPosition] == current[newItemPosition]
-        }
-
-    }
-
     fun updateApps(newApps: List<Application>) {
         val old = listApplications
         val diff = DiffUtil.calculateDiff(
-            AppDiffUtil(old, newApps)
+            CustomDiffUtil(old, newApps)
         )
         listApplications = newApps
         diff.dispatchUpdatesTo(this)
+    }
+
+    override fun getFilter(): Filter {
+        return FilterUtils.filter(listApplicationsFull, this::updateApps)
     }
 }
