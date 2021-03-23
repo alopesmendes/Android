@@ -1,4 +1,4 @@
-package fr.uge.confroid
+package fr.uge.confroid.utils
 
 import android.view.View
 
