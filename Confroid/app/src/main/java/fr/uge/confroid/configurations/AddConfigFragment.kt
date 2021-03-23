@@ -67,8 +67,8 @@ class AddConfigFragment : Fragment(R.layout.fragment_add_config) {
             oldversion = it.getInt("version_number")
         }
         app_name.text = app
-        newContentJsonFormat.text = toJsonFormat()
         editTag.hint = "Version $oldversion modified"
+
 
         Intent(activity, ConfigurationVersions::class.java).apply {
             putExtra("app", app)
@@ -81,11 +81,17 @@ class AddConfigFragment : Fragment(R.layout.fragment_add_config) {
                 if (configsVersions.contains(newversion)) {
                     Toast.makeText(activity, "version already saved", Toast.LENGTH_SHORT).show()
                 } else {
+                    var newTag:String
+                    if (editTag.text.isEmpty()){
+                         newTag = "Version $oldversion modified"
+                    }else{
+                        newTag = editTag.text.toString()
+                    }
                     AppFragment.model.addConfig(
                         app,
                         newversion,
                         toJsonFormat(),
-                        editTag.text.toString()
+                        newTag
                     )
                     navController.navigate(R.id.action_createConfigFragment_to_appFragment)
                 }

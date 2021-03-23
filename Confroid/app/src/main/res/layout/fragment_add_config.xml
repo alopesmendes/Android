@@ -10,26 +10,60 @@
         android:id="@+id/app_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="10sp"
+        android:textSize="25sp"
         android:text="app_name"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
 
     <TextView
-        android:id="@+id/newContentJsonFormat"
+        android:id="@+id/infoFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="10sp"
+        android:textSize="15sp"
+        android:text="Creation of new version:"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_name" />
+        app:layout_constraintTop_toBottomOf="@id/app_name"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="TagView, VersionView" />
+
+    <TextView
+        android:id="@+id/TagView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TAG: "
+        android:textSize="15sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/editTag"
+        app:layout_constraintEnd_toStartOf="@id/barrier"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/infoFragment" />
 
     <EditText
         android:id="@+id/editTag"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintTop_toBottomOf="@id/infoFragment" />
+
+
+    <TextView
+        android:id="@+id/VersionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VERSION: "
+        android:textSize="15sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/editVersion"
+        app:layout_constraintEnd_toStartOf="@id/barrier"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/newContentJsonFormat" />
+        app:layout_constraintTop_toBottomOf="@id/TagView" />
 
     <EditText
         android:id="@+id/editVersion"
@@ -39,7 +73,7 @@
         android:inputType="number"
         android:textAlignment="center"
         android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/barrier"
         app:layout_constraintTop_toBottomOf="@id/editTag" />
 
     <Button
