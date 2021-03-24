@@ -43,6 +43,10 @@
     <string name="help_explain_register_button">Clicking the text will bring you to the register</string>
     <string name="help_explain_register_text">Enter username and same password then click on register</string>
     <string name="send_all_text">Send All</string>
+    <string name="generate_modified_config_text">generate modified config</string>
+    <string name="content_text" translatable="false">CONTENT:</string>
+    <string name="version_text" translatable="false">VERSION:</string>
+    <string name="tag_text" translatable="false">TAG:</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

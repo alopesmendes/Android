@@ -6,12 +6,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.uge.confroid.R
@@ -20,11 +17,7 @@ import fr.uge.confroid.configurations.services.ConfigurationPusher
 import kotlinx.android.synthetic.main.fragment_all_versions.*
 import kotlinx.android.synthetic.main.fragment_config.*
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ConfigFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class ConfigFragment : Fragment(R.layout.fragment_config) {
 
     val filter: IntentFilter = IntentFilter()
