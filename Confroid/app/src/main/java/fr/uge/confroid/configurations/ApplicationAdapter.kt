@@ -14,7 +14,7 @@ import fr.uge.confroid.utils.FilterUtils
 import kotlinx.android.synthetic.main.application_view.view.*
 
 class ApplicationAdapter(
-    private var listApplications: List<Application>,
+    var listApplications: List<Application>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ApplicationAdapter.ViewHolder>(), Filterable {
 

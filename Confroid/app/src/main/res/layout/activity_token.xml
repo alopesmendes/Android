@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="20dp"
+        android:layout_margin="15dp"/>
 
     <TextView
         android:id="@+id/token_tv"
@@ -20,24 +22,32 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_tv" />
+        app:layout_constraintTop_toBottomOf="@id/app_tv"
+        android:padding="20dp"
+        android:layout_margin="15dp"/>
 
     <Button
         android:id="@+id/generate_token_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="generate token"
+        android:text="@string/generate_token_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/send_token_button"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="15dp"
+        android:layout_margin="5dp"
+        android:backgroundTint="@color/secondary"/>
 
     <Button
         android:id="@+id/send_token_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="send token to app"
+        android:text="@string/send_token_to_app_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/generate_token_button" />
+        app:layout_constraintStart_toEndOf="@id/generate_token_button"
+        android:padding="15dp"
+        android:layout_margin="5dp"
+        android:backgroundTint="@color/secondary"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

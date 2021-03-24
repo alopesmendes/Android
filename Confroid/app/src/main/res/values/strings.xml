@@ -50,6 +50,8 @@
     <string name="new_value_text">New Value:</string>
     <string name="old_value_text">Old Value:</string>
     <string name="field_name_text">Field Name:</string>
+    <string name="generate_token_text">generate token</string>
+    <string name="send_token_to_app_text">send token to app</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 
