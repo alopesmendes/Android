@@ -4,21 +4,30 @@ package fr.uge.confroid.configurations
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import fr.uge.confroid.R
+import fr.uge.confroid.utils.CustomDiffUtil
+import fr.uge.confroid.utils.FilterUtils
 
-class ConfigAdapter (val listener: AllVersionsFragment, private val listConfigs: List<Config>):RecyclerView.Adapter<ConfigAdapter.ViewHolder>(){
+class ConfigAdapter(val listener: AllVersionsFragment, private var listConfigs: List<Config>) :
+    RecyclerView.Adapter<ConfigAdapter.ViewHolder>(), Filterable {
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
-        private val textVersion : TextView = itemView.findViewById(R.id.textVersion)
-        private val textTag : TextView = itemView.findViewById(R.id.textTag)
+    private val listConfigsFull = listConfigs
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
+        private val textVersion: TextView = itemView.findViewById(R.id.textVersion)
+        private val textTag: TextView = itemView.findViewById(R.id.textTag)
 
         init {
             itemView.setOnClickListener(this)
         }
 
-        fun update(config: Config){
+        fun update(config: Config) {
             textVersion.text = "VERSION: ${config.version}"
             textTag.text = "TAG: ${config.tag}"
         }
@@ -44,5 +53,24 @@ class ConfigAdapter (val listener: AllVersionsFragment, private val listConfigs:
 
     override fun getItemCount(): Int {
         return listConfigs.size
+    }
+
+    private fun updateConfig(newConfigs: List<Config>) {
+        val old = listConfigs
+        val diff = DiffUtil.calculateDiff(
+            CustomDiffUtil(old, newConfigs)
+        )
+        listConfigs = newConfigs
+        diff.dispatchUpdatesTo(this)
+    }
+
+    override fun getFilter(): Filter {
+        return FilterUtils.filter(
+            listConfigsFull,
+            {
+                "${it.version} ${it.tag}"
+            },
+            this::updateConfig
+        )
     }
 }

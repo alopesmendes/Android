@@ -74,6 +74,6 @@ class ApplicationAdapter(
     }
 
     override fun getFilter(): Filter {
-        return FilterUtils.filter(listApplicationsFull, this::updateApps)
+        return FilterUtils.filter(listApplicationsFull, { it.toString() }, this::updateApps)
     }
 }

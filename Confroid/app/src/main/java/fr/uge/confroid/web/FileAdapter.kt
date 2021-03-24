@@ -69,37 +69,7 @@ class FileAdapter(val listener: OnFileListener, var requests: List<FileAttribute
     }
 
     override fun getFilter(): Filter {
-        return FilterUtils.filter(requestsFull, this::updateRequests)
+        return FilterUtils.filter(requestsFull, { it.name }, this::updateRequests)
     }
 
-    /*
-    private val filter : Filter = object : Filter() {
-        override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val filteredList = ArrayList<FileAttributes>()
-            if (constraint == null || constraint.isEmpty()) {
-                filteredList.addAll(requestsFull)
-            } else {
-                val filterPattern = constraint.toString().toLowerCase().trim()
-                for (item in requestsFull) {
-                    if (item.name.toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item)
-                    }
-                }
-            }
-            val results = FilterResults()
-            results.values = filteredList
-            return results
-        }
-
-        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            val results = results?.values as List<FileAttributes>
-            if (results == null) {
-                updateRequests(requests)
-            } else {
-                updateRequests(results)
-            }
-        }
-
-    }
-    */
 }
