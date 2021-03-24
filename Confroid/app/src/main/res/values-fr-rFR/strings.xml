@@ -30,5 +30,8 @@
     <string name="help_explain_register_text">Entrez le nom d\'utilisateur et le même mot de passe. Puis cliquez sur s\'inscrire</string>
     <string name="send_all_text">Tout Envoie</string>
     <string name="generate_modified_config_text">genere la config modifie</string>
+    <string name="new_value_text">Nouvelle Valeur:</string>
+    <string name="old_value_text">Ancienne Valeur:</string>
+    <string name="field_name_text">Nom de Champ:</string>
 
 </resources>
