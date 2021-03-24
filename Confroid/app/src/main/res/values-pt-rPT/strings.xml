@@ -29,4 +29,7 @@
     <string name="help_explain_register_text">Entre o nome de usuário e a mesma senha e clique em registrar</string>
     <string name="send_all_text">Manda Tudo</string>
     <string name="generate_modified_config_text">gerar configuração modificada</string>
+    <string name="new_value_text">Novo Valor:</string>
+    <string name="old_value_text">Valor Antigo:</string>
+    <string name="field_name_text">Nome da var:</string>
 </resources>

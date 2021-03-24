@@ -8,11 +8,6 @@ import androidx.navigation.fragment.findNavController
 import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.fragment_leaf.*
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LeafFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LeafFragment : Fragment(R.layout.fragment_leaf) {
 
     lateinit var field:Field
