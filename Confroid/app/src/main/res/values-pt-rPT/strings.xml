@@ -27,4 +27,5 @@
     <string name="help_explain_login">Digite o nome de usuário e a senha.Em seguida, o botão de login.Se não funcionar vai exibir uma mensagem de erro.</string>
     <string name="help_explain_register_button">"  Clicar no texto o levará ao registro"</string>
     <string name="help_explain_register_text">Entre o nome de usuário e a mesma senha e clique em registrar</string>
+    <string name="send_all_text">Manda Tudo</string>
 </resources>

@@ -18,11 +18,6 @@ import fr.uge.confroid.configurations.services.ConfigurationVersions
 import fr.uge.confroid.utils.FilterUtils
 import kotlinx.android.synthetic.main.fragment_all_versions.*
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AllVersionsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AllVersionsFragment : Fragment(R.layout.fragment_all_versions) {
 
     private lateinit var navController: NavController

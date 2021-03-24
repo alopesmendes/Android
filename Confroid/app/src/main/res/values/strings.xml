@@ -12,7 +12,6 @@
     <string name="dark_mode_text">Dark Mode</string>
     <string name="light_mode_text">Light Mode</string>
     <string name="moon_and_sun">Moon and sun</string>
-
     <string name="languages_text">Languages</string>
     <string name="home">Home</string>
     <string name="files_download">Files Download</string>
@@ -43,6 +42,7 @@
     </integer-array>
     <string name="help_explain_register_button">Clicking the text will bring you to the register</string>
     <string name="help_explain_register_text">Enter username and same password then click on register</string>
+    <string name="send_all_text">Send All</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 
