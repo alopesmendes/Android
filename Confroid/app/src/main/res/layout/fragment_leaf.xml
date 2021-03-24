@@ -4,71 +4,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="auto"
     tools:context=".configurations.LeafFragment">
 
     <TextView
         android:id="@+id/FieldName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="cursive"
         android:text="Field Name:"
-        app:layout_constraintBaseline_toBaselineOf="@id/FieldNameValue"
         android:textSize="25sp"
+        android:padding="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/FieldNameValue"
         app:layout_constraintEnd_toStartOf="@id/barrier"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/oldValueView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="cursive"
         android:text="Old Value:"
-        app:layout_constraintBaseline_toBaselineOf="@id/oldValueText"
         android:textSize="25sp"
+        android:padding="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/oldValueText"
         app:layout_constraintEnd_toStartOf="@id/barrier"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/FieldName"/>
+        app:layout_constraintTop_toBottomOf="@id/FieldName" />
 
     <TextView
         android:id="@+id/newValueView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="cursive"
         android:text="New Value:"
+        android:padding="15dp"
         android:textSize="25sp"
         app:layout_constraintBaseline_toBaselineOf="@id/field_editValue"
         app:layout_constraintEnd_toStartOf="@id/barrier"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/oldValueView"/>
+        app:layout_constraintTop_toBottomOf="@id/oldValueView" />
 
     <TextView
         android:id="@+id/FieldNameValue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:padding="15dp"
         android:text="Name"
         android:textSize="25sp"
-        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintBottom_toTopOf="@+id/oldValueText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/oldValueText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:padding="15dp"
         android:text="OldValue"
         android:textSize="25sp"
-        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintBottom_toTopOf="@+id/field_editValue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/FieldNameValue"/>
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintTop_toBottomOf="@+id/FieldNameValue" />
 
     <EditText
         android:id="@+id/field_editValue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        android:background="@drawable/round_border_secondary"
+        android:fontFamily="monospace"
         android:gravity="center_horizontal"
+        android:inputType="text"
         android:textAlignment="center"
+        android:textColor="@color/secondary"
         android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/button_modify"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/barrier"
-        app:layout_constraintTop_toBottomOf="@id/oldValueText" />
+        app:layout_constraintTop_toBottomOf="@+id/oldValueText" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
@@ -79,13 +102,14 @@
 
     <Button
         android:id="@+id/button_modify"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_margin="15dp"
+        android:backgroundTint="@color/secondary"
+        android:padding="15dp"
         android:text="Modify"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/field_editValue" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

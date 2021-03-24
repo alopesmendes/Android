@@ -15,14 +15,20 @@
         android:id="@+id/countryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="French"
-        android:gravity="center"
         android:layout_alignBottom="@+id/countryFlag"
-        android:layout_toEndOf="@+id/countryFlag"
         android:layout_alignParentTop="true"
-        android:layout_margin="10dp"
-        android:textSize="16sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toEndOf="@+id/countryFlag"
+        android:layout_toRightOf="@+id/countryFlag"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="French"
         android:textColor="@color/secondary"
-        android:layout_toRightOf="@+id/countryFlag" />
+        android:textSize="16sp" />
 
 </RelativeLayout>
