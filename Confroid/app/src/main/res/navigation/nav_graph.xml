@@ -234,14 +234,12 @@
     <fragment
         android:id="@+id/leafFragment"
         android:name="fr.uge.confroid.configurations.LeafFragment"
-        android:label="fragment_leaf"
         tools:layout="@layout/fragment_leaf">
     </fragment>
 
     <fragment
         android:id="@+id/branchFragment"
         android:name="fr.uge.confroid.configurations.BranchFragment"
-        android:label="fragment_branch"
         tools:layout="@layout/fragment_branch">
         <action
             android:id="@+id/action_branchFragment_to_leafFragment"

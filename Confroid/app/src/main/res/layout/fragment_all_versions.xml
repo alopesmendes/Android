@@ -26,6 +26,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/AppName"
         app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
         android:backgroundTint="@color/secondary"/>
 
     <androidx.recyclerview.widget.RecyclerView
