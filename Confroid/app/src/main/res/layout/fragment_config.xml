@@ -10,7 +10,6 @@
         android:id="@+id/AppNameConfig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
         android:gravity="center_horizontal"
         android:padding="15dp"
         android:text="TextView"
@@ -34,7 +33,6 @@
         android:id="@+id/textVersionInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
         android:padding="5dp"
         android:text="@string/version_text"
         android:textColor="@color/secondary"
@@ -58,7 +56,6 @@
         android:id="@+id/textTagInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
         android:padding="5dp"
         android:text="@string/tag_text"
         android:textColor="@color/secondary"
@@ -84,7 +81,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="cursive"
         android:padding="5dp"
         android:text="@string/content_text"
         android:textColor="@color/secondary"
@@ -104,7 +100,7 @@
         app:layout_constraintStart_toEndOf="@+id/AppNameConfig"
         app:layout_constraintStart_toStartOf="@+id/guidelineEndVerticalTextTitleConfig"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
+        />
 
     <ImageView
         android:id="@+id/delete_button"
