@@ -1,6 +1,7 @@
 package fr.uge.confroid.utils
 
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 
 class CustomDiffUtil(private val old: List<*>, private val current: List<*>) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
@@ -18,4 +19,5 @@ class CustomDiffUtil(private val old: List<*>, private val current: List<*>) : D
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return old[oldItemPosition] == current[newItemPosition]
     }
+
 }

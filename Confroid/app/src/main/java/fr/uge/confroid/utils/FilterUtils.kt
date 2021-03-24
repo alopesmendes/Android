@@ -14,7 +14,7 @@ import fr.uge.confroid.R
 
 object FilterUtils {
 
-    fun <T> filter(list : List<T>, updateRequests : (newList: List<T>) -> Unit) : Filter {
+    fun <T> filter(list : List<T>, transformString : (listItem : T) -> String, updateRequests : (newList: List<T>) -> Unit) : Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val filteredList = ArrayList<T>()
@@ -23,7 +23,7 @@ object FilterUtils {
                 } else {
                     val filterPattern = constraint.toString().toLowerCase().trim()
                     for (item in list) {
-                        if (item.toString().toLowerCase().contains(filterPattern)) {
+                        if (transformString(item).toLowerCase().contains(filterPattern)) {
                             filteredList.add(item)
                         }
                     }

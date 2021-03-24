@@ -3,41 +3,63 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:cardElevation="12dp"
+    app:cardCornerRadius="20dp"
+    android:layout_margin="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="10dp"
-        android:layout_margin="5dp"
-        android:background="@drawable/ic_launcher_background">
+        android:background="@drawable/round_bg"
+        android:padding="25dp">
+
+        <ImageView
+            android:id="@+id/imageVersionConfig"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_version_settings"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textVersion"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="15sp"
             android:layout_margin="5dp"
-            android:padding="10dp"/>
+            android:background="@drawable/round_border_primary"
+            android:padding="10dp"
+            android:textColor="@color/primary"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/textTag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageVersionConfig"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/textTag"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/textVersion"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="15sp"
             android:layout_margin="5dp"
             android:padding="10dp"
             android:textColor="@color/primary"
-            />
+            android:textSize="15sp"
+            android:background="@drawable/round_border_primary"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageVersionConfig"
+            app:layout_constraintTop_toBottomOf="@+id/textVersion"
+            android:gravity="center_horizontal" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

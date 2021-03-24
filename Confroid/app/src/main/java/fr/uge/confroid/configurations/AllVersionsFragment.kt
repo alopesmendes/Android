@@ -4,10 +4,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -15,6 +15,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.uge.confroid.R
 import fr.uge.confroid.configurations.services.ConfigurationVersions
+import fr.uge.confroid.utils.FilterUtils
 import kotlinx.android.synthetic.main.fragment_all_versions.*
 
 /**
@@ -22,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_all_versions.*
  * Use the [AllVersionsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AllVersionsFragment : Fragment() {
+class AllVersionsFragment : Fragment(R.layout.fragment_all_versions) {
 
     private lateinit var navController: NavController
     private var configs: List<Config>? = null
@@ -60,6 +61,8 @@ class AllVersionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
         navController = Navigation.findNavController(view)
         filter.addAction(broadcastAction)
 
@@ -82,13 +85,14 @@ class AllVersionsFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_versions, container, false)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        FilterUtils.onCreateOptionsMenu(requireContext(), resources, menu, inflater) {
+            configAdapter?.filter?.filter(it)
+        }
+        super.onCreateOptionsMenu(menu, inflater)
     }
+
 
     fun onClickListener(position: Int) {
         val config = configs?.get(position)
