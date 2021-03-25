@@ -259,7 +259,6 @@
     <fragment
         android:id="@+id/createConfigFragment"
         android:name="fr.uge.confroid.configurations.AddConfigFragment"
-        android:label="fragment_createConfig"
         tools:layout="@layout/fragment_add_config">
         <action
             android:id="@+id/action_createConfigFragment_to_appFragment"

@@ -35,5 +35,6 @@
     <string name="field_name_text">Nom de Champ:</string>
     <string name="generate_token_text">générer un jeton</string>
     <string name="send_token_to_app_text">envoyer un jeton à l\'application</string>
+    <string name="creation_of_new_version">Création d\'une nouvelle version:</string>
 
 </resources>
