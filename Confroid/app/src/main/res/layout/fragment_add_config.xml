@@ -26,7 +26,7 @@
         android:textSize="15sp"
         android:layout_margin="10dp"
         android:padding="10dp"
-        android:text="Creation of new version:"
+        android:text="@string/creation_of_new_version"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_name"
