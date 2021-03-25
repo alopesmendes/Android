@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/secondary"
         android:text="@string/send_all_text"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

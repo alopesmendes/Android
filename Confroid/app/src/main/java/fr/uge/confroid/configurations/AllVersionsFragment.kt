@@ -43,6 +43,14 @@ class AllVersionsFragment : Fragment(R.layout.fragment_all_versions) {
                     val request = intent.getLongExtra("request", 0L)
                     if (request != 0L) {
                         send_all_to_app_button.visibility = View.VISIBLE
+                        send_all_to_app_button.setOnClickListener {
+                            Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra("content", configs?.joinToString("\n", "{", "}"))
+                                putExtra("request", request)
+                                startActivity(this)
+                            }
+                        }
                     }
 
                     Intent(activity, ConfigurationVersions::class.java).apply {
@@ -68,15 +76,6 @@ class AllVersionsFragment : Fragment(R.layout.fragment_all_versions) {
             putExtra("app", app)
             putExtra("request", request)
             requireActivity().startService(this)
-        }
-
-        send_all_to_app_button.setOnClickListener {
-            Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra("content", configs?.joinToString("\n", "{", "}"))
-                putExtra("request", request)
-                startActivity(this)
-            }
         }
     }
 
