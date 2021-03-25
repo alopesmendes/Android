@@ -83,7 +83,6 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         filter.addAction(broadcastAction)
-
         val app = arguments?.getString("app")
         val version = arguments?.getInt("version")
         val content = arguments?.getSerializable("content")
@@ -155,6 +154,9 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
     }
 
     private fun toList(content: String): List<String> {
+        if (content.length<2){
+            return arrayListOf<String>()
+        }
         var test = content.subSequence(1, content.length - 1).toString()
         var pair = firstField(test)
         var res = arrayListOf(pair.first)
@@ -173,7 +175,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
             var field = str.substring(0, str.indexOf("="))
             var content = str.substring(str.indexOf("=") + 1)
             var testList = toList(content)
-            if (testList.size == 1) {
+            if (testList.size <= 1) {
                 lst.add(Field(field, content, null))
             } else {
                 lst.add(Field(field, null, toListField(testList)))
