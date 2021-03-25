@@ -145,15 +145,6 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
             }
         }
 
-        /////////////////////////////////////////////////////
-
-        // SUPPRIME TOUTES LES DONNEES DE LA DB
-        reset_button.setOnClickListener {
-            model.reset()
-            appAdapter.updateApps(initAppList())
-        }
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

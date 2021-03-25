@@ -44,9 +44,9 @@
     <string name="help_explain_register_text">Enter username and same password then click on register</string>
     <string name="send_all_text">Send All</string>
     <string name="generate_modified_config_text">generate modified config</string>
-    <string name="content_text" translatable="false">CONTENT:</string>
-    <string name="version_text" translatable="false">VERSION:</string>
-    <string name="tag_text" translatable="false">TAG:</string>
+    <string name="content_text" translatable="false">"CONTENT: "</string>
+    <string name="version_text" translatable="false">"VERSION: "</string>
+    <string name="tag_text" translatable="false">"TAG: "</string>
     <string name="new_value_text">New Value:</string>
     <string name="old_value_text">Old Value:</string>
     <string name="field_name_text">Field Name:</string>
