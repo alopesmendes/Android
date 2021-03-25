@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest
 import com.google.gson.Gson
 import fr.uge.confroid.R
 import fr.uge.confroid.utils.FilterUtils
+import fr.uge.confroid.utils.RecyclerViewUtils
 import kotlinx.android.synthetic.main.fragment_files.*
 import kotlinx.coroutines.runBlocking
 import java.io.File
@@ -57,6 +58,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
         filesRecyclerView.layoutManager = GridLayoutManager(activity, 2)
         filesRecyclerView.setHasFixedSize(true)
 
+        RecyclerViewUtils.visibility(fileAdapter.requests.isEmpty(), filesRecyclerView, imageLogoFilesFragment)
     }
 
     override fun onClickListener(fileAttributes: FileAttributes) {
@@ -66,26 +68,6 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        /*
-        inflater.inflate(R.menu.files_menu, menu)
-        val searchItem: MenuItem = menu.findItem(R.id.searchItem)
-        val searchView: SearchView = searchItem.actionView as SearchView
-        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
-
-        searchView.background = resources.getDrawable(R.drawable.search_bg, requireContext().theme)
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                fileAdapter.filter.filter(newText)
-                return false
-            }
-        })
-
-        */
         FilterUtils.onCreateOptionsMenu(requireContext(), resources, menu, inflater) {
             fileAdapter.filter.filter(it)
         }

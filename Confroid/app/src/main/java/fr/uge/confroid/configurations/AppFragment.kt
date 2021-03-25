@@ -21,6 +21,7 @@ import fr.uge.confroid.configurations.receivers.TokenDispenser
 import fr.uge.confroid.configurations.services.ConfigurationPuller
 import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.utils.FilterUtils
+import fr.uge.confroid.utils.RecyclerViewUtils
 import fr.uge.confroid.web.WebSharedPreferences
 import kotlinx.android.synthetic.main.fragment_app.*
 
@@ -170,6 +171,8 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
             layoutManager = LinearLayoutManager(this@AppFragment.context)
             adapter = appAdapter
         }
+
+        RecyclerViewUtils.visibility(appLst.isEmpty(), appRecyclerView, imageLogoAppFragment)
     }
 
     override fun onItemClick(position: Int) {

@@ -33,5 +33,7 @@
     <string name="new_value_text">Nouvelle Valeur:</string>
     <string name="old_value_text">Ancienne Valeur:</string>
     <string name="field_name_text">Nom de Champ:</string>
+    <string name="generate_token_text">générer un jeton</string>
+    <string name="send_token_to_app_text">envoyer un jeton à l\'application</string>
 
 </resources>

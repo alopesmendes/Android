@@ -32,4 +32,6 @@
     <string name="new_value_text">Novo Valor:</string>
     <string name="old_value_text">Valor Antigo:</string>
     <string name="field_name_text">Nome da var:</string>
+    <string name="generate_token_text">genera um token</string>
+    <string name="send_token_to_app_text">enviar token para o aplicativo</string>
 </resources>
