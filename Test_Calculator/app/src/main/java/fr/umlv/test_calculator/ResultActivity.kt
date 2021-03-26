@@ -20,9 +20,11 @@ class ResultActivity : AppCompatActivity() {
                 val token = intent.getStringExtra("token")
                 val request = intent.getLongExtra("request", 0L)
 
+                result_tv.text =
+                    "LAST REQUEST ID: ${ConfroidUtils.REQUEST}\nREQUEST ID: $request\n\n$content"
                 if (request == ConfroidUtils.REQUEST) {
-                    result_tv.text =
-                        "LAST REQUEST ID: ${ConfroidUtils.REQUEST}\nREQUEST ID: $request\n\n$content"
+                    prefs.edit().putLong("request", 0L).apply()
+                    result_tv.text = result_tv.text.toString().plus("$content")
 
                     if (token != null) {
                         prefs.edit().putString("token", token).apply()

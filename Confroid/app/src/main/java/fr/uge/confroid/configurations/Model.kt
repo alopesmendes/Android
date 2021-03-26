@@ -9,17 +9,28 @@ import androidx.annotation.RequiresApi
 import java.sql.Date
 import java.time.LocalDate
 
-
+/**
+ * Class that allows Confroid to make requests to the database.
+ * It contains methods to add a new config, delete a config, delete a config (drop the table
+ * associated to the App), retrieve one or all config(s) of an App, or simply retrieve all configs
+ * of the database.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class Model(context: Context) {
 
-    lateinit var db: SQLiteDatabase
+    private lateinit var db: SQLiteDatabase
     private val handler: DatabaseHandler = DatabaseHandler(
         context,
         DatabaseHandler.DATABASE_NAME,
         null,
         DatabaseHandler.DATABASE_VERSION
     )
-    val allColumns: Array<String> = arrayOf(
+    private val allColumns: Array<String> = arrayOf(
         DatabaseHandler.KEY_ID,
         DatabaseHandler.KEY_VERSION,
         DatabaseHandler.KEY_CONTENT,
@@ -30,14 +41,6 @@ class Model(context: Context) {
     fun open() {
         db = handler.writableDatabase
         handler.initTables(db)
-    }
-
-    fun close() {
-        handler.close()
-    }
-
-    fun reset() {
-        handler.reset(db)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -89,12 +92,12 @@ class Model(context: Context) {
             null, null, null, null, null
         )
 
-        if (cursor == null || !cursor.moveToFirst()) {
-            return null
+        return if (cursor == null || !cursor.moveToFirst()) {
+            null
         } else {
             val config = cursorToConfig(app, cursor)
             cursor.close()
-            return config
+            config
         }
     }
 
@@ -129,18 +132,6 @@ class Model(context: Context) {
         }
         cursor.close()
         return configList
-    }
-
-    fun updateConfig(app: String, config: Config): Int {
-        val values = ContentValues()
-        values.put(DatabaseHandler.KEY_CONTENT, config.content)
-
-        return db.update(
-            app,
-            values,
-            "${DatabaseHandler.KEY_ID} = ${config.id}",
-            arrayOf(config.id.toString())
-        )
     }
 
     fun showTables(): List<String> {

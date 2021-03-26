@@ -1,5 +1,6 @@
 package fr.umlv.test_shop
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,9 +16,11 @@ class SendConfig : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_config)
 
+        val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+
         /////////////////////////////////////////////////////////
 
-        val prefs = ShoppingPreferences(mutableMapOf())
+        val shopPrefs = ShoppingPreferences(mutableMapOf())
 
         add_address_button.setOnClickListener {
             val name = name_et.text.toString()
@@ -49,12 +52,12 @@ class SendConfig : AppCompatActivity() {
                     cryptogram.toInt()
                 )
                 val shopInfo = ShoppingInfo(address, billingDetail, favorite_cb.isChecked)
-                prefs.shoppingInfos[label] = shopInfo
+                shopPrefs.shoppingInfos[label] = shopInfo
             }
         }
 
         show_config_button.setOnClickListener {
-            val fields = ConfroidUtils.deepGetFields(mutableMapOf(), prefs)
+            val fields = ConfroidUtils.deepGetFields(mutableMapOf(), shopPrefs)
             val content = ConfroidUtils.convertToBundle(fields)
             config_text_view.text = content.toString()
         }
@@ -66,7 +69,8 @@ class SendConfig : AppCompatActivity() {
             if (version.isBlank()) {
                 Toast.makeText(this, "version required", Toast.LENGTH_SHORT).show()
             } else {
-                ConfroidUtils.saveConfiguration(this, "Shop", prefs, version)
+                ConfroidUtils.saveConfiguration(this, "Shop", shopPrefs, version)
+                prefs.edit().putLong("request", ConfroidUtils.REQUEST).apply()
             }
         }
     }

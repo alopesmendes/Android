@@ -1,5 +1,6 @@
 package fr.umlv.test_calculator
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -15,9 +16,11 @@ class SendConfig : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_config)
 
+        val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+
         /////////////////////////////////////////////////////////
 
-        val prefs = CalculatorPreferences("Standard", "Light", true)
+        val calcPrefs = CalculatorPreferences("Standard", "Light", true)
 
         //////////////////////////////////////////////
 
@@ -37,7 +40,7 @@ class SendConfig : AppCompatActivity() {
                 id: Long
             ) {
                 if (parent != null) {
-                    prefs.calculator = parent.getItemAtPosition(position).toString()
+                    calcPrefs.calculator = parent.getItemAtPosition(position).toString()
                 }
             }
 
@@ -65,7 +68,7 @@ class SendConfig : AppCompatActivity() {
                 id: Long
             ) {
                 if (parent != null) {
-                    prefs.lightMode = parent.getItemAtPosition(position).toString()
+                    calcPrefs.lightMode = parent.getItemAtPosition(position).toString()
                 }
             }
 
@@ -78,13 +81,13 @@ class SendConfig : AppCompatActivity() {
         /////////////////////////////////////////////
 
         historic_cb.setOnClickListener {
-            prefs.removeHistoricAtStart = historic_cb.isChecked
+            calcPrefs.removeHistoricAtStart = historic_cb.isChecked
         }
 
         //////////////////////////////////////////
 
         show_config_button.setOnClickListener {
-            val fields = ConfroidUtils.deepGetFields(mutableMapOf(), prefs)
+            val fields = ConfroidUtils.deepGetFields(mutableMapOf(), calcPrefs)
             val content = ConfroidUtils.convertToBundle(fields)
             config_text_view.text = content.toString()
         }
@@ -96,7 +99,8 @@ class SendConfig : AppCompatActivity() {
             if (version.isBlank()) {
                 Toast.makeText(this, "version required", Toast.LENGTH_SHORT).show()
             } else {
-                ConfroidUtils.saveConfiguration(this, "Calculator", prefs, version)
+                ConfroidUtils.saveConfiguration(this, "Calculator", calcPrefs, version)
+                prefs.edit().putLong("request", ConfroidUtils.REQUEST).apply()
             }
         }
     }
