@@ -6,14 +6,19 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.android.volley.NetworkResponse
 import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.web.*
+import java.io.ByteArrayOutputStream
+import java.io.DataOutputStream
 import java.io.File
+import java.io.IOException
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
-class UploadWorker(appContext: Context, workerParams: WorkerParameters):
+class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result {
         if (!WebSharedPreferences.getInstance(applicationContext).isLoggedIn()) {
             return Result.failure()
@@ -27,31 +32,53 @@ class UploadWorker(appContext: Context, workerParams: WorkerParameters):
         return Result.success()
     }
 
-    private fun sendFile(file : File, password : String,  token : String) {
-        Log.i("preparing send","path:${file.absolutePath} and token:$token")
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun sendFile(file: File, password: String, token: String) {
+        Log.i("preparing send", "path:${file.absolutePath} and token:$token")
 
-        val customRequest = object : VolleyFileUploadRequest(
-            Method.POST, URL.ROOT_FILE_UPLOAD,
-            {
-                Log.i("success", it.toString())
-            },
-            {
-                Log.e("fail", it.toString())
-            })
-        {
+        val secretKey: SecretKey = SecretKeySpec(
+            CryptKey.decrypt(password.toByteArray(), CryptKey.secretKey),
+            "AES"
+        )
+        val data = FormatDataFileRequest(
+            file.absolutePath,
+            CryptKey.encrypt(file.readBytes(), secretKey)!!
+        )
+
+
+        val cs = object :
+            CustomRequest<NetworkResponse>(Method.POST,
+                URL.ROOT_FILE_UPLOAD,
+                NetworkResponse::class.java,
+                {
+                    Log.i("success", it.toString())
+                },
+                {
+                    Log.e("fail", it.toString())
+                }) {
             override fun getHeaders(): MutableMap<String, String> {
                 return mutableMapOf("authorization" to token)
             }
 
+            override fun getBodyContentType() = FormatDataFileRequest.bodyContentType()
+
             @RequiresApi(Build.VERSION_CODES.O)
-            override fun getByteData(): Map<String, FileDataPart>? {
-                val params = HashMap<String, FileDataPart>()
-                val secretKey : SecretKey = SecretKeySpec(CryptKey.decrypt(password.toByteArray(), CryptKey.secretKey), "AES")
-                params["file"] = FileDataPart(file.absolutePath, CryptKey.encrypt(file.readBytes(), secretKey)!!, "txt")
-                return params
+            override fun getBody(): ByteArray {
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                val dataOutputStream = DataOutputStream(byteArrayOutputStream)
+                try {
+
+                    FormatDataFileRequest.processData(dataOutputStream, data)
+                    return byteArrayOutputStream.toByteArray()
+
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                return super.getBody()
             }
+
         }
 
-        VolleySingleton.getInstance(applicationContext).addToRequestQueue(customRequest)
+        VolleySingleton.getInstance(applicationContext).addToRequestQueue(cs)
     }
 }
