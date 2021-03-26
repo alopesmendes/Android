@@ -16,7 +16,8 @@ class MainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
 
         ConfroidUtils.TOKEN = prefs.getString("token", "").toString()
-        token_tv.text = "TOKEN: ${ConfroidUtils.TOKEN}"
+        ConfroidUtils.REQUEST = prefs.getLong("request", 0L)
+        token_tv.text = "TOKEN: ${ConfroidUtils.TOKEN}\nLAST REQUEST ID: ${ConfroidUtils.REQUEST}"
 
         /////////////////////////////
 
@@ -52,7 +53,8 @@ class MainActivity : AppCompatActivity() {
             ConfroidUtils.cancelConfigurationSubscription<Any>(this, "Shop", null)
             ConfroidUtils.TOKEN = ""
             prefs.edit().putString("token", "").apply()
-            token_tv.text = "TOKEN: ${ConfroidUtils.TOKEN}"
+            prefs.edit().putLong("request", ConfroidUtils.REQUEST).apply()
+            token_tv.text = "TOKEN: ${ConfroidUtils.TOKEN}\nLAST REQUEST ID: ${ConfroidUtils.REQUEST}"
         }
     }
 }

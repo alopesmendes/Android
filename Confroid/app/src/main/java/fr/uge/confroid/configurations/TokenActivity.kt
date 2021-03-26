@@ -8,8 +8,18 @@ import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.activity_token.*
 import kotlin.random.Random
 
+/**
+ * This Activity allows to send a token to an App and associate the App with the token
+ * in Confroid preferences.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class TokenActivity : AppCompatActivity() {
-    var token: String = ""
+    private var token: String = ""
 
     companion object {
         const val STRING_LENGTH: Int = 20
@@ -26,7 +36,7 @@ class TokenActivity : AppCompatActivity() {
 
         generate_token_button.setOnClickListener {
             token =
-                (1..STRING_LENGTH).map { i -> Random.nextInt(0, REGEX.size) }.map(REGEX::get)
+                (1..STRING_LENGTH).map { Random.nextInt(0, REGEX.size) }.map(REGEX::get)
                     .joinToString("")
             token_tv.text = "TOKEN: $token"
         }

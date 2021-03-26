@@ -1,5 +1,6 @@
 package fr.umlv.test_shop
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,12 +12,15 @@ class LoadConfig : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_load_config)
 
+        val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+
         load_config_button.setOnClickListener {
             val version = version_edit_text.text.toString()
             if (version.isBlank()) {
                 Toast.makeText(this, "version required", Toast.LENGTH_SHORT).show()
             } else {
                 ConfroidUtils.loadConfiguration<Any>(this, "Shop", version, null)
+                prefs.edit().putLong("request", ConfroidUtils.REQUEST).apply()
             }
         }
     }

@@ -5,6 +5,17 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
+/**
+ * This class allows to create Confroid database with SQL syntax.
+ * It contains a method to create a table for a new App,
+ * and drop a table when an App cancels subscription.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class DatabaseHandler(
     context: Context?,
     name: String?,
@@ -13,36 +24,26 @@ class DatabaseHandler(
 ) : SQLiteOpenHelper(context, name, factory, version) {
 
     companion object {
-        val DATABASE_VERSION: Int = 1
-        val DATABASE_NAME: String = "configDB"
+        const val DATABASE_VERSION: Int = 1
+        const val DATABASE_NAME: String = "configDB"
 
         val TABLES: MutableSet<String> = mutableSetOf()
-        val KEY_ID: String = "id"
-        val KEY_VERSION: String = "version"
-        val KEY_CONTENT: String = "content"
-        val KEY_TAG: String = "tag"
-        val KEY_DATE: String = "date"
+        const val KEY_ID: String = "id"
+        const val KEY_VERSION: String = "version"
+        const val KEY_CONTENT: String = "content"
+        const val KEY_TAG: String = "tag"
+        const val KEY_DATE: String = "date"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-//        initTables(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        // Drop older table if existed
         TABLES.forEach {
             db?.execSQL("DROP TABLE IF EXISTS $it")
         }
 
-        // Create tables again
         onCreate(db)
-    }
-
-    fun reset(db: SQLiteDatabase) {
-        TABLES.forEach {
-            db.execSQL("DROP TABLE IF EXISTS $it")
-        }
-        TABLES.removeAll(TABLES)
     }
 
     fun createTable(db: SQLiteDatabase, app: String) {

@@ -3,13 +3,20 @@ package fr.uge.confroid.configurations.receivers
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import android.util.Log
 import fr.uge.confroid.configurations.TokenActivity
 
+/**
+ * This service that opens a fragment with an external App name and its request id.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class TokenDispenser : Service() {
 
     override fun onBind(intent: Intent): IBinder? {
-        Log.i("token dispenser service", "bind")
         return null
     }
 
