@@ -58,7 +58,6 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
         filesRecyclerView.layoutManager = GridLayoutManager(activity, 2)
         filesRecyclerView.setHasFixedSize(true)
 
-        RecyclerViewUtils.visibility(fileAdapter.requests.isEmpty(), filesRecyclerView, imageLogoFilesFragment)
     }
 
     override fun onClickListener(fileAttributes: FileAttributes) {
@@ -136,6 +135,8 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
             Log.i("shared user", user.toString())
             getFiles(user.token)
 
+            //RecyclerViewUtils.visibility(fileAdapter.requests.isEmpty(), filesRecyclerView, imageLogoFilesFragment)
+
         }
 
     }
@@ -152,6 +153,7 @@ class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListe
         val files = parse(requestBody)
         fileAdapter.initFullList(files)
         fileAdapter.updateRequests(files)
+        RecyclerViewUtils.visibility(files.isEmpty(), filesRecyclerView, imageLogoFilesFragment)
     }
 
     private fun getFiles(token: String) {
