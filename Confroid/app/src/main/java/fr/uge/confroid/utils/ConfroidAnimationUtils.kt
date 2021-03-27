@@ -3,6 +3,15 @@ package fr.uge.confroid.utils
 import android.view.View
 import android.view.animation.BounceInterpolator
 
+/***
+ * Will deal with the features of an Animation.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 object ConfroidAnimationUtils {
     private fun hide(view: View, time: Long) {
         view.animate().apply {
@@ -31,6 +40,12 @@ object ConfroidAnimationUtils {
         }
     }
 
+    /***
+     * The animation of visibility.
+     * @param view a [View].
+     * @param revealTime the time to reveal the [View].
+     * @param hideTime the time to hide the [View].
+     */
     fun animationVisibility(view: View, revealTime : Long, hideTime : Long) {
         if (view.visibility == View.INVISIBLE) {
             reveal(view, revealTime)
@@ -39,6 +54,10 @@ object ConfroidAnimationUtils {
         }
     }
 
+    /***
+     * The animation of a bounce.
+     * @param view the [View].
+     */
     fun animationBounce(view: View) {
         view.animate().apply {
             interpolator = BounceInterpolator()

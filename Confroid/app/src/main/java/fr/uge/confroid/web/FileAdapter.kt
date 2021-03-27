@@ -13,6 +13,15 @@ import fr.uge.confroid.utils.CustomDiffUtil
 import fr.uge.confroid.R
 import fr.uge.confroid.utils.FilterUtils
 
+/***
+ * Will create an [RecyclerView.Adapter] for the files.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class FileAdapter(val listener: OnFileListener, var requests: List<FileAttributes>) : RecyclerView.Adapter<FileAdapter.ViewHolder>(), Filterable {
     private lateinit var requestsFull : List<FileAttributes>
 

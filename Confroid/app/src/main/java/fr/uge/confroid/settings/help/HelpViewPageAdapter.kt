@@ -5,6 +5,16 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
+
+/***
+ * Implements [FragmentStateAdapter] to travel between fragments.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class HelpViewPageAdapter(
     private val fragmentList: List<Fragment>,
     fm: FragmentManager,

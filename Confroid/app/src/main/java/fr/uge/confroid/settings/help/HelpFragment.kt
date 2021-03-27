@@ -11,6 +11,16 @@ import fr.uge.confroid.settings.ZoomOutPageTransformer
 import fr.uge.confroid.settings.help.fragments.*
 import kotlinx.android.synthetic.main.fragment_help.*
 
+/***
+ * To help the User understand better how to use the application.
+ * Uses the [HelpViewPageAdapter] that will allow the user to travel between the different fragments.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class HelpFragment : Fragment(R.layout.fragment_help) {
 
     private lateinit var navController: NavController

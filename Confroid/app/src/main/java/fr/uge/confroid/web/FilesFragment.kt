@@ -1,19 +1,12 @@
 package fr.uge.confroid.web
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -34,7 +27,15 @@ import java.io.File
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
-
+/***
+ * The FilesFragment will allow the user to see all their files and download the content.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class FilesFragment : Fragment(R.layout.fragment_files), FileAdapter.OnFileListener {
 
     private val fileAdapter : FileAdapter = FileAdapter(this, listOf())

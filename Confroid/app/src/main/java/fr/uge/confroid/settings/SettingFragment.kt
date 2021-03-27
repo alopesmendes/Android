@@ -1,12 +1,9 @@
 package fr.uge.confroid.settings
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
@@ -19,14 +16,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import fr.uge.confroid.MainActivity
 import fr.uge.confroid.R
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.country_spinner_row.*
-import kotlinx.android.synthetic.main.country_spinner_row.view.*
 import kotlinx.android.synthetic.main.fragment_setting.*
-import java.util.*
 
+/***
+ * Will allow the user to change the settings of Confroid.
+ * Can change the theme and language of the application.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class SettingViewModel : ViewModel() {
     private val mutableSelectedItem = MutableLiveData<String>()
     val selectedItem: LiveData<String> get() = mutableSelectedItem
@@ -134,6 +136,11 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         const val NIGHT_MODE = "NightMode"
         const val LANG = "LangSelected"
 
+        /***
+         * Enables the opposite theme.
+         * @param context the [Context] to get the [SharedPreferences].
+         * @return true if night mode is enable otherwise false.
+         */
         fun enableMode(context: Context): Boolean {
             val appSettingPrefs: SharedPreferences = context.getSharedPreferences(PREFS, 0)
             val isNightModeOn = appSettingPrefs.getBoolean(NIGHT_MODE, false)

@@ -1,8 +1,6 @@
 package fr.uge.confroid.web
 
 import android.content.Context
-import android.content.Intent
-import fr.uge.confroid.MainActivity
 
 /**
  * This class allow us to deal with the users data and check if they are login.
