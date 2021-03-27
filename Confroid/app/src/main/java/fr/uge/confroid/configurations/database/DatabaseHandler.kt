@@ -1,4 +1,4 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

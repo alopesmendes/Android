@@ -1,4 +1,4 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.fragments
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,24 +13,31 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.uge.confroid.MainActivity
 import fr.uge.confroid.R
+import fr.uge.confroid.configurations.model.Config
+import fr.uge.confroid.configurations.model.Field
+import fr.uge.confroid.configurations.model.FieldAdapter
 import fr.uge.confroid.configurations.services.ConfigurationPuller
 import fr.uge.confroid.configurations.services.ConfigurationPusher
 import kotlinx.android.synthetic.main.fragment_all_versions.*
 import kotlinx.android.synthetic.main.fragment_config.*
 
-
+/**
+ * This Fragment displays a config content.
+ * It displays all fields as a RecyclerView and the user
+ * can navigate into them for a version update.
+ */
 class ConfigFragment : Fragment(R.layout.fragment_config) {
 
     val filter: IntentFilter = IntentFilter()
     lateinit var adapter: FieldAdapter
-    var positionToChange = -1
+    private var positionToChange = -1
     var list: ArrayList<Field> = arrayListOf()
 
     companion object {
-        val broadcastAction = "getOneVersion"
+        const val broadcastAction = "getOneVersion"
     }
 
-    val receiver: BroadcastReceiver = object : BroadcastReceiver() {
+    private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 if (intent.action == broadcastAction) {
@@ -40,7 +47,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                     textTagConfig.text = config.tag
 
                     val content: String = config.content
-                    var fields = toListField(toList(content))
+                    val fields = toListField(toList(content))
                     if (list.isEmpty()) {
                         list = fields
                     }
@@ -138,11 +145,11 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
         var i = 0
         var nb_rec = 0
         while (i < content.length) {
-            if (content.get(i) == '{') {
+            if (content[i] == '{') {
                 nb_rec++
-            } else if (content.get(i) == '}') {
+            } else if (content[i] == '}') {
                 nb_rec--
-            } else if (content.get(i) == ',' && (nb_rec == 0)) {
+            } else if (content[i] == ',' && (nb_rec == 0)) {
                 return Pair(
                     content.subSequence(0, i).toString(),
                     content.subSequence(i + 1, content.length).toString()
@@ -154,12 +161,12 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
     }
 
     private fun toList(content: String): List<String> {
-        if (content.length<2){
-            return arrayListOf<String>()
+        if (content.length < 2) {
+            return arrayListOf()
         }
-        var test = content.subSequence(1, content.length - 1).toString()
+        val test = content.subSequence(1, content.length - 1).toString()
         var pair = firstField(test)
-        var res = arrayListOf(pair.first)
+        val res = arrayListOf(pair.first)
         var bool = pair.second
         while (bool.isNotEmpty()) {
             pair = firstField(bool)
@@ -170,11 +177,11 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
     }
 
     private fun toListField(strs: List<String>): ArrayList<Field> {
-        var lst = arrayListOf<Field>()
+        val lst = arrayListOf<Field>()
         for (str in strs) {
-            var field = str.substring(0, str.indexOf("="))
-            var content = str.substring(str.indexOf("=") + 1)
-            var testList = toList(content)
+            val field = str.substring(0, str.indexOf("="))
+            val content = str.substring(str.indexOf("=") + 1)
+            val testList = toList(content)
             if (testList.size <= 1) {
                 lst.add(Field(field, content, null))
             } else {

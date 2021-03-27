@@ -66,8 +66,8 @@ class SendConfig : AppCompatActivity() {
 
         send_to_confroid_button.setOnClickListener {
             val version = version_edit_text.text.toString()
-            if (version.isBlank()) {
-                Toast.makeText(this, "version required", Toast.LENGTH_SHORT).show()
+            if (version.isBlank() || shopPrefs.shoppingInfos.isEmpty()) {
+                Toast.makeText(this, "please fill the fields", Toast.LENGTH_SHORT).show()
             } else {
                 ConfroidUtils.saveConfiguration(this, "Shop", shopPrefs, version)
                 prefs.edit().putLong("request", ConfroidUtils.REQUEST).apply()

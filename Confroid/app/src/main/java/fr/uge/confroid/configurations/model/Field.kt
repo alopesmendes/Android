@@ -1,4 +1,4 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.model
 
 import java.io.Serializable
 
@@ -13,7 +13,7 @@ data class Field(
     }
 
     fun toJsonFormat(): String {
-        var res:StringBuilder = java.lang.StringBuilder()
+        val res:StringBuilder = java.lang.StringBuilder()
         res.append(name)
         res.append("=")
         if (!content.isNullOrBlank()){

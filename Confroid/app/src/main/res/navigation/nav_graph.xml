@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/appFragment"
-        android:name="fr.uge.confroid.configurations.AppFragment"
+        android:name="fr.uge.confroid.configurations.fragments.AppFragment"
         tools:layout="@layout/fragment_app">
 
         <action
@@ -161,7 +161,7 @@
 
     <fragment
         android:id="@+id/allVersionsFragment"
-        android:name="fr.uge.confroid.configurations.AllVersionsFragment"
+        android:name="fr.uge.confroid.configurations.fragments.AllVersionsFragment"
         tools:layout="@layout/fragment_all_versions">
         <action
             android:id="@+id/action_allVersionsFragment_to_appFragment"
@@ -187,7 +187,7 @@
 
     <fragment
         android:id="@+id/configFragment"
-        android:name="fr.uge.confroid.configurations.ConfigFragment"
+        android:name="fr.uge.confroid.configurations.fragments.ConfigFragment"
         tools:layout="@layout/fragment_config">
 
         <action
@@ -232,13 +232,13 @@
 
     <fragment
         android:id="@+id/leafFragment"
-        android:name="fr.uge.confroid.configurations.LeafFragment"
+        android:name="fr.uge.confroid.configurations.fragments.LeafFragment"
         tools:layout="@layout/fragment_leaf">
     </fragment>
 
     <fragment
         android:id="@+id/branchFragment"
-        android:name="fr.uge.confroid.configurations.BranchFragment"
+        android:name="fr.uge.confroid.configurations.fragments.BranchFragment"
         tools:layout="@layout/fragment_branch">
         <action
             android:id="@+id/action_branchFragment_to_leafFragment"
@@ -258,7 +258,7 @@
 
     <fragment
         android:id="@+id/createConfigFragment"
-        android:name="fr.uge.confroid.configurations.AddConfigFragment"
+        android:name="fr.uge.confroid.configurations.fragments.AddConfigFragment"
         tools:layout="@layout/fragment_add_config">
         <action
             android:id="@+id/action_createConfigFragment_to_appFragment"

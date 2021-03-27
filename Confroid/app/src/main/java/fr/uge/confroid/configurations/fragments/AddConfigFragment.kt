@@ -1,4 +1,4 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.fragments
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,35 +7,39 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
 import fr.uge.confroid.R
+import fr.uge.confroid.configurations.model.Config
+import fr.uge.confroid.configurations.model.Field
 import fr.uge.confroid.configurations.services.ConfigurationVersions
 import kotlinx.android.synthetic.main.fragment_add_config.*
-import kotlinx.android.synthetic.main.fragment_all_versions.*
 
 
 /**
- * A simple [Fragment] subclass.
- * Use the [AddConfigFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * This Fragment retrieves a config with a field selected by the user,
+ * then the user can modify the field.
+ * It will add a new config into the database.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
  */
 class AddConfigFragment : Fragment(R.layout.fragment_add_config) {
     private lateinit var navController: NavController
-    lateinit var fields: ArrayList<Field>
-    var newversion: Int = -1
+    private lateinit var fields: ArrayList<Field>
+    private var newversion: Int = -1
 
     lateinit var configsVersions: List<Int>
     val filter: IntentFilter = IntentFilter()
 
-    val receiver: BroadcastReceiver = object : BroadcastReceiver() {
+    private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 if (intent.action == AllVersionsFragment.broadcastAction) {
@@ -57,8 +61,8 @@ class AddConfigFragment : Fragment(R.layout.fragment_add_config) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        var app: String = ""
-        var oldversion: Int = 0
+        var app = ""
+        var oldversion = 0
         filter.addAction(AllVersionsFragment.broadcastAction)
 
         arguments?.let {
@@ -81,11 +85,10 @@ class AddConfigFragment : Fragment(R.layout.fragment_add_config) {
                 if (configsVersions.contains(newversion)) {
                     Toast.makeText(activity, "version already saved", Toast.LENGTH_SHORT).show()
                 } else {
-                    var newTag:String
-                    if (editTag.text.isEmpty()){
-                         newTag = "Version $oldversion modified"
-                    }else{
-                        newTag = editTag.text.toString()
+                    val newTag: String = if (editTag.text.isEmpty()) {
+                        "Version $oldversion modified"
+                    } else {
+                        editTag.text.toString()
                     }
                     AppFragment.model.addConfig(
                         app,
@@ -100,10 +103,9 @@ class AddConfigFragment : Fragment(R.layout.fragment_add_config) {
     }
 
     private fun toJsonFormat(): String {
-        var res: StringBuilder = java.lang.StringBuilder()
+        val res: StringBuilder = java.lang.StringBuilder()
         res.append("{")
         for (i in fields.indices) {
-            Log.i("field a insérer", fields[i].toString())
             res.append(fields[i].toJsonFormat())
             if (i < fields.size - 1) {
                 res.append(",")

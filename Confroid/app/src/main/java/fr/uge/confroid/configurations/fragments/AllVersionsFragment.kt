@@ -1,4 +1,4 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.fragments
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -14,10 +14,23 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.uge.confroid.R
+import fr.uge.confroid.configurations.model.Config
+import fr.uge.confroid.configurations.model.ConfigAdapter
 import fr.uge.confroid.configurations.services.ConfigurationVersions
 import fr.uge.confroid.utils.FilterUtils
 import kotlinx.android.synthetic.main.fragment_all_versions.*
 
+/**
+ * This Fragment displays all configs of an App as a RecyclerView.
+ * It allows to go to one config's Fragment or to send all configs
+ * if the Fragment is open because of an external App request.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class AllVersionsFragment : Fragment(R.layout.fragment_all_versions) {
 
     private lateinit var navController: NavController
@@ -26,10 +39,10 @@ class AllVersionsFragment : Fragment(R.layout.fragment_all_versions) {
     val filter: IntentFilter = IntentFilter()
 
     companion object {
-        val broadcastAction = "getAllVersions"
+        const val broadcastAction = "getAllVersions"
     }
 
-    val receiver: BroadcastReceiver = object : BroadcastReceiver() {
+    private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 if (intent.action == broadcastAction) {
