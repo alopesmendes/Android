@@ -1,7 +1,6 @@
 package fr.uge.confroid
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Build
@@ -10,10 +9,7 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -27,7 +23,6 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.material.navigation.NavigationView
-import fr.uge.confroid.configurations.AppFragment
 import fr.uge.confroid.settings.SettingFragment
 import fr.uge.confroid.settings.SettingViewModel
 import fr.uge.confroid.web.*

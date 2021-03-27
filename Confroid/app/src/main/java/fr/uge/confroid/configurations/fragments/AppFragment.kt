@@ -1,15 +1,13 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.fragments
 
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -17,20 +15,29 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.uge.confroid.R
+import fr.uge.confroid.configurations.database.Model
+import fr.uge.confroid.configurations.model.Application
+import fr.uge.confroid.configurations.model.ApplicationAdapter
 import fr.uge.confroid.configurations.receivers.TokenDispenser
-import fr.uge.confroid.configurations.services.ConfigurationPuller
 import fr.uge.confroid.storageprovider.MyProvider
 import fr.uge.confroid.utils.FilterUtils
 import fr.uge.confroid.utils.RecyclerViewUtils
 import fr.uge.confroid.web.WebSharedPreferences
 import kotlinx.android.synthetic.main.fragment_app.*
 
+/**
+ * This Fragment displays all apps saved by Confroid as a RecyclerView.
+ * The user can choose one and then Confroid opens a Fragment with all versions.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemClickListener {
 
     val filter: IntentFilter = IntentFilter()
-
-    var configToSend: Config? = null
-    var versionsToSend: Array<Config>? = null
 
     companion object {
         lateinit var model: Model
@@ -41,7 +48,7 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
 
         fun initAppList(): ArrayList<Application> {
             val res = ArrayList<Application>()
-            var configCount = 0
+            var configCount: Int
             for (app in model.showTables()) {
                 configCount = (model.getAllVersions(app))?.size ?: 0
                 res.add(Application(app, configCount))
@@ -82,8 +89,8 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
                 )
             }
         }
-        when {
-            requireActivity().intent.action == Intent.ACTION_SEND -> {
+        when (requireActivity().intent.action) {
+            Intent.ACTION_SEND -> {
                 val request = requireActivity().intent.getLongExtra("request", 0L)
 
                 val app = requireActivity().intent.getStringExtra("app")
@@ -128,13 +135,12 @@ class AppFragment : Fragment(R.layout.fragment_app), ApplicationAdapter.OnItemCl
                                 )
                             }
                         }
-                    }
-                    else {
+                    } else {
                         if (app != null) {
                             model.deleteApp(app)
                         }
                     }
-//                    TOKEN RETRIEVING
+    //                    TOKEN RETRIEVING
                 } else {
                     Intent(activity, TokenDispenser::class.java).apply {
                         putExtra("app", app)

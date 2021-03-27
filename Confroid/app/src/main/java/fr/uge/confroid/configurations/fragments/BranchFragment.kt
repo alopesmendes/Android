@@ -1,26 +1,34 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.uge.confroid.R
+import fr.uge.confroid.configurations.model.Field
+import fr.uge.confroid.configurations.model.FieldAdapter
 import kotlinx.android.synthetic.main.fragment_branch.*
 import kotlinx.android.synthetic.main.fragment_branch.RvValueField
 
 /**
- * A simple [Fragment] subclass.
- * Use the [BranchFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * This Fragment displays a field of a config when the field
+ * contains other fields that are not primitive.
+ * It shows its content as a RecyclerView and the user
+ * can navigate into it.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
  */
 class BranchFragment : Fragment(R.layout.fragment_branch) {
 
     lateinit var adapter: FieldAdapter
-    var positionToChange = -1
-    lateinit var field:Field
+    private var positionToChange = -1
+    private lateinit var field: Field
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,15 +36,12 @@ class BranchFragment : Fragment(R.layout.fragment_branch) {
         arguments?.let {
             field = it.get("field") as Field
         }
-        //Log.i("in fragment", field.toString())
-        //Log.i("fieldName", field.name)
         FieldNameValue.text = field.name
         adapter = field.recursiveContent?.let { FieldAdapter(ConfigFragment(),this@BranchFragment, it, false) }!!
         RvValueField.adapter = adapter
         RvValueField.layoutManager = LinearLayoutManager(activity)
         RvValueField.setHasFixedSize(true)
         button_modify.setOnClickListener{
-                //Log.i("nouvelle valeur", field.toString())
                 navigateBack()
         }
 

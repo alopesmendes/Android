@@ -3,8 +3,8 @@ package fr.uge.confroid.configurations.services
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import fr.uge.confroid.configurations.AllVersionsFragment
-import fr.uge.confroid.configurations.AppFragment
+import fr.uge.confroid.configurations.fragments.AllVersionsFragment
+import fr.uge.confroid.configurations.fragments.AppFragment
 
 /**
  * This service retrieves all versions of a config from an external App request.

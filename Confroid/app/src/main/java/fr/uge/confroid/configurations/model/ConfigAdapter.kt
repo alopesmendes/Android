@@ -1,4 +1,4 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.model
 
 
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import fr.uge.confroid.R
+import fr.uge.confroid.configurations.fragments.AllVersionsFragment
 import fr.uge.confroid.utils.CustomDiffUtil
 import fr.uge.confroid.utils.FilterUtils
 

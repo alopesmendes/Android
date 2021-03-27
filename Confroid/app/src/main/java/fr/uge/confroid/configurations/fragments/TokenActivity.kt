@@ -1,4 +1,4 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.fragments
 
 import android.content.Context
 import android.content.Intent
@@ -25,7 +25,6 @@ class TokenActivity : AppCompatActivity() {
         const val STRING_LENGTH: Int = 20
         val REGEX: List<Char> = ('a'..'z') + ('A'..'Z')
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_token)

@@ -1,4 +1,4 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.model
 
 import android.view.LayoutInflater
 import android.view.View

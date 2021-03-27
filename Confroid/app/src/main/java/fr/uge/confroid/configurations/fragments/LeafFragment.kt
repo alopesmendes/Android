@@ -1,16 +1,26 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import fr.uge.confroid.R
+import fr.uge.confroid.configurations.model.Field
 import kotlinx.android.synthetic.main.fragment_leaf.*
 
+/**
+ * This Fragment displays a field of a config with its old value
+ * and the user can modify it.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class LeafFragment : Fragment(R.layout.fragment_leaf) {
 
-    lateinit var field:Field
+    private lateinit var field: Field
 
     companion object {
 
@@ -23,20 +33,16 @@ class LeafFragment : Fragment(R.layout.fragment_leaf) {
         arguments?.let {
             field = it.get("field") as Field
         }
-        Log.i("in fragment", field.toString())
-        Log.i("fieldName", field.name)
         FieldNameValue.text = field.name
         oldValueText.text = field.content
 
-        button_modify.setOnClickListener{
-            if (!field_editValue.text.isNullOrBlank()){
+        button_modify.setOnClickListener {
+            if (!field_editValue.text.isNullOrBlank()) {
                 field = Field(field.name, field_editValue.text.toString(), null)
-                Log.i("nouvelle valeur", field.toString())
                 navigateBack()
             }
         }
     }
-
 
 
     private fun navigateBack() {

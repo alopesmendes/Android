@@ -1,4 +1,4 @@
-package fr.uge.confroid.configurations
+package fr.uge.confroid.configurations.model
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,32 +6,40 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.uge.confroid.R
+import fr.uge.confroid.configurations.fragments.BranchFragment
+import fr.uge.confroid.configurations.fragments.ConfigFragment
 
 
-class FieldAdapter(val listenerPrimary: ConfigFragment,val listenerSecondary: BranchFragment, private var listFields: ArrayList<Field>, private val status: Boolean) : RecyclerView.Adapter<FieldAdapter.ViewHolder>(){
+class FieldAdapter(
+    val listenerPrimary: ConfigFragment,
+    val listenerSecondary: BranchFragment,
+    private var listFields: ArrayList<Field>,
+    private val status: Boolean
+) : RecyclerView.Adapter<FieldAdapter.ViewHolder>() {
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
-        private val nameField : TextView = itemView.findViewById(R.id.nameField)
-        private val valueField : TextView = itemView.findViewById(R.id.valueField)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
+        private val nameField: TextView = itemView.findViewById(R.id.nameField)
+        private val valueField: TextView = itemView.findViewById(R.id.valueField)
 
 
         init {
             itemView.setOnClickListener(this)
         }
 
-        fun update(field: Field){
+        fun update(field: Field) {
             nameField.text = field.name
-            if (field.recursiveContent.isNullOrEmpty()){
+            if (field.recursiveContent.isNullOrEmpty()) {
                 valueField.text = field.content
-            }else{
+            } else {
                 valueField.text = "[Click to show details]"
             }
         }
 
         override fun onClick(v: View?) {
-            if (status){
+            if (status) {
                 listenerPrimary.onClickListener(adapterPosition)
-            }else{
+            } else {
                 listenerSecondary.onClickListener(adapterPosition)
             }
 
@@ -63,11 +71,7 @@ class FieldAdapter(val listenerPrimary: ConfigFragment,val listenerSecondary: Br
         }
     }
 
-    fun getfields(): ArrayList<Field> {
-        return listFields
-    }
-
-    fun getfield(position: Int): Field{
+    fun getfield(position: Int): Field {
         return listFields[position]
     }
 

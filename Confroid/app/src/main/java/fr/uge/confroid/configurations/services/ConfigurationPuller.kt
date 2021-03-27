@@ -3,8 +3,8 @@ package fr.uge.confroid.configurations.services
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import fr.uge.confroid.configurations.AppFragment
-import fr.uge.confroid.configurations.ConfigFragment
+import fr.uge.confroid.configurations.fragments.AppFragment
+import fr.uge.confroid.configurations.fragments.ConfigFragment
 
 /**
  * This service retrieves a config from an external App request.

@@ -3,7 +3,7 @@ package fr.uge.confroid.configurations.receivers
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import fr.uge.confroid.configurations.TokenActivity
+import fr.uge.confroid.configurations.fragments.TokenActivity
 
 /**
  * This service that opens a fragment with an external App name and its request id.

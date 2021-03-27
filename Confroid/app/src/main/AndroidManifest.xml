@@ -33,9 +33,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".configurations.TokenActivity" />
-        <activity android:name=".configurations.AllVersionsActivity" />
-        <activity android:name=".configurations.ConfigActivity" />
+        <activity android:name=".configurations.fragments.TokenActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
