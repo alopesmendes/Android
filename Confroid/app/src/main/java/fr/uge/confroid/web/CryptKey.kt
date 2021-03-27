@@ -20,10 +20,7 @@ object CryptKey {
     val secretKey : SecretKey
 
     init {
-        val keyGenerator : KeyGenerator = KeyGenerator.getInstance("AES")
-        keyGenerator.init(256)
-        secretKey = SecretKeySpec("1Hbfh667adfDEJ78".toByteArray(), "AES")
-
+        secretKey = SecretKeySpec("&F)J@McQfTjWnZr4u7x!A%D*G-KaPdRg".toByteArray(), "AES")
     }
 
     /**
