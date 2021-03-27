@@ -16,12 +16,15 @@
             android:id="@+id/helpRegisterTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/register_text"
-            android:textSize="25sp"
             android:fontFamily="monospace"
+            android:gravity="center_horizontal"
+            android:padding="15dp"
+            android:text="@string/register_text"
             android:textAlignment="center"
+            android:textSize="15sp"
+            android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center_horizontal" />
+            android:layout_marginBottom="15dp"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

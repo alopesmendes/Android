@@ -35,4 +35,13 @@
     <string name="generate_token_text">genera um token</string>
     <string name="send_token_to_app_text">enviar token para o aplicativo</string>
     <string name="creation_of_new_version">Criação de nova versão:</string>
+    <string name="number_of_versions_text">Número de versões existentes</string>
+    <string name="help_app_explain">O nome do aplicativo. Clique para ver todas as versões</string>
+    <string name="all_version_information">Uma configuração com sua versão e tag. Clique para ver os detalhes</string>
+    <string name="all_version">Todas as versões</string>
+    <string name="all_app">Aplicativos</string>
+    <string name="delete_config">"Excluir configuração "</string>
+    <string name="branch_details">Para ver mais detalhes</string>
+    <string name="modify_config">Para modificar a configuração</string>
+    <string name="config">Configuração</string>
 </resources>

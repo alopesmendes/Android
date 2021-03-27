@@ -53,7 +53,15 @@
     <string name="generate_token_text">generate token</string>
     <string name="send_token_to_app_text">send token to app</string>
     <string name="creation_of_new_version">Creation of new version:</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="number_of_versions_text">Number of versions existing</string>
+    <string name="help_app_explain">The name of the app. Click to see all versions</string>
+    <string name="all_version_information">A config with it\'s version and tag. Click to see details</string>
+    <string name="all_version">All Version</string>
+    <string name="all_app">Apps</string>
+    <string name="delete_config">Delete config</string>
+    <string name="branch_details">To see further details</string>
+    <string name="modify_config">To modify config</string>
+    <string name="config">Configuration</string>
 
 
 </resources>

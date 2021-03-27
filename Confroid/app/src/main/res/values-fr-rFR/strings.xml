@@ -36,5 +36,14 @@
     <string name="generate_token_text">générer un jeton</string>
     <string name="send_token_to_app_text">envoyer un jeton à l\'application</string>
     <string name="creation_of_new_version">Création d\'une nouvelle version:</string>
+    <string name="number_of_versions_text">Nombre de versions existantes</string>
+    <string name="help_app_explain">Le nom de l\'application. Cliquez pour voir toutes les versions</string>
+    <string name="all_version_information">" Une config avec sa version et son tag. Cliquez pour voir les détails"</string>
+    <string name="all_version">Toutes les Version</string>
+    <string name="all_app">Applications</string>
+    <string name="delete_config">Supprimer la configuration</string>
+    <string name="branch_details">"Pour voir plus de détails "</string>
+    <string name="modify_config">Pour modifier la configuration</string>
+    <string name="config">Configuration</string>
 
 </resources>

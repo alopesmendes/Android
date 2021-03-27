@@ -8,10 +8,7 @@ import androidx.navigation.Navigation
 import com.google.android.material.tabs.TabLayoutMediator
 import fr.uge.confroid.R
 import fr.uge.confroid.settings.ZoomOutPageTransformer
-import fr.uge.confroid.settings.help.fragments.HelpLoginFragment
-import fr.uge.confroid.settings.help.fragments.HelpMenuFragment
-import fr.uge.confroid.settings.help.fragments.HelpRegisterFragment
-import fr.uge.confroid.settings.help.fragments.HelpSettingFragment
+import fr.uge.confroid.settings.help.fragments.*
 import kotlinx.android.synthetic.main.fragment_help.*
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
@@ -26,6 +23,9 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         adapter = HelpViewPageAdapter(
             listOf(
                 HelpMenuFragment(),
+                HelpAppFragment(),
+                HelpAllVersionsFragment(),
+                HelpConfigFragment(),
                 HelpSettingFragment(),
                 HelpLoginFragment(),
                 HelpRegisterFragment(),
