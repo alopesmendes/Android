@@ -6,6 +6,15 @@ import androidx.viewpager2.widget.ViewPager2
 private const val MIN_SCALE = 0.85f
 private const val MIN_ALPHA = 0.5f
 
+/***
+ * Android page transformer. Will add an animation when sliding the pages of the [ViewPager2]
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class ZoomOutPageTransformer : ViewPager2.PageTransformer {
 
     override fun transformPage(view: View, position: Float) {

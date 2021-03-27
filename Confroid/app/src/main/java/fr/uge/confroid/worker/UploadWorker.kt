@@ -16,6 +16,15 @@ import java.io.IOException
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
+/**
+ * Will implement [Worker] to create our personal [Worker].
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
     @RequiresApi(Build.VERSION_CODES.O)

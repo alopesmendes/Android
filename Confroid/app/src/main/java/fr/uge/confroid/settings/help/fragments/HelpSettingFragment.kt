@@ -7,7 +7,15 @@ import fr.uge.confroid.utils.ConfroidAnimationUtils
 import fr.uge.confroid.R
 import kotlinx.android.synthetic.main.fragment_help_setting.*
 
-
+/***
+ * Will help the user understand better the SettingFragment.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class HelpSettingFragment : Fragment(R.layout.fragment_help_setting) {
     private var isNight = false
 

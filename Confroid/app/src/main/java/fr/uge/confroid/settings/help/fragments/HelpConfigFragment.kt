@@ -7,7 +7,15 @@ import fr.uge.confroid.R
 import fr.uge.confroid.utils.ConfroidAnimationUtils
 import kotlinx.android.synthetic.main.fragment_help_config.*
 
-
+/***
+ * Will help the user understand better the ConfigFragment.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class HelpConfigFragment : Fragment(R.layout.fragment_help_config) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -10,6 +10,15 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import fr.uge.confroid.R
 
+/***
+ * Will display the web view of our license.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class LicenseFragment : Fragment(R.layout.fragment_license) {
 
     private lateinit var navController: NavController

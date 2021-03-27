@@ -26,11 +26,21 @@ import com.google.android.material.navigation.NavigationView
 import fr.uge.confroid.settings.SettingFragment
 import fr.uge.confroid.settings.SettingViewModel
 import fr.uge.confroid.web.*
+import fr.uge.confroid.web.LoginRequest.logAction
 import fr.uge.confroid.worker.UploadWorker
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+/**
+ * The MainActivity of our program.
+ *
+ * @author Ailton Lopes Mendes
+ * @author Jonathan CHU
+ * @author Fabien LAMBERT--DELAVAQUERIE
+ * @author Akram MALEK
+ * @author Gérald LIN
+ */
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NavController.OnDestinationChangedListener  {
 
     private val settingViewModel: SettingViewModel by viewModels()
@@ -69,7 +79,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         SettingFragment.enableMode(this)
 
-        logAction()
+        logAction(applicationContext)
 
 
 
@@ -103,19 +113,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun configureNavigationView() {
         mainNavigationView.setNavigationItemSelectedListener(this)
-    }
-
-
-    private fun logAction() {
-        if (WebSharedPreferences.getInstance(this).isLoggedIn()) {
-
-            val user = WebSharedPreferences.getInstance(this).getUser()
-            LoginRequest.request(this, user.username, user.password) {}
-            work()
-
-            Log.i("shared user", user.toString())
-
-        }
     }
 
     private fun isLoggedInVisibility() {
@@ -172,22 +169,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         mainDrawerLayout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-
-    private fun work() {
-        val constraints = Constraints.Builder()
-            .setRequiresBatteryNotLow(true)
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresStorageNotLow(true)
-            .build()
-
-        val work = PeriodicWorkRequestBuilder<UploadWorker>(20, TimeUnit.MINUTES)
-            .setConstraints(constraints)
-            .build()
-
-        val workManager = WorkManager.getInstance(this)
-        workManager.enqueue(work)
     }
 
     override fun onDestinationChanged(
