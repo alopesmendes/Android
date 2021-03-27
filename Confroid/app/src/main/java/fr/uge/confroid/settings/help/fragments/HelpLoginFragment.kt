@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import fr.uge.confroid.utils.ConfroidAnimationUtils
 import fr.uge.confroid.R
+import kotlinx.android.synthetic.main.fragment_help_app.*
 import kotlinx.android.synthetic.main.fragment_help_login.*
 
 
@@ -15,13 +16,13 @@ class HelpLoginFragment : Fragment(R.layout.fragment_help_login) {
         helpExplainLoginText.movementMethod = ScrollingMovementMethod()
 
         helpLoginButton.setOnClickListener {
-            ConfroidAnimationUtils.animationVisibility(helpExplainLoginText, 600, 600)
             helpExplainLoginText.text = resources.getString(R.string.help_explain_login)
+            ConfroidAnimationUtils.animationBounce(helpExplainLoginText)
         }
 
         helpPointRegisterTextOfLogin.setOnClickListener {
-            ConfroidAnimationUtils.animationVisibility(helpExplainLoginText, 600, 600)
             helpExplainLoginText.text = resources.getString(R.string.help_explain_register_button)
+            ConfroidAnimationUtils.animationBounce(helpExplainLoginText)
         }
     }
 }

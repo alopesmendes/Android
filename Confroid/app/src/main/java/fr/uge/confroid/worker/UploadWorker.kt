@@ -16,7 +16,7 @@ import java.io.IOException
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
-class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
+class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result {
@@ -55,6 +55,7 @@ class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
                 },
                 {
                     Log.e("fail", it.toString())
+                    WebSharedPreferences.getInstance(appContext).logout()
                 }) {
             override fun getHeaders(): MutableMap<String, String> {
                 return mutableMapOf("authorization" to token)
