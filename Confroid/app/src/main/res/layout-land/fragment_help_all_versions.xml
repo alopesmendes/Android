@@ -27,10 +27,11 @@
 
         <ImageView
             android:id="@+id/helpAllVersionImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:src="@drawable/app_versions"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineLandEndVerticalAllVersionsImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/helpAllVersionsTitle" />
 
@@ -43,57 +44,79 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/helpAllVersionImage" />
+            app:layout_constraintStart_toStartOf="@+id/guidelineLandStartVerticalImageExplain"
+            app:layout_constraintTop_toBottomOf="@+id/helpAllVersionsTitle" />
 
         <ImageView
             android:id="@+id/helpPointAllVersionImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_right_point"
-            app:layout_constraintBottom_toBottomOf="@+id/helpAllVersionImage"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintBottom_toTopOf="@+id/guidelineLandEndHorizontalPointImage"
+            app:layout_constraintStart_toEndOf="@+id/helpAllVersionImage" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineLandEndVerticalAllVersionsImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.34" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineLandEndHorizontalPointImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.91" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineLandStartVerticalImageExplain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
         <TextView
             android:id="@+id/helpExplainAllVersionText"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="@string/all_version_information"
-            app:layout_constraintBottom_toTopOf="@+id/guidelineEndHorizontalAllVersionsExplainText"
-            app:layout_constraintEnd_toStartOf="@+id/guidelineEndVerticalAllVersionsExplainText"
-            app:layout_constraintStart_toStartOf="@+id/guidelineStartVerticalAllVersionsExplainText"
-            app:layout_constraintTop_toTopOf="@+id/guidelineStartHorizontalAllVersionsExplainText"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineLandEndHorizontalTextExplain"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineLandEndVerticalTextExplain"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLandStartVerticalTextExplain"
+            app:layout_constraintTop_toTopOf="@+id/guidelineLandStartHorizontalTextExplain"
             android:visibility="invisible"
             android:gravity="center_vertical"
             android:scrollbars="vertical"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineEndHorizontalAllVersionsExplainText"
+            android:id="@+id/guidelineLandStartHorizontalTextExplain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.8" />
+            app:layout_constraintGuide_percent="0.27" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineStartHorizontalAllVersionsExplainText"
+            android:id="@+id/guidelineLandEndHorizontalTextExplain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.71" />
+            app:layout_constraintGuide_percent="0.53" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineEndVerticalAllVersionsExplainText"
+            android:id="@+id/guidelineLandStartVerticalTextExplain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.73" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineStartVerticalAllVersionsExplainText"
+            android:id="@+id/guidelineLandEndVerticalTextExplain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.47" />
+            app:layout_constraintGuide_percent="0.88" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

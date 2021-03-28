@@ -62,6 +62,7 @@
     <string name="branch_details">To see further details</string>
     <string name="modify_config">To modify config</string>
     <string name="config">Configuration</string>
+    <string name="files">Files</string>
 
 
 </resources>
