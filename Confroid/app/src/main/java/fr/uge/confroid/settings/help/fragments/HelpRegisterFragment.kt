@@ -20,11 +20,11 @@ import kotlinx.android.synthetic.main.fragment_help_register.*
 class HelpRegisterFragment : Fragment(R.layout.fragment_help_register) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        textView2.movementMethod = ScrollingMovementMethod()
+        helpExplainRegisterText.movementMethod = ScrollingMovementMethod()
 
-        imageView2.setOnClickListener {
-            ConfroidAnimationUtils.animationVisibility(imageView3, 300, 600)
-            ConfroidAnimationUtils.animationVisibility(textView2, 600, 300)
+        helpRegisterButtonImage.setOnClickListener {
+            ConfroidAnimationUtils.animationVisibility(helpExplainRegisterImage, 300, 600)
+            ConfroidAnimationUtils.animationVisibility(helpExplainRegisterText, 600, 300)
         }
     }
 }

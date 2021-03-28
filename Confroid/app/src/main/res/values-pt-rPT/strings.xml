@@ -44,4 +44,5 @@
     <string name="branch_details">Para ver mais detalhes</string>
     <string name="modify_config">Para modificar a configuração</string>
     <string name="config">Configuração</string>
+    <string name="files">Arquivos</string>
 </resources>
