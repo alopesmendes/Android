@@ -14,10 +14,6 @@ db.serialize(() => {
   // Queries scheduled here will be serialized.
   db.run('DROP TABLE account');
   db.run('CREATE TABLE IF NOT EXISTS account(id_person INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL)')
-    .run(`INSERT INTO account(username, password)
-          VALUES('a', 'a'),
-                ('b', 'b'),
-                ('Z', 'Z')`)
     .each(`SELECT * FROM account`, (err, row) => {
       if (err){
         throw err;
