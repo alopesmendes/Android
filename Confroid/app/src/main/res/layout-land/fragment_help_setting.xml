@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".settings.help.fragments.HelpSettingFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"/>
+
+        <TextView
+            android:id="@+id/helpSettingTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center_horizontal"
+            android:padding="15dp"
+            android:text="@string/settings"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="15dp"
+            />
+
+        <ImageView
+            android:id="@+id/helpSettingsImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/settings_light"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helpSettingTitle" />
+
+        <ImageView
+            android:id="@+id/helpPointTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_right_point"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/helpSettingTitle" />
+
+        <ImageView
+            android:id="@+id/helpPointLanguages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:src="@drawable/ic_right_point"
+            app:layout_constraintStart_toEndOf="@+id/helpSettingsImage"
+            app:layout_constraintTop_toBottomOf="@+id/helpPointTheme" />
+
+        <ImageView
+            android:id="@+id/helpImageExplainLanguage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_man_explain"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/helpPointTheme"
+            app:layout_constraintTop_toBottomOf="@+id/helpSettingTitle"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/helpExplainLanguageSetting"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/language_explanation_text"
+            android:fontFamily="monospace"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineEndHorizontalText"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEndVerticalText"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStartVerticalText"
+            app:layout_constraintTop_toTopOf="@+id/guidelineStartHorizontalText"
+            android:visibility="invisible"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStartVerticalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.74" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStartHorizontalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.28" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEndVerticalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.92" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEndHorizontalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.53" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</ScrollView>

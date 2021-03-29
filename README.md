@@ -21,7 +21,7 @@ Refer to the website [nodejs](https://nodejs.org/en/download/)
 
 ### Npm dependencies 
 ```bash
-$ sudo npm install -g nodemon
+$ npm install -g nodemon
 $ npm install express --save
 $ npm install sqlite3
 $ npm install knex multer

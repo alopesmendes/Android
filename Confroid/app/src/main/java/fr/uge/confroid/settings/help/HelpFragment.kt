@@ -39,6 +39,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
                 HelpSettingFragment(),
                 HelpLoginFragment(),
                 HelpRegisterFragment(),
+                HelpConnectedFragment(),
             ),
             childFragmentManager,
             lifecycle
