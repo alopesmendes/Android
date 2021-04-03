@@ -1,0 +1,3 @@
+Confroid application will allow the user to change the configuration of certains applications. 
+The user will be able to stock the changements locally or by login into his account.
+By sending generating a token first applications will be able to send and receive configurations from Confroid.
