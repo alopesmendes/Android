@@ -1,1 +1,0 @@
-Confroid application will allow the user to change the configuration of certains applications. The user will be able to stock the changements locally or by login into his account.
