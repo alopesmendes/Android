@@ -16,19 +16,19 @@ router.get('/files', AuthHelper.checkToken, async function(req, res) {
         res.status(500).send({
           message: "Unable to read files!",
         });
-        throw err;
       }
-  
-      let fileInfos = [];
-  
-      files.forEach((file) => {
-        fileInfos.push({
-          name: file,
-          url: global.baseUrl+ 'api/file/' + file,
+      else {
+        let fileInfos = [];
+    
+        files.forEach((file) => {
+          fileInfos.push({
+            name: file,
+            url: global.baseUrl+ 'api/file/' + file,
+          });
         });
-      });
-  
-      res.status(200).send(fileInfos);
+    
+        res.status(200).send(fileInfos);
+      }
     });
 });
 
